@@ -48,7 +48,9 @@ export default function AuthForm({ type }: { type: AuthType }) {
     <div className="form-container">
       <h1 className="form-title">{isLogin ? "Log In" : "Register"}</h1>
       <p className="form-subtitle">
-        {isLogin ? "Welcome back! Please enter your details" : "Create your account to get started"}
+        {isLogin
+          ? "Welcome back! Please enter your details"
+          : "Create your account to get started"}
       </p>
 
       <form onSubmit={handleSubmit} className="form">
@@ -125,9 +127,13 @@ export default function AuthForm({ type }: { type: AuthType }) {
 
       <p className="login-link">
         {isLogin ? (
-          <>Don&apos;t have an account? <a href="/register">Register</a></>
+          <>
+            Don&apos;t have an account? <a href="/register">Register</a>
+          </>
         ) : (
-          <>Already have an account? <a href="/login">Log In</a></>
+          <>
+            Already have an account? <a href="/login">Log In</a>
+          </>
         )}
       </p>
 
@@ -250,6 +256,19 @@ export default function AuthForm({ type }: { type: AuthType }) {
         .login-link a:hover {
           color: var(--primary-hover);
           text-decoration: underline;
+        }
+         
+        .input:-webkit-autofill {
+          -webkit-text-fill-color: var(--text-primary) !important;
+          -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset !important;
+          border: 1.5px solid var(--input-border) !important;
+          transition: background-color 9999s ease-in-out 0s;
+          caret-color: var(--text-primary);
+        }
+
+        .input:-webkit-autofill:focus {
+          border-color: var(--input-focus) !important;
+          -webkit-box-shadow: 0 0 0px 1000px var(--surface) inset !important;
         }
       `}</style>
     </div>
