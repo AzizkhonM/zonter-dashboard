@@ -28,7 +28,7 @@ export default function AuthLayout({
           
         .auth-wrapper {
           display: flex;
-          min-height: 100vh;
+          min-height: 100svh;
           width: 100%;
           background: #09090B;
         }
