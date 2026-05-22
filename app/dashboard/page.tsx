@@ -11,9 +11,6 @@ export default async function Dashboard() {
 
   const payload = verifyToken(token);
 
-  console.log(payload);
-  
-
   if (!payload) {
     return <div>Not authorized</div>;
   }
