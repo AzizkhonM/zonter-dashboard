@@ -9,7 +9,7 @@ export default async function Dashboard() {
     return <div>Not authorized</div>;
   }
 
-  const payload = verifyToken(token) as { userId: string } | null;
+  const payload = verifyToken(token) as unknown as { userId: string } | null;
 
   console.log(payload);
   
