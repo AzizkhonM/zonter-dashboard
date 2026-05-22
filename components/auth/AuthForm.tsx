@@ -264,6 +264,7 @@ export default function AuthForm({ type }: { type: AuthType }) {
           border: 1.5px solid var(--input-border) !important;
           transition: background-color 9999s ease-in-out 0s;
           caret-color: var(--text-primary);
+          color: var(--text-primary);
         }
 
         .input:-webkit-autofill:focus {
