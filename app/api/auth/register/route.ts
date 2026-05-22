@@ -32,8 +32,7 @@ export async function POST(req: Request) {
 
   // 4. create JWT (AUTO LOGIN)
   const token = signToken({
-    userId: user.id,
-    role: user.role,
+    userId: user.id
   })
 
   // 5. response
