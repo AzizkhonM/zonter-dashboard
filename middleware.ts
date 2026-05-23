@@ -6,29 +6,32 @@ export function middleware(req: NextRequest) {
 
   const { pathname } = req.nextUrl
 
-  // 🔓 Public routes (auth talab qilinmaydi)
-  const isPublicRoute =
+  // 🔐 Auth pages
+  const isAuthRoute =
     pathname.startsWith("/login") ||
     pathname.startsWith("/register")
 
-  // ❌ NO TOKEN → faqat public route’lar ochiq
-  if (!token && !isPublicRoute) {
+  // 🔒 Protected dashboard routes
+  const isDashboardRoute =
+    pathname.startsWith("/dashboard")
+
+  // ❌ Token yo‘q → dashboardga kiritmaslik
+  if (!token && isDashboardRoute) {
     const url = req.nextUrl.clone()
     url.pathname = "/login"
     return NextResponse.redirect(url)
   }
 
-  // 🔁 TOKEN BOR → login/register ga kirsa home yoki dashboardga yuborish
-  if (token && isPublicRoute) {
+  // 🔁 Token bor → login/registerga kiritmaslik
+  if (token && isAuthRoute) {
     const url = req.nextUrl.clone()
-    url.pathname = "/"
+    url.pathname = "/dashboard"
     return NextResponse.redirect(url)
   }
 
   return NextResponse.next()
 }
 
-// ⚙️ qaysi route’larda ishlaydi
 export const config = {
   matcher: [
     "/((?!api|_next/static|_next/image|favicon.ico).*)",

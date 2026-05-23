@@ -37,7 +37,7 @@ export default function AuthForm({ type }: { type: AuthType }) {
     });
 
     if (res.ok) {
-      router.push("/");
+      router.push("/dashboard");
     } else {
       const data = await res.json();
       setError(data.error || "Something went wrong");
