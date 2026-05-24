@@ -1,5 +1,6 @@
 import { LeftPanelCarousel } from "@/components/register/LeftPanelCarousel";
-import "../globals.css";
+import "@/app/globals.css";
+import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 
 export default function AuthLayout({
   children,
@@ -8,6 +9,7 @@ export default function AuthLayout({
 }) {
   return (
     <div className="auth-wrapper">
+      <LocaleSwitcher />
       {/* LEFT PANEL */}
       <div className="left-panel">
         <div className="left-glow" />
@@ -56,6 +58,7 @@ export default function AuthLayout({
           width: 500px;
           height: 500px;
           background: radial-gradient(circle, rgba(249,115,22,0.18), transparent 70%);
+          animation: glowPulse1 8s ease-in-out infinite;
         }
 
         .left-glow-2 {
@@ -65,6 +68,18 @@ export default function AuthLayout({
           width: 320px;
           height: 320px;
           background: radial-gradient(circle, rgba(249,115,22,0.08), transparent 70%);
+          animation: glowPulse2 10s ease-in-out infinite;
+          animation-delay: -3s;
+        }
+
+        @keyframes glowPulse1 {
+          0%, 100% { transform: scale(1);   opacity: 1;    }
+          50%       { transform: scale(1.15); opacity: 0.6; }
+        }
+              
+        @keyframes glowPulse2 {
+          0%, 100% { transform: scale(1);   opacity: 1;    }
+          50%       { transform: scale(1.2); opacity: 0.5; }
         }
 
         

@@ -1,39 +1,59 @@
-import { NextResponse } from "next/server"
-import type { NextRequest } from "next/server"
+import createMiddleware from "next-intl/middleware"
+import { NextRequest, NextResponse } from "next/server"
 
-export function middleware(req: NextRequest) {
+const intlMiddleware = createMiddleware({
+  locales: ["uz", "en", "ru"],
+  defaultLocale: "uz",
+  localePrefix: "as-needed",
+  localeDetection: false
+})
+
+export default function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value
 
-  const { pathname } = req.nextUrl
+  const pathname = req.nextUrl.pathname
 
-  // 🔐 Auth pages
+  // Locale qismini olib tashlash
+  const pathnameWithoutLocale = pathname.replace(
+    /^\/(en|ru)/,
+    ""
+  )
+
+  // Auth pages
   const isAuthRoute =
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/register")
+    pathnameWithoutLocale.startsWith("/login") ||
+    pathnameWithoutLocale.startsWith("/register")
 
-  // 🔒 Protected dashboard routes
+  // Protected pages
   const isDashboardRoute =
-    pathname.startsWith("/dashboard")
+    pathnameWithoutLocale.startsWith("/dashboard")
 
-  // ❌ Token yo‘q → dashboardga kiritmaslik
+  // Locale aniqlash
+  const locale =
+    pathname.startsWith("/en")
+      ? "en"
+      : pathname.startsWith("/ru")
+      ? "ru"
+      : "uz"
+
+  // ❌ No token
   if (!token && isDashboardRoute) {
-    const url = req.nextUrl.clone()
-    url.pathname = "/login"
-    return NextResponse.redirect(url)
+    return NextResponse.redirect(
+      new URL(`/${locale}/login`, req.url)
+    )
   }
 
-  // 🔁 Token bor → login/registerga kiritmaslik
+  // 🔁 Already logged in
   if (token && isAuthRoute) {
-    const url = req.nextUrl.clone()
-    url.pathname = "/dashboard"
-    return NextResponse.redirect(url)
+    return NextResponse.redirect(
+      new URL(`/${locale}/dashboard`, req.url)
+    )
   }
 
-  return NextResponse.next()
+  // 🌍 next-intl middleware
+  return intlMiddleware(req)
 }
 
 export const config = {
-  matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
-  ],
+  matcher: ["/((?!api|_next|.*\\..*).*)"],
 }

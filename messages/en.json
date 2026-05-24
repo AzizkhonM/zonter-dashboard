@@ -1,0 +1,49 @@
+{
+  "HomePage": {
+    "title": "Welcome to Zonter"
+  },
+  "RegisterCarousel": {
+    "slides": {
+      "0": {
+        "head": "This is not a tournament tool. It is a tournament operating system.",
+        "sub": "Build, manage, and control CS2 competitions like infrastructure — not spreadsheets."
+      },
+
+      "1": {
+        "head": "You don't join tournaments. You control them.",
+        "sub": "Design brackets, define rules, and run competitive systems with precision."
+      },
+
+      "2": {
+        "head": "Built for organizers, not spectators.",
+        "sub": "Every feature is designed for people who create structure, not consume it."
+      },
+
+      "3": {
+        "head": "Competition needs structure. Zonter is that structure.",
+        "sub": "From small community cups to university leagues — everything stays organized."
+      },
+
+      "4": {
+        "head": "A new layer for competitive CS2 infrastructure.",
+        "sub": "Not a platform. Not a dashboard. A control layer for esports operations."
+      }
+    }
+  },
+  "Auth": {
+    "loginTitle": "Log In",
+    "registerTitle": "Register",
+    "loginSubtitle": "Welcome back! Please enter your details",
+    "registerSubtitle": "Create your account to get started",
+    "name": "Full Name",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "login": "Log In",
+    "register": "Register",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "errorMatch": "Passwords do not match",
+    "errorGeneric": "Something went wrong"
+  }
+}

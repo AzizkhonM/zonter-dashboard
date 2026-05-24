@@ -1,0 +1,49 @@
+{
+  "HomePage": {
+    "title": "Zonterga xush kelibsiz"
+  },
+  "RegisterCarousel": {
+    "slides": {
+      "0": {
+        "head": "Bu oddiy turnir vositasi emas. Bu — turnirlarni boshqarish operatsion tizimi.",
+        "sub": "CS2 musobaqalarini elektron jadvallar orqali emas, haqiqiy infratuzilma kabi yarating, boshqaring va nazorat qiling."
+      },
+
+      "1": {
+        "head": "Siz turnirlarga qo‘shilmaysiz. Siz ularni boshqarasiz.",
+        "sub": "Bracketlarni yarating, qoidalarni belgilang va raqobat tizimlarini maksimal aniqlik bilan yuriting."
+      },
+
+      "2": {
+        "head": "Tomoshabinlar uchun emas, tashkilotchilar uchun yaratilgan.",
+        "sub": "Har bir funksiya kontent iste’mol qiluvchilar uchun emas, tizim va tartib yaratuvchilar uchun ishlab chiqilgan."
+      },
+
+      "3": {
+        "head": "Raqobatga tartib kerak. Zonter — aynan shu tartib.",
+        "sub": "Kichik community kuboklaridan tortib universitet ligalarigacha — hammasi tartibli va nazorat ostida qoladi."
+      },
+
+      "4": {
+        "head": "CS2 raqobat infratuzilmasi uchun yangi qatlam.",
+        "sub": "Bu platforma emas. Dashboard emas. Bu — esports operatsiyalarini boshqarish nazorat qatlami."
+      }
+    }
+  },
+  "Auth": {
+    "loginTitle": "Kirish",
+    "registerTitle": "Ro‘yxatdan o‘tish",
+    "loginSubtitle": "Xush kelibsiz! Ma'lumotlarni kiriting",
+    "registerSubtitle": "Hisob yaratish uchun ma'lumot kiriting",
+    "name": "To‘liq ism",
+    "email": "Email manzil",
+    "password": "Parol",
+    "confirmPassword": "Parolni tasdiqlang",
+    "login": "Kirish",
+    "register": "Ro‘yxatdan o‘tish",
+    "noAccount": "Account yo‘qmi?",
+    "haveAccount": "Account bormi?",
+    "errorMatch": "Parollar mos emas",
+    "errorGeneric": "Xatolik yuz berdi"
+  }
+}

@@ -1,21 +1,21 @@
 import { SessionProvider } from "@/app/providers/session-provider"
 import localFont from "next/font/local";
 
-const monument = localFont({
-  src: [
-    {
-      path: "../public/fonts/MonumentExtended-Regular.otf",
-      weight: "400",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/MonumentExtended-Ultrabold.otf",
-      weight: "800",
-      style: "normal",
-    },
-  ],
-  variable: "--font-monument",
-});
+// const monument = localFont({
+//   src: [
+//     {
+//       path: "../public/fonts/MonumentExtended-Regular.otf",
+//       weight: "400",
+//       style: "normal",
+//     },
+//     {
+//       path: "../public/fonts/MonumentExtended-Ultrabold.otf",
+//       weight: "800",
+//       style: "normal",
+//     },
+//   ],
+//   variable: "--font-monument",
+// });
 
 const satoshi = localFont({
   src: [
@@ -76,15 +76,15 @@ const satoshi = localFont({
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={satoshi.variable}>
+    <html className={satoshi.variable}>
       <body>
         <SessionProvider>
           {children}
         </SessionProvider>
       </body>
     </html>
-  );
+  )
 }

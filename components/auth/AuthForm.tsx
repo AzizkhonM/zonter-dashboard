@@ -2,13 +2,23 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import "@/app/globals.css";
+import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 type AuthType = "login" | "register";
 
 export default function AuthForm({ type }: { type: AuthType }) {
   const router = useRouter();
   const isLogin = type === "login";
+  const pathname = usePathname();
+  const localeSet = new Set(["uz", "en", "ru"]);
+  const segment = pathname.split("/")[1];
+  const locale = localeSet.has(segment) ? segment : "uz";
+  console.log(locale);
+
+  const t = useTranslations("Auth");
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -17,6 +27,11 @@ export default function AuthForm({ type }: { type: AuthType }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
+
+  const withLocale = (path: string) => {
+    if (locale === "uz") return path; // /register
+    return `/${locale}${path}`; // /en/register
+  };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -46,11 +61,11 @@ export default function AuthForm({ type }: { type: AuthType }) {
 
   return (
     <div className="form-container">
-      <h1 className="form-title">{isLogin ? "Log In" : "Register"}</h1>
+      <h1 className="form-title">
+        {isLogin ? t("loginTitle") : t("registerTitle")}
+      </h1>
       <p className="form-subtitle">
-        {isLogin
-          ? "Welcome back! Please enter your details"
-          : "Create your account to get started"}
+        {isLogin ? t("loginSubtitle") : t("registerSubtitle")}
       </p>
 
       <form onSubmit={handleSubmit} className="form">
@@ -59,7 +74,7 @@ export default function AuthForm({ type }: { type: AuthType }) {
             <input
               className="input"
               type="text"
-              placeholder="Full Name"
+              placeholder={t("name")}
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -71,7 +86,7 @@ export default function AuthForm({ type }: { type: AuthType }) {
           <input
             className="input"
             type="email"
-            placeholder="Email address"
+            placeholder={t("email")}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -82,7 +97,7 @@ export default function AuthForm({ type }: { type: AuthType }) {
           <input
             className="input"
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
+            placeholder={t("password")}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -102,7 +117,7 @@ export default function AuthForm({ type }: { type: AuthType }) {
             <input
               className="input"
               type={showConfirm ? "text" : "password"}
-              placeholder="Confirm Password"
+              placeholder={t("confirmPassword")}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -121,18 +136,20 @@ export default function AuthForm({ type }: { type: AuthType }) {
         {error && <p className="error-msg">{error}</p>}
 
         <button type="submit" className="submit-btn">
-          {isLogin ? "Log In" : "Create an Account"}
+          {isLogin ? t("login") : t("register")}
         </button>
       </form>
 
       <p className="login-link">
         {isLogin ? (
           <>
-            Don&apos;t have an account? <a href="/register">Register</a>
+            {t("noAccount")}{" "}
+            <Link href={withLocale("/register")}>{t("register")}</Link>
           </>
         ) : (
           <>
-            Already have an account? <a href="/login">Log In</a>
+            {t("haveAccount")}{" "}
+            <Link href={withLocale("/login")}>{t("login")}</Link>
           </>
         )}
       </p>
