@@ -44,6 +44,19 @@
     "noAccount": "Don't have an account?",
     "haveAccount": "Already have an account?",
     "errorMatch": "Passwords do not match",
-    "errorGeneric": "Something went wrong"
+    "errorGeneric": "Something went wrong",
+    "PASSWORDS_DO_NOT_MATCH": "Passwords do not match",
+    "USER_EXISTS": "User already exists",
+    "INVALID_CREDENTIALS": "Invalid email or password",
+    "SERVER_ERROR": "A server error occurred",
+    "existing_otp": "Verification code was already sent to your email",
+    "new_otp": "New verification code sent to your email",
+    "verifyTitle": "Verify email",
+    "verifySubtitle": "Enter code sent to your email",
+    "6-digitCode": "Enter 6-digit code",
+    "NO_VERIFICATION_FOUND": "No verification request found",
+    "TOO_MANY_ATTEMPTS": "Too many attempts. Try again in 10 minutes.",
+    "CODE_EXPIRED": "The code has expired. Please request a new one.",
+    "INVALID_CODE": "Invalid code. Please try again."
   }
 }

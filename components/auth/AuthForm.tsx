@@ -8,6 +8,12 @@ import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 type AuthType = "login" | "register";
+type ApiResponse = {
+  success?: boolean;
+  error?: string;
+  toast?: "existing_otp" | "new_otp";
+  code?: "EMAIL_NOT_VERIFIED" | "INVALID_CODE" | "USER_EXISTS";
+};
 
 export default function AuthForm({ type }: { type: AuthType }) {
   const router = useRouter();
@@ -27,6 +33,9 @@ export default function AuthForm({ type }: { type: AuthType }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
+  const [step, setStep] = useState<"form" | "verify">("form");
+  const [otp, setOtp] = useState("");
+  const [toast, setToast] = useState("");
 
   const withLocale = (path: string) => {
     if (locale === "uz") return path; // /register
@@ -38,12 +47,15 @@ export default function AuthForm({ type }: { type: AuthType }) {
     setError("");
 
     if (!isLogin && password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("PASSWORDS_DO_NOT_MATCH");
       return;
     }
 
     const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
-    const body = isLogin ? { email, password } : { name, email, password };
+
+    const body = isLogin
+      ? { email, password, locale }
+      : { name, email, password, locale };
 
     const res = await fetch(endpoint, {
       method: "POST",
@@ -51,94 +63,187 @@ export default function AuthForm({ type }: { type: AuthType }) {
       body: JSON.stringify(body),
     });
 
-    if (res.ok) {
+    let data: ApiResponse = {};
+
+    try {
+      data = await res.json();
+    } catch {
+      setError("SERVER_ERROR");
+      return;
+    }
+
+    if (!res.ok) {
+      if (data.code === "EMAIL_NOT_VERIFIED") {
+        if (data.toast === "existing_otp") {
+          setToast(t("existing_otp"));
+        } else if (data.toast === "new_otp") {
+          setToast(t("new_otp"));
+        }
+        setStep("verify");
+        return;
+      }
+
+      setError(data.error || "Something went wrong");
+      return;
+    }
+
+    // 🔥 IMPORTANT CHANGE HERE
+    if (isLogin) {
       router.push("/dashboard");
     } else {
-      const data = await res.json();
-      setError(data.error || "Something went wrong");
+      if (data.toast === "existing_otp") {
+        setToast(t("existing_otp"));
+      } else if (data.toast === "new_otp") {
+        setToast(t("new_otp"));
+      }
+      setStep("verify");
     }
+  }
+
+  async function handleVerify() {
+    setError("");
+
+    const res = await fetch("/api/auth/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        code: otp,
+      }),
+    });
+
+    let data: ApiResponse = {};
+
+    try {
+      data = await res.json();
+    } catch {
+      setError("SERVER_ERROR");
+      return;
+    }
+
+    if (!res.ok) {
+      setError(data.error || "Invalid code");
+      return;
+    }
+
+    router.push("/dashboard");
   }
 
   return (
     <div className="form-container">
       <h1 className="form-title">
-        {isLogin ? t("loginTitle") : t("registerTitle")}
+        {step === "form"
+          ? isLogin
+            ? t("loginTitle")
+            : t("registerTitle")
+          : t("verifyTitle")}
       </h1>
       <p className="form-subtitle">
-        {isLogin ? t("loginSubtitle") : t("registerSubtitle")}
+        {step === "form"
+          ? isLogin
+            ? t("loginSubtitle")
+            : t("registerSubtitle")
+          : t("verifySubtitle")}
       </p>
 
-      <form onSubmit={handleSubmit} className="form">
-        {!isLogin && (
+      {/* STEP 1 */}
+      {step === "form" && (
+        <form onSubmit={handleSubmit} className="form">
+          {!isLogin && (
+            <div className="field">
+              <input
+                className="input"
+                type="text"
+                placeholder={t("name")}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+          )}
+
           <div className="field">
             <input
               className="input"
-              type="text"
-              placeholder={t("name")}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              type="email"
+              placeholder={t("email")}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
-        )}
 
-        <div className="field">
-          <input
-            className="input"
-            type="email"
-            placeholder={t("email")}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="field field-icon">
-          <input
-            className="input"
-            type={showPassword ? "text" : "password"}
-            placeholder={t("password")}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button
-            type="button"
-            className="eye-btn"
-            onClick={() => setShowPassword((v) => !v)}
-            tabIndex={-1}
-          >
-            {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-          </button>
-        </div>
-
-        {!isLogin && (
           <div className="field field-icon">
             <input
               className="input"
-              type={showConfirm ? "text" : "password"}
-              placeholder={t("confirmPassword")}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              type={showPassword ? "text" : "password"}
+              placeholder={t("password")}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
+
             <button
               type="button"
               className="eye-btn"
-              onClick={() => setShowConfirm((v) => !v)}
+              onClick={() => setShowPassword((v) => !v)}
               tabIndex={-1}
             >
-              {showConfirm ? <EyeOffIcon /> : <EyeIcon />}
+              {showPassword ? <EyeOffIcon /> : <EyeIcon />}
             </button>
           </div>
-        )}
 
-        {error && <p className="error-msg">{error}</p>}
+          {!isLogin && (
+            <div className="field field-icon">
+              <input
+                className="input"
+                type={showConfirm ? "text" : "password"}
+                placeholder={t("confirmPassword")}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
 
-        <button type="submit" className="submit-btn">
-          {isLogin ? t("login") : t("register")}
-        </button>
-      </form>
+              <button
+                type="button"
+                className="eye-btn"
+                onClick={() => setShowConfirm((v) => !v)}
+                tabIndex={-1}
+              >
+                {showConfirm ? <EyeOffIcon /> : <EyeIcon />}
+              </button>
+            </div>
+          )}
+
+          {error && <p className="error-msg">{t(error)}</p>}
+
+          <button type="submit" className="submit-btn">
+            {isLogin ? t("login") : t("register")}
+          </button>
+        </form>
+      )}
+
+      {/* STEP 2 */}
+      {step === "verify" && (
+        <div className="form">
+          {toast && <p className="toast-msg">{toast}</p>}
+          <div className="field">
+            <input
+              className="input"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+              placeholder={t("6-digitCode")}
+              maxLength={6}
+            />
+          </div>
+
+          {error && <p className="error-msg">{t(error)}</p>}
+
+          <button className="submit-btn" onClick={handleVerify}>
+            {t("verifyTitle")}
+          </button>
+        </div>
+      )}
 
       <p className="login-link">
         {isLogin ? (
@@ -287,6 +392,16 @@ export default function AuthForm({ type }: { type: AuthType }) {
         .input:-webkit-autofill:focus {
           border-color: var(--input-focus) !important;
           -webkit-box-shadow: 0 0 0px 1000px var(--surface) inset !important;
+        }
+
+        .toast-msg {
+          font-size: 0.82rem;
+          color: #4ade80;
+          padding: 10px 12px;
+          background: rgba(74, 222, 128, 0.08);
+          border: 1px solid rgba(74, 222, 128, 0.2);
+          border-radius: 8px;
+          text-align: center;
         }
       `}</style>
     </div>

@@ -44,6 +44,19 @@
     "noAccount": "Account yo‘qmi?",
     "haveAccount": "Account bormi?",
     "errorMatch": "Parollar mos emas",
-    "errorGeneric": "Xatolik yuz berdi"
+    "errorGeneric": "Xatolik yuz berdi",
+    "PASSWORDS_DO_NOT_MATCH": "Parollar mos kelmadi",
+    "USER_EXISTS": "Foydalanuvchi allaqachon mavjud",
+    "INVALID_CREDENTIALS": "Email yoki parol noto‘g‘ri",
+    "SERVER_ERROR": "Server xatosi yuz berdi",
+    "existing_otp": "Tasdiqlash kodi emailingizga allaqachon yuborilgan",
+    "new_otp": "Yangi tasdiqlash kodi emailingizga yuborildi",
+    "verifyTitle": "Emailni tasdiqlash",
+    "verifySubtitle": "Emailingizga yuborilgan kodni kiriting",
+    "6-digitCode": "6 xonali kodni kiriting",
+    "NO_VERIFICATION_FOUND": "Tasdiqlash so‘rovi topilmadi",
+    "TOO_MANY_ATTEMPTS": "Juda ko‘p urinish qilindi. 10 daqiqadan so‘ng qayta urinib ko‘ring.",
+    "CODE_EXPIRED": "Kodning amal qilish muddati tugagan. Iltimos, yangisini so‘rang.",
+    "INVALID_CODE": "Noto‘g‘ri kod. Iltimos, qayta urinib ko‘ring."
   }
 }
