@@ -57,6 +57,8 @@
     "NO_VERIFICATION_FOUND": "Tasdiqlash so‘rovi topilmadi",
     "TOO_MANY_ATTEMPTS": "Juda ko‘p urinish qilindi. 10 daqiqadan so‘ng qayta urinib ko‘ring.",
     "CODE_EXPIRED": "Kodning amal qilish muddati tugagan. Iltimos, yangisini so‘rang.",
-    "INVALID_CODE": "Noto‘g‘ri kod. Iltimos, qayta urinib ko‘ring."
+    "INVALID_CODE": "Noto‘g‘ri kod. Iltimos, qayta urinib ko‘ring.",
+    "or": "yoki",
+    "continueWithGoogle": "Google orqali davom etish"
   }
 }

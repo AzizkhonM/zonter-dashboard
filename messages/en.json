@@ -57,6 +57,8 @@
     "NO_VERIFICATION_FOUND": "No verification request found",
     "TOO_MANY_ATTEMPTS": "Too many attempts. Try again in 10 minutes.",
     "CODE_EXPIRED": "The code has expired. Please request a new one.",
-    "INVALID_CODE": "Invalid code. Please try again."
+    "INVALID_CODE": "Invalid code. Please try again.",
+    "or": "or",
+    "continueWithGoogle": "Continue with Google"
   }
 }

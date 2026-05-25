@@ -1,59 +1,45 @@
-import createMiddleware from "next-intl/middleware"
-import { NextRequest, NextResponse } from "next/server"
+import createMiddleware from "next-intl/middleware";
+import { NextRequest, NextResponse } from "next/server";
 
 const intlMiddleware = createMiddleware({
   locales: ["uz", "en", "ru"],
   defaultLocale: "uz",
   localePrefix: "as-needed",
-  localeDetection: false
-})
+  localeDetection: false,
+});
 
 export default function middleware(req: NextRequest) {
-  const token = req.cookies.get("token")?.value
+  const token = req.cookies.get("token")?.value;
 
-  const pathname = req.nextUrl.pathname
+  const isLoggedIn = !!token;
 
-  // Locale qismini olib tashlash
-  const pathnameWithoutLocale = pathname.replace(
-    /^\/(en|ru)/,
-    ""
-  )
+  const pathname = req.nextUrl.pathname;
 
-  // Auth pages
+  const pathnameWithoutLocale = pathname.replace(/^\/(en|ru)/, "");
+
   const isAuthRoute =
     pathnameWithoutLocale.startsWith("/login") ||
-    pathnameWithoutLocale.startsWith("/register")
+    pathnameWithoutLocale.startsWith("/register");
 
-  // Protected pages
-  const isDashboardRoute =
-    pathnameWithoutLocale.startsWith("/dashboard")
+  const isDashboardRoute = pathnameWithoutLocale.startsWith("/dashboard");
 
-  // Locale aniqlash
-  const locale =
-    pathname.startsWith("/en")
-      ? "en"
-      : pathname.startsWith("/ru")
-      ? "ru"
-      : "uz"
+  const locale = pathname.startsWith("/en")
+    ? "en"
+    : pathname.startsWith("/ru")
+    ? "ru"
+    : "uz";
 
-  // ❌ No token
-  if (!token && isDashboardRoute) {
-    return NextResponse.redirect(
-      new URL(`/${locale}/login`, req.url)
-    )
+  if (!isLoggedIn && isDashboardRoute) {
+    return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
   }
 
-  // 🔁 Already logged in
-  if (token && isAuthRoute) {
-    return NextResponse.redirect(
-      new URL(`/${locale}/dashboard`, req.url)
-    )
+  if (isLoggedIn && isAuthRoute) {
+    return NextResponse.redirect(new URL(`/${locale}/dashboard`, req.url));
   }
 
-  // 🌍 next-intl middleware
-  return intlMiddleware(req)
+  return intlMiddleware(req);
 }
 
 export const config = {
   matcher: ["/((?!api|_next|.*\\..*).*)"],
-}
+};
