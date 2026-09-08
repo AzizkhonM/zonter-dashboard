@@ -21,11 +21,9 @@ export default async function middleware(req: NextRequest) {
     pathnameWithoutLocale.startsWith("/login") ||
     pathnameWithoutLocale.startsWith("/register");
 
-  const isDashboardRoute =
-    pathnameWithoutLocale.startsWith("/dashboard");
+  const isDashboardRoute = pathnameWithoutLocale.startsWith("/dashboard");
 
-  const isAdminRoute =
-    pathnameWithoutLocale.startsWith("/admin");
+  const isAdminRoute = pathnameWithoutLocale.startsWith("/admin");
 
   // Hozirgi locale
   const locale = pathname.startsWith("/en")
@@ -41,23 +39,34 @@ export default async function middleware(req: NextRequest) {
     try {
       const decoded = await verifyToken(token);
 
-      if (
-        typeof decoded === "object" &&
-        decoded !== null &&
-        "role" in decoded
-      ) {
+      // ✅ ROLE mavjudligi tekshirish
+      if (decoded && "role" in decoded) {
         role = decoded.role as string;
+      } else {
+        // Role yo'q → Login page ga
+        return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
       }
-    } catch {
-      // Token invalid yoki expired
+    } catch (error) {
+      console.error("Token verification failed:", error);
+
       const response = NextResponse.redirect(
         new URL(`/${locale}/login`, req.url)
       );
-
       response.cookies.delete("token");
-
       return response;
     }
+  }
+
+  // ==========================================
+  // USER ROUTE PROTECTION
+  // ==========================================
+
+  if (isDashboardRoute && role !== "USER") {
+    return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
+  }
+
+  if (isAdminRoute && role !== "SUPER_ADMIN") {
+    return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
   }
 
   // ==========================================
@@ -66,9 +75,7 @@ export default async function middleware(req: NextRequest) {
 
   if (!token) {
     if (isDashboardRoute || isAdminRoute) {
-      return NextResponse.redirect(
-        new URL(`/${locale}/login`, req.url)
-      );
+      return NextResponse.redirect(new URL(`/${locale}/login`, req.url));
     }
 
     return intlMiddleware(req);
@@ -79,9 +86,7 @@ export default async function middleware(req: NextRequest) {
   // ==========================================
 
   if (role === "USER" && isAdminRoute) {
-    return NextResponse.redirect(
-      new URL(`/${locale}/dashboard`, req.url)
-    );
+    return NextResponse.redirect(new URL(`/${locale}/dashboard`, req.url));
   }
 
   // ==========================================
@@ -89,9 +94,7 @@ export default async function middleware(req: NextRequest) {
   // ==========================================
 
   if (role === "SUPER_ADMIN" && isDashboardRoute) {
-    return NextResponse.redirect(
-      new URL(`/${locale}/admin`, req.url)
-    );
+    return NextResponse.redirect(new URL(`/${locale}/admin`, req.url));
   }
 
   // ==========================================
@@ -101,14 +104,10 @@ export default async function middleware(req: NextRequest) {
 
   if (isAuthRoute) {
     if (role === "SUPER_ADMIN") {
-      return NextResponse.redirect(
-        new URL(`/${locale}/admin`, req.url)
-      );
+      return NextResponse.redirect(new URL(`/${locale}/admin`, req.url));
     }
 
-    return NextResponse.redirect(
-      new URL(`/${locale}/dashboard`, req.url)
-    );
+    return NextResponse.redirect(new URL(`/${locale}/dashboard`, req.url));
   }
 
   return intlMiddleware(req);
