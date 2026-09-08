@@ -78,7 +78,10 @@ export async function POST(req: Request) {
     where: { id: record.id },
   });
 
-  const token = signToken({ userId: user.id });
+  const token = await signToken({
+    userId: user.id,
+    role: user.role,
+  });
 
   const res = NextResponse.json({ success: true });
 
