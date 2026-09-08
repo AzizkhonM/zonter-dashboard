@@ -125,14 +125,38 @@ export function LocaleSwitcher() {
             display: flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 8px 10px;
-            border-radius: 8px;
-            color: white;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow:
+              0 4px 16px rgba(0, 0, 0, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            padding: 8px 12px;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.92);
             cursor: pointer;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
           }
-  
+                
+          .locale-button:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.28);
+            box-shadow:
+              0 6px 20px rgba(0, 0, 0, 0.25),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
+          }
+                
+          .locale-button:active {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow:
+              0 2px 8px rgba(0, 0, 0, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform: scale(0.98);
+          }
+
           .locale-dropdown {
             margin-top: 8px;
             background: #111;
