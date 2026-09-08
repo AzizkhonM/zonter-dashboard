@@ -63,7 +63,7 @@ export async function POST(req: Request) {
       data: {
         email,
         codeHash: hashCode(code),
-        expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+        expiresAt: new Date(Date.now() + 1 * 60 * 1000),
         attempts: 0,
       },
     });

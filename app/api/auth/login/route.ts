@@ -13,7 +13,6 @@ function hashCode(code: string) {
   return crypto.createHash("sha256").update(code).digest("hex");
 }
 
-
 export async function POST(req: Request) {
   const { email, password, locale } = await req.json();
 
@@ -56,7 +55,7 @@ export async function POST(req: Request) {
       data: {
         email,
         codeHash: hashCode(code),
-        expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+        expiresAt: new Date(Date.now() + 1 * 60 * 1000),
         attempts: 0,
       },
     });
@@ -73,9 +72,18 @@ export async function POST(req: Request) {
     );
   }
 
-  const token = signToken({ userId: user.id });
+  const token = await signToken({
+    userId: user.id,
+    role: user.role,
+  });
 
-  const res = NextResponse.json({ success: true });
+  const res = NextResponse.json({
+    success: true,
+    role: user.role,
+    redirectTo: user.role === "SUPER_ADMIN"
+      ? "/admin"
+      : "/dashboard",
+  });
 
   res.cookies.set("token", token, {
     httpOnly: true,

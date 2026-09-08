@@ -4,26 +4,34 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import "@/app/globals.css";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
 
 type AuthType = "login" | "register";
 type ApiResponse = {
   success?: boolean;
+  role?: "USER" | "SUPER_ADMIN";
+  redirectTo?: string;
   error?: string;
   toast?: "existing_otp" | "new_otp";
-  code?: "EMAIL_NOT_VERIFIED" | "INVALID_CODE" | "USER_EXISTS";
+  code?:
+    | "EMAIL_NOT_VERIFIED"
+    | "INVALID_CODE"
+    | "USER_EXISTS"
+    | "TOO_MANY_ATTEMPTS";
+  expiresAt?: string | Date;
+  blockedUntil?: string | Date;
 };
 
 export default function AuthForm({ type }: { type: AuthType }) {
   const router = useRouter();
   const isLogin = type === "login";
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const localeSet = new Set(["uz", "en", "ru"]);
   const segment = pathname.split("/")[1];
   const locale = localeSet.has(segment) ? segment : "uz";
-  console.log(locale);
 
   const t = useTranslations("Auth");
 
@@ -34,29 +42,84 @@ export default function AuthForm({ type }: { type: AuthType }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
-  const [step, setStep] = useState<"form" | "verify">("form");
-  const [otp, setOtp] = useState("");
-  const [toast, setToast] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<{
+    name?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+  }>({});
 
   const withLocale = (path: string) => {
-    if (locale === "uz") return path; // /register
-    return `/${locale}${path}`; // /en/register
+    const params = new URLSearchParams(searchParams);
+    const paramsString = params.toString();
+    const queryString = paramsString ? "?" + paramsString : "";
+
+    if (locale === "uz") {
+      return `${path}${queryString}`;
+    }
+    return `/${locale}${path}${queryString}`;
+  };
+
+  function validateForm() {
+    const newErrors: typeof errors = {};
+
+    // Name validation (FAQAT REGISTER)
+    if (!isLogin && name.trim().length < 4) {
+      newErrors.name = t("errors.name");
+    }
+
+    // Email validation (IKKALA JOYDA)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      newErrors.email = t("errors.email");
+    }
+
+    // Password validation (FAQAT REGISTER)
+    if (!isLogin && password.length < 8) {
+      newErrors.password = t("errors.password");
+    }
+
+    // Confirm password validation (FAQAT REGISTER)
+    if (!isLogin && password !== confirmPassword) {
+      newErrors.confirmPassword = t("errors.confirmPassword");
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
+
+  const isFormValid = () => {
+    const hasActiveErrors = Object.values(errors).some(
+      (error) => error !== undefined && error !== ""
+    );
+
+    if (!isLogin) {
+      return (
+        name.trim().length >= 4 &&
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) &&
+        password.length >= 8 &&
+        password === confirmPassword &&
+        !hasActiveErrors
+      );
+    }
+
+    return (
+      email.trim().length > 0 && password.trim().length > 0 && !hasActiveErrors
+    );
   };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
 
-    if (!isLogin && password !== confirmPassword) {
-      setError("PASSWORDS_DO_NOT_MATCH");
+    if (!validateForm()) {
       return;
     }
 
     setLoading(true);
     try {
       const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
-
       const body = isLogin
         ? { email, password, locale }
         : { name, email, password, locale };
@@ -77,13 +140,22 @@ export default function AuthForm({ type }: { type: AuthType }) {
       }
 
       if (!res.ok) {
+        console.log(data);
+        
         if (data.code === "EMAIL_NOT_VERIFIED") {
-          if (data.toast === "existing_otp") {
-            setToast(t("existing_otp"));
-          } else if (data.toast === "new_otp") {
-            setToast(t("new_otp"));
+          // ✅ localStorage ga save
+          localStorage.setItem("pendingEmail", email);
+          localStorage.setItem("pendingName", name);
+          localStorage.setItem("pendingLocale", locale);
+
+          // ✅ /register/verify ga o'tish (query param yo'q)
+          if (pathname.includes("/login")) {
+            // Login uchun - query param saqlanadi (eski yechim)
+            router.push(`${pathname}?step=verify`);
+          } else {
+            // Register uchun - alohida path
+            router.push(`${pathname}/verify`);
           }
-          setStep("verify");
           return;
         }
 
@@ -92,48 +164,15 @@ export default function AuthForm({ type }: { type: AuthType }) {
       }
 
       if (isLogin) {
-        router.push("/dashboard");
+        router.push(data.redirectTo || "/dashboard");
       } else {
-        if (data.toast === "existing_otp") {
-          setToast(t("existing_otp"));
-        } else if (data.toast === "new_otp") {
-          setToast(t("new_otp"));
-        }
-        setStep("verify");
+        // Register success - verify page ga o'tish
+        localStorage.setItem("pendingEmail", email);
+        localStorage.setItem("pendingName", name);
+        localStorage.setItem("pendingLocale", locale);
+
+        router.push(`${pathname}/verify`);
       }
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function handleVerify() {
-    setError("");
-    setLoading(true);
-    try {
-      const res = await fetch("/api/auth/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          code: otp,
-        }),
-      });
-
-      let data: ApiResponse = {};
-
-      try {
-        data = await res.json();
-      } catch {
-        setError("SERVER_ERROR");
-        return;
-      }
-
-      if (!res.ok) {
-        setError(data.error || "Invalid code");
-        return;
-      }
-
-      router.push("/dashboard");
     } finally {
       setLoading(false);
     }
@@ -142,57 +181,90 @@ export default function AuthForm({ type }: { type: AuthType }) {
   return (
     <div className="form-container">
       <h1 className="form-title">
-        {step === "form"
-          ? isLogin
-            ? t("loginTitle")
-            : t("registerTitle")
-          : t("verifyTitle")}
+        {isLogin ? t("loginTitle") : t("registerTitle")}
       </h1>
       <p className="form-subtitle">
-        {step === "form"
-          ? isLogin
-            ? t("loginSubtitle")
-            : t("registerSubtitle")
-          : t("verifySubtitle")}
+        {isLogin ? t("loginSubtitle") : t("registerSubtitle")}
       </p>
 
-      {/* STEP 1 */}
-      {step === "form" && (
-        <form onSubmit={handleSubmit} className="form">
-          {!isLogin && (
-            <div className="field">
-              <input
-                className="input"
-                type="text"
-                placeholder={t("name")}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-          )}
-
+      {/* STEP 1 - Form */}
+      <form onSubmit={handleSubmit} className="form">
+        {!isLogin && (
           <div className="field">
             <input
-              className="input"
-              type="email"
-              placeholder={t("email")}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              className={`input ${errors.name ? "error" : ""}`}
+              type="text"
+              placeholder={t("name")}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onBlur={() => {
+                const trimmedName = name.trim();
+
+                if (trimmedName.length < 4) {
+                  setErrors({
+                    ...errors,
+                    name: t("errors.name"),
+                  });
+                } else if (/\d/.test(trimmedName)) {
+                  setErrors({
+                    ...errors,
+                    name: t("errors.nameNoNumbers"),
+                  });
+                } else {
+                  setErrors({ ...errors, name: undefined });
+                }
+              }}
               required
             />
+            {errors.name && <p className="field-error">{errors.name}</p>}
           </div>
+        )}
 
-          <div className="field field-icon">
+        <div className="field">
+          <input
+            className={`input ${errors.email ? "error" : ""}`}
+            type="email"
+            placeholder={t("email")}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onBlur={() => {
+              const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              if (!emailRegex.test(email)) {
+                setErrors({ ...errors, email: t("errors.email") });
+              } else {
+                setErrors({ ...errors, email: undefined });
+              }
+            }}
+            required
+          />
+          {errors.email && <p className="field-error">{errors.email}</p>}
+        </div>
+
+        {/* Parol qismi */}
+        <div className="field">
+          <div className="input-wrapper field-icon">
             <input
-              className="input"
+              className={`input ${errors.password ? "error" : ""}`}
               type={showPassword ? "text" : "password"}
               placeholder={t("password")}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onBlur={() => {
+                if (!isLogin) {
+                  if (password.length < 8) {
+                    setErrors({
+                      ...errors,
+                      password: t("errors.password"),
+                    });
+                  } else {
+                    setErrors({ ...errors, password: undefined });
+                  }
+                } else {
+                  setErrors({ ...errors, password: undefined });
+                }
+              }}
               required
             />
-
             <button
               type="button"
               className="eye-btn"
@@ -202,18 +274,31 @@ export default function AuthForm({ type }: { type: AuthType }) {
               {showPassword ? <EyeOffIcon /> : <EyeIcon />}
             </button>
           </div>
+          {errors.password && <p className="field-error">{errors.password}</p>}
+        </div>
 
-          {!isLogin && (
-            <div className="field field-icon">
+        {/* Parolni tasdiqlash qismi */}
+        {!isLogin && (
+          <div className="field">
+            <div className="input-wrapper field-icon">
               <input
-                className="input"
+                className={`input ${errors.confirmPassword ? "error" : ""}`}
                 type={showConfirm ? "text" : "password"}
                 placeholder={t("confirmPassword")}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                onBlur={() => {
+                  if (password !== confirmPassword) {
+                    setErrors({
+                      ...errors,
+                      confirmPassword: t("errors.confirmPassword"),
+                    });
+                  } else {
+                    setErrors({ ...errors, confirmPassword: undefined });
+                  }
+                }}
                 required
               />
-
               <button
                 type="button"
                 className="eye-btn"
@@ -223,55 +308,36 @@ export default function AuthForm({ type }: { type: AuthType }) {
                 {showConfirm ? <EyeOffIcon /> : <EyeIcon />}
               </button>
             </div>
-          )}
-
-          {error && <p className="error-msg">{t(error)}</p>}
-
-          <button type="submit" className="submit-btn" disabled={loading}>
-            {loading ? <Spinner /> : isLogin ? t("login") : t("register")}
-          </button>
-
-          <div className="divider">
-            <span>{t("or")}</span>
+            {errors.confirmPassword && (
+              <p className="field-error">{errors.confirmPassword}</p>
+            )}
           </div>
+        )}
 
-          <button
-            type="button"
-            className="google-btn"
-            onClick={() => signIn("google")}
-            disabled={loading}
-          >
-            <GoogleIcon />
-            {t("continueWithGoogle")}
-          </button>
-        </form>
-      )}
+        {error && <p className="error-msg">{t(error)}</p>}
 
-      {/* STEP 2 */}
-      {step === "verify" && (
-        <div className="form">
-          {toast && <p className="toast-msg">{toast}</p>}
-          <div className="field">
-            <input
-              className="input"
-              value={otp}
-              onChange={(e) => setOtp(e.target.value)}
-              placeholder={t("6-digitCode")}
-              maxLength={6}
-            />
-          </div>
+        <button
+          type="submit"
+          className="submit-btn"
+          disabled={loading || !isFormValid()}
+        >
+          {loading ? <Spinner /> : isLogin ? t("login") : t("register")}
+        </button>
 
-          {error && <p className="error-msg">{t(error)}</p>}
-
-          <button
-            className="submit-btn"
-            onClick={handleVerify}
-            disabled={loading}
-          >
-            {loading ? <Spinner /> : t("verifyTitle")}
-          </button>
+        <div className="divider">
+          <span>{t("or")}</span>
         </div>
-      )}
+
+        <button
+          type="button"
+          className="google-btn"
+          onClick={() => signIn("google")}
+          disabled={loading}
+        >
+          <GoogleIcon />
+          {t("continueWithGoogle")}
+        </button>
+      </form>
 
       <p className="login-link">
         {isLogin ? (
@@ -342,6 +408,11 @@ export default function AuthForm({ type }: { type: AuthType }) {
           background: var(--surface);
         }
 
+        .input-wrapper {
+          position: relative;
+          width: 100%;
+        }
+
         .eye-btn {
           position: absolute;
           right: 14px;
@@ -353,7 +424,10 @@ export default function AuthForm({ type }: { type: AuthType }) {
           color: var(--text-muted);
           display: flex;
           align-items: center;
+          justify-content: center;
           padding: 0;
+          width: 40px;
+          height: 40px;
           transition: color 0.2s;
         }
 
@@ -489,6 +563,52 @@ export default function AuthForm({ type }: { type: AuthType }) {
           opacity: 0.6;
           cursor: not-allowed;
         }
+
+        .error {
+          border-color: #ef4444 !important;
+          outline-color: #ef4444 !important;
+        }
+              
+        .field-error {
+          color: #ef4444;
+          font-size: 0.875rem;
+          margin-top: 4px;
+        }
+              
+        button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .otp-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  justify-content: center;
+}
+
+.otp-input {
+  width: 48px;
+  height: 48px;
+  border: 1.5px solid var(--input-border);
+  border-radius: var(--radius);
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.otp-input:focus {
+  border-color: var(--input-focus);
+  background: var(--surface);
+}
+
+.otp-input::placeholder {
+  color: var(--text-muted);
+}
       `}</style>
     </div>
   );

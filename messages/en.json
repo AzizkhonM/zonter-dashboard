@@ -54,11 +54,21 @@
     "verifyTitle": "Verify email",
     "verifySubtitle": "Enter code sent to your email",
     "6-digitCode": "Enter 6-digit code",
+    "codeExpiresIn": "Code expires in: ",
+    "blockedUntil": "Blocked until:  ",
+    "resendCode": "Resend code",
     "NO_VERIFICATION_FOUND": "No verification request found",
     "TOO_MANY_ATTEMPTS": "Too many attempts. Try again in 10 minutes.",
     "CODE_EXPIRED": "The code has expired. Please request a new one.",
     "INVALID_CODE": "Invalid code. Please try again.",
     "or": "or",
-    "continueWithGoogle": "Continue with Google"
+    "continueWithGoogle": "Continue with Google",
+    "errors": {
+      "name": "Name must contain at least 4 characters",
+      "nameNoNumbers": "Name should not contain numbers",
+      "email": "Invalid email format",
+      "password": "Password must contain at least 8 characters",
+      "confirmPassword": "Passwords do not match"
+    }
   }
 }

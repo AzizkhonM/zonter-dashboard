@@ -10,13 +10,19 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 
-const autoplayPlugin = Autoplay({
-  delay: 3000,
-  stopOnInteraction: false,
-});
-
 export function LeftPanelCarousel() {
   const t = useTranslations("RegisterCarousel");
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [mounted, setMounted] = React.useState(false);
+  const [api, setApi] = React.useState<any>();
+
+  React.useEffect(() => {
+    setMounted(true);
+    const savedIndex = localStorage.getItem("carouselIndex");
+    if (savedIndex) {
+      setCurrentIndex(Number(savedIndex));
+    }
+  }, []);
 
   const slides = [
     {
@@ -38,14 +44,45 @@ export function LeftPanelCarousel() {
     {
       head: t("slides.4.head"),
       sub: t("slides.4.sub"),
-    }
+    },
   ];
 
-  const plugin = React.useRef(autoplayPlugin);
+  React.useEffect(() => {
+    if (!api) return;
+
+    const onSelect = () => {
+      const index = api.selectedScrollSnap();
+      setCurrentIndex(index);
+      localStorage.setItem("carouselIndex", index.toString());
+    };
+
+    api.on("select", onSelect);
+
+    return () => {
+      api.off("select", onSelect);
+    };
+  }, [api]);
+
+  React.useEffect(() => {
+    if (!api || !mounted) return;
+    api.scrollTo(currentIndex);
+  }, [api, mounted]);
+
+  const plugin = React.useRef(
+    Autoplay({
+      delay: 3000,
+      stopOnInteraction: false,
+    })
+  );
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div className="left-carousel-wrapper">
       <Carousel
+        setApi={setApi}
         plugins={[plugin.current]}
         orientation="vertical"
         opts={{ align: "start", loop: true }}
@@ -53,18 +90,11 @@ export function LeftPanelCarousel() {
       >
         <CarouselContent className="left-carousel-content">
           {slides.map((slide, index) => (
-            <CarouselItem
-              key={index}
-              className="left-carousel-item"
-            >
+            <CarouselItem key={index} className="left-carousel-item">
               <div className="slide-inner">
-                <p className="slide-head">
-                  {slide.head}
-                </p>
+                <p className="slide-head">{slide.head}</p>
 
-                <p className="slide-sub">
-                  {slide.sub}
-                </p>
+                <p className="slide-sub">{slide.sub}</p>
               </div>
             </CarouselItem>
           ))}
@@ -103,6 +133,8 @@ export function LeftPanelCarousel() {
   flex-direction: column;
   gap: 16px;
   overflow: hidden;
+  hover: cursor;
+  user-select: none;
 }
 
 .slide-head {

@@ -329,19 +329,29 @@
 //   );
 // }
 
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import AuthForm from "@/components/auth/AuthForm";
-import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
-
-export async function generateMetadata(): Promise<Metadata> {
-  const t = await getTranslations("Auth");
-
-  return {
-    title: `${t("registerTitle")} | Zonter`,
-    description: t("registerTitle"),
-  };
-}
 
 export default function RegisterPage() {
+  const router = useRouter();
+  const [isChecking, setIsChecking] = useState(true);
+
+  useEffect(() => {
+    const pendingEmail = localStorage.getItem("pendingEmail");
+
+    if (pendingEmail) {
+      router.replace("./register/verify");
+    } else {
+      setIsChecking(false);
+    }
+  }, [router]);
+
+  if (isChecking) {
+    return null;
+  }
+
   return <AuthForm type="register" />;
 }

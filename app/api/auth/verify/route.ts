@@ -24,10 +24,7 @@ export async function POST(req: Request) {
 
   // 1. BLOCK CHECK (MUST BE FIRST)
   if (record.blockedUntil && record.blockedUntil > new Date()) {
-    return NextResponse.json(
-      { error: "TOO_MANY_ATTEMPTS" },
-      { status: 429 }
-    );
+    return NextResponse.json({ error: "TOO_MANY_ATTEMPTS" }, { status: 429 });
   }
 
   // 2. EXPIRE CHECK
@@ -48,12 +45,16 @@ export async function POST(req: Request) {
         where: { id: record.id },
         data: {
           attempts: newAttempts,
-          blockedUntil: new Date(Date.now() + 10 * 60 * 1000),
+          blockedUntil: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes
         },
       });
 
       return NextResponse.json(
-        { error: "TOO_MANY_ATTEMPTS" },
+        {
+          error: "TOO_MANY_ATTEMPTS",
+          code: "TOO_MANY_ATTEMPTS",
+          blockedUntil: new Date(Date.now() + 10 * 60 * 1000),
+        },
         { status: 429 }
       );
     }

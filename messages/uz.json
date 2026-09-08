@@ -33,8 +33,8 @@
   "Auth": {
     "loginTitle": "Kirish",
     "registerTitle": "Ro‘yxatdan o‘tish",
-    "loginSubtitle": "Xush kelibsiz! Ma'lumotlarni kiriting",
-    "registerSubtitle": "Hisob yaratish uchun ma'lumot kiriting",
+    "loginSubtitle": "Xush kelibsiz! Maʼlumotlarni kiriting",
+    "registerSubtitle": "Hisob yaratish uchun maʼlumot kiriting",
     "name": "To‘liq ism",
     "email": "Email manzil",
     "password": "Parol",
@@ -54,11 +54,21 @@
     "verifyTitle": "Emailni tasdiqlash",
     "verifySubtitle": "Emailingizga yuborilgan kodni kiriting",
     "6-digitCode": "6 xonali kodni kiriting",
+    "codeExpiresIn": "Quyidagi vaqt ichida faol: ",
+    "blockedUntil": "Quyidagi vaqtgacha bloklandingiz: ",
+    "resendCode": "Kodni qayta joʻnatish",
     "NO_VERIFICATION_FOUND": "Tasdiqlash so‘rovi topilmadi",
     "TOO_MANY_ATTEMPTS": "Juda ko‘p urinish qilindi. 10 daqiqadan so‘ng qayta urinib ko‘ring.",
     "CODE_EXPIRED": "Kodning amal qilish muddati tugagan. Iltimos, yangisini so‘rang.",
     "INVALID_CODE": "Noto‘g‘ri kod. Iltimos, qayta urinib ko‘ring.",
     "or": "yoki",
-    "continueWithGoogle": "Google orqali davom etish"
+    "continueWithGoogle": "Google orqali davom etish",
+    "errors": {
+      "name": "Ism 4 va undan koʻp belgidan iborat boʻlishi lozim",
+      "nameNoNumbers": "Ism raqamlarni oʻz ichiga olmasligi lozim",
+      "email": "Email notoʻgʻri formatda",
+      "password": "Parol 8 va undan koʻp belgidan iborat boʻlishi lozim",
+      "confirmPassword": "Parollar bir xil emas"
+    }
   }
 }
