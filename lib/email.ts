@@ -60,7 +60,7 @@ const bodies: Record<Locale, (code: string) => string> = {
       "Tasdiqlash kodi",
       "Quyidagi kodni kiritib, emailingizni tasdiqlang:",
       code,
-      "Kod 10 daqiqa davomida amal qiladi.",
+      "Kod 1 daqiqa davomida amal qiladi.",
       "Agar siz bu soʻrovni yubormagan boʻlsangiz, ushbu xabarni eʼtiborsiz qoldiring."
     ),
   en: (code) =>
@@ -68,7 +68,7 @@ const bodies: Record<Locale, (code: string) => string> = {
       "Verification code",
       "Enter the code below to verify your email address:",
       code,
-      "Code is valid for 10 minutes.",
+      "Code is valid for 1 minutes.",
       "If you didn't request this, you can safely ignore this email."
     ),
   ru: (code) =>
@@ -76,7 +76,7 @@ const bodies: Record<Locale, (code: string) => string> = {
       "Код подтверждения",
       "Введите код ниже, чтобы подтвердить вашу почту:",
       code,
-      "Код действителен 10 минут.",
+      "Код действителен 1 минут.",
       "Если вы не запрашивали это, просто проигнорируйте это письмо."
     ),
 };
