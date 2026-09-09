@@ -1,82 +1,531 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import "@/app/globals.css";
+import LocaleDash from "@/components/LocaleDash";
+import { useTranslations } from "next-intl";
 
 interface DashboardLayoutProps {
   children: ReactNode;
 }
 
-export default function DashboardLayout({
-  children,
-}: DashboardLayoutProps) {
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [hasOrganizations, setHasOrganizations] = useState(false);
+  const [userName, setUserName] = useState("");
+  const t = useTranslations("Dashboard");
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+
+        if (!res.ok) {
+          console.log("Failed to fetch user:", res.status);
+          return;
+        }
+
+        const data = await res.json();
+
+        setUserName(data.user?.name || "User");
+
+        const organizations = data.user?.organizationMembers ?? [];
+        setHasOrganizations(organizations.length > 0);
+      } catch (error) {
+        console.error("Failed to load user:", error);
+      }
+    };
+
+    loadUser();
+  }, []);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Close on ESC
+  useEffect(() => {
+    if (!mounted) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && open) {
+        setOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [open, mounted]);
+
+  if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Mobile button */}
-      <button
-  onClick={() => setOpen(!open)}
-  className="fixed left-4 top-4 z-50 rounded-lg bg-white/10 p-3 md:hidden hover:bg-white/20 transition-all hover:cursor-pointer"
-  aria-label="Toggle menu"
->
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    className={`transition-transform duration-300 ${open ? "rotate-90" : "rotate-0"}`}
-  >
-    {open ? (
-      // X icon
-      <>
-        <line x1="18" y1="6" x2="6" y2="18" />
-        <line x1="6" y1="6" x2="18" y2="18" />
-      </>
-    ) : (
-      // Hamburger icon
-      <>
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="18" x2="21" y2="18" />
-      </>
-    )}
-  </svg>
-</button>
+    <div className="dashboard-wrapper">
+      {/* Mobile overlay */}
+      {open && (
+        <div className="mobile-overlay" onClick={() => setOpen(false)} />
+      )}
 
       {/* Sidebar */}
-      <aside
-        className={`fixed left-0 top-0 z-40 h-screen w-64 border-r border-white/10 bg-black p-6 transition-transform duration-200
-        ${open ? "translate-x-0" : "-translate-x-full"}
-        md:translate-x-0`}
-      >
-        <div className="mt-12 text-2xl font-bold md:mt-0">Zonter</div>
+      <aside className={`dashboard-sidebar ${open ? "open" : ""}`}>
+        {/* Close button */}
+        <button
+          className="sidebar-close"
+          onClick={() => setOpen(false)}
+          aria-label="Close menu"
+        >
+          ✕
+        </button>
+        {/* User section */}
+        <div className="sidebar-user">
+          <div className="user-avatar">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="24" r="24" fill="#646566" />
+              <circle cx="24" cy="18" r="6" fill="white" opacity="0.7" />
+              <path
+                d="M12 36c0-4.418 5.373-8 12-8s12 3.582 12 8v2H12v-2z"
+                fill="white"
+                opacity="0.7"
+              />
+            </svg>
+          </div>
 
-        <nav className="mt-10 flex flex-col gap-2 text-sm">
+          {userName ? (
+            <h3 className="sidebar-zonter">{userName}</h3>
+          ) : (
+            <div className="user-name-skeleton" />
+          )}
+        </div>
+
+        {/* Navigation */}
+        <nav className="sidebar-nav uppercase">
+          {/* Home */}
           <a
             href="/dashboard"
-            className="rounded-lg bg-white/10 px-4 py-3"
+            className="nav-link active"
+            onClick={() => setOpen(false)}
           >
-            Overview
+            <span>{t("sidebar.home")}</span>
           </a>
 
+          {/* Organization navigation */}
+          {hasOrganizations && (
+            <>
+              <a
+                href="/dashboard/organizations"
+                className="nav-link"
+                onClick={() => setOpen(false)}
+              >
+                <span>{t("sidebar.myorgs")}</span>
+              </a>
+
+              <a
+                href="/dashboard/history"
+                className="nav-link"
+                onClick={() => setOpen(false)}
+              >
+                <span>{t("sidebar.history")}</span>
+              </a>
+            </>
+          )}
+
+          {/* Divider */}
+          <div
+            style={{
+              height: "1px",
+              background: "#232A34",
+              margin: "16px 0",
+            }}
+          />
+
+          {/* Profile */}
+          <a
+            href="/dashboard/profile"
+            className="nav-link"
+            onClick={() => setOpen(false)}
+          >
+            <span>{t("sidebar.profile")}</span>
+          </a>
+
+          {/* Notifications */}
+          <a
+            href="/dashboard/notifications"
+            className="nav-link"
+            onClick={() => setOpen(false)}
+          >
+            <span>{t("sidebar.notifications")}</span>
+          </a>
+
+          {/* Help */}
+          <a
+            href="/dashboard/help"
+            className="nav-link"
+            onClick={() => setOpen(false)}
+          >
+            <span>{t("sidebar.help")}</span>
+          </a>
+
+          {/* Settings */}
           <a
             href="/dashboard/settings"
-            className="rounded-lg px-4 py-3 text-white/60 hover:bg-white/5 hover:text-white"
+            className="nav-link"
+            onClick={() => setOpen(false)}
           >
-            Settings
+            <span>{t("sidebar.settings")}</span>
           </a>
         </nav>
+
+        {/* Bottom section */}
+        <div className="sidebar-bottom">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <div style={{ width: "auto" }}>
+              <LocaleDash />
+            </div>
+
+            <button className="sidebar-logout" style={{ width: "auto" }}>
+              {t("sidebar.logout")}
+            </button>
+          </div>
+        </div>
       </aside>
 
-      {/* Main */}
-      <main className="min-h-screen p-6 md:ml-64 md:p-8">
-        {children}
+      {/* Main content */}
+      <main className="dashboard-main">
+        {/* Header */}
+        <header className="dashboard-header">
+          <button
+            onClick={() => setOpen((prev) => !prev)}
+            className="mobile-menu-btn"
+            aria-label="Toggle menu"
+            aria-expanded={open}
+          >
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
+              {open ? (
+                <>
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </>
+              ) : (
+                <>
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </>
+              )}
+            </svg>
+          </button>
+
+          <div>
+            <p className="header-label">{t("title")}</p>
+            <h1 className="header-title">{t("overview")}</h1>
+          </div>
+        </header>
+
+        {/* Content */}
+        <div className="dashboard-content">{children}</div>
       </main>
+
+      <style>{`
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+
+        .dashboard-wrapper {
+          display: flex;
+          min-height: 100svh;
+          width: 100%;
+          background: #09090B;
+          font-family: var(--font-satoshi);
+        }
+
+        /* Mobile overlay */
+        .mobile-overlay {
+          display: none;
+          position: fixed;
+          inset: 0;
+          z-index: 30;
+          background: rgba(0, 0, 0, 0.5);
+          backdrop-filter: blur(4px);
+        }
+
+        /* Mobile menu button */
+        .mobile-menu-btn {
+          display: none;
+          width: 44px;
+          height: 44px;
+          flex-shrink: 0;
+          border-radius: 8px;
+          color: white;
+          cursor: pointer;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.2s;
+        }
+
+        .mobile-menu-btn:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        .menu-icon {
+          width: 22px;
+          height: 22px;
+        }
+
+        /* Sidebar */
+        .dashboard-sidebar {
+          width: 256px;
+          height: 100svh;
+          border-right: 1px solid #232A34;
+          background: #0F1115;
+          padding: 24px;
+          display: flex;
+          flex-direction: column;
+          position: fixed;
+          left: 0;
+          top: 0;
+          z-index: 40;
+          transition: transform 0.2s ease;
+        }
+
+        /* User section */
+        .sidebar-user {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+          margin-bottom: 32px;
+        }
+
+        .user-avatar {
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          background: #646566;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+        }
+
+        .sidebar-close {
+  display: none;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  width: 44px;
+  height: 44px;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+}
+
+.sidebar-close:hover{
+background: rgba(255, 255, 255, 0.2);
+}
+
+        .sidebar-zonter {
+          font-size: 18px;
+          font-weight: 700;
+          color: white;
+          letter-spacing: -0.5px;
+          margin: 0;
+          text-align: center
+        }
+
+        .sidebar-nav {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+
+        .nav-link {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 16px;
+          border-radius: 8px;
+          text-decoration: none;
+          font-size: 14px;
+          font-weight: 500;
+          color: #9CA3AF;
+          transition: color 0.2s;
+          min-width: 0
+        }
+
+        .nav-link span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+        .nav-link:hover {
+          color: white;
+        }
+
+        .nav-link.active {
+          border-right: 5px solid white;
+          border-radius: 0px;
+          color: white;
+        }
+
+        .nav-icon {
+          font-size: 18px;
+          width: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .sidebar-bottom {
+          border-top: 1px solid #232A34;
+          padding-top: 24px;
+        }
+
+        .sidebar-logout {
+          width: 100%;
+          padding: 10px 16px;
+          background: transparent;
+          border: none;
+          color: white;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: color 0.2s;
+          text-align: left;
+        }
+
+        .sidebar-logout:hover {
+          color: #f97316;
+        }
+
+        /* Main content */
+        .dashboard-main {
+          flex: 1;
+          margin-left: 256px;
+          display: flex;
+          flex-direction: column;
+          min-height: 100svh;
+        }
+
+        .dashboard-header {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          border-bottom: 1px solid #232A34;
+          background: #0F1115;
+          padding: 24px 32px;
+          position: sticky;
+          top: 0;
+          z-index: 20;
+        }
+
+        .header-label {
+          font-size: 12px;
+          font-weight: 600;
+          color: #6B7280;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-bottom: 8px;
+        }
+
+        .header-title {
+          font-size: 24px;
+          font-weight: 600;
+          color: white;
+          letter-spacing: -0.5px;
+        }
+
+        .dashboard-content {
+          flex: 1;
+          padding: 32px;
+          overflow-y: auto;
+        }
+
+        .user-name-skeleton {
+  width: 80px;
+  height: 20px;
+  border-radius: 4px;
+  background: #232A34;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+        /* Responsive */
+        @media (max-width: 768px) {
+          .mobile-overlay {
+            display: block;
+          }
+
+          .mobile-menu-btn {
+            display: flex;
+          }
+
+          .dashboard-sidebar {
+            transform: translateX(-100%);
+            width: 100%;
+            border-right: none;
+            padding-top: 24px;
+          }
+
+          .sidebar-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+          .dashboard-sidebar.open {
+            transform: translateX(0);
+          }
+
+          .dashboard-main {
+            margin-left: 0;
+          }
+
+          .dashboard-header {
+            padding: 16px 20px;
+            min-height: 76px;
+          }
+
+          .header-title {
+            font-size: 20px;
+          }
+
+          .dashboard-content {
+            padding: 20px;
+          }
+        }
+      `}</style>
     </div>
   );
 }

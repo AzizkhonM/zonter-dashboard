@@ -70,5 +70,35 @@
       "password": "Parol 8 va undan koʻp belgidan iborat boʻlishi lozim",
       "confirmPassword": "Parollar bir xil emas"
     }
+  },
+  "Dashboard": {
+    "title": "Boshqaruv paneli",
+    "overview": "Umumiy",
+    "sidebar": {
+      "home": "Bosh sahifa",
+      "myorgs": "Tashkilotlarim",
+      "history": "Tarix",
+      "profile": "Profil",
+      "notifications": "Bildirishnomalar",
+      "help": "Yordam",
+      "settings": "Sozlamalar",
+      "logout": "Chiqish"
+    },
+    "main": {
+      "welcome": "Zonterga xush kelibsiz",
+      "underwelcome": "Turnirlar, jamoalar, o‘yinchilar va boshqa ko‘plab imkoniyatlarni boshqarishni boshlash uchun tashkilot yarating yoki mavjud tashkilotga qo‘shiling.",
+      "orgs": "Tashkilotlar",
+      "tours": "Turnirlar",
+      "teams": "Jamoalar",
+      "players": "Oʻyinchilar",
+      "createorg": "Tashkilot yarating",
+      "undercreateorg": "Oʻz tashkilotingizni yarating va turnirlar, jamoalar, o‘yinchilar hamda a’zolarni bir joydan boshqaring.",
+      "buttoncreateorg": "Tashkilot yaratish",
+      "joinorg": "Tashkilotga qoʻshiling",
+      "underjoinorg": "Taklifnomangiz bormi? Mavjud tashkilotga qo‘shiling va uning jamoasi bilan ishlashni boshlang.",
+      "buttonjoinorg": "Taklifnomalarni koʻrish",
+      "noorgs": "Hozircha tashkilotlar yo‘q",
+      "undernoorgs": "Tashkilot yaratsangiz yoki unga qo‘shilsangiz, u shu yerda ko‘rinadi."
+    }
   }
 }

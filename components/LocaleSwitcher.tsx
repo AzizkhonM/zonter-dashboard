@@ -55,30 +55,55 @@ const flags: Record<string, ReactNode> = {
     </svg>
   ),
   en: (
-<svg width="18" height="12" viewBox="0 0 18 12" style={{ borderRadius: 2, overflow: "hidden" }}>
-  {/* Fon */}
-  <rect width="18" height="12" fill="#012169" />
-  
-  {/* Oq diagonal xoch — Avliyo Andrey xochi */}
-  <path d="M0,0 L18,12 M18,0 L0,12" stroke="#fff" strokeWidth="3.5" />
-  
-  {/* Qizil diagonal xoch — Avliyo Patrik xochi (Asimmetrik siljigan) */}
-  {/* Yuqori chap va pastki o'ng */}
-  <path d="M0,0 L9,6" stroke="#C8102E" strokeWidth="1.2" transform="translate(0, 0.8)" />
-  <path d="M9,6 L18,12" stroke="#C8102E" strokeWidth="1.2" transform="translate(0, -0.8)" />
-  
-  {/* Yuqori o'ng va pastki chap */}
-  <path d="M18,0 L9,6" stroke="#C8102E" strokeWidth="1.2" transform="translate(0, 0.8)" />
-  <path d="M9,6 L0,12" stroke="#C8102E" strokeWidth="1.2" transform="translate(0, -0.8)" />
-  
-  {/* Oq to'g'ri xoch — Avliyo Georg xochi */}
-  <rect x="7.5" y="0" width="3" height="12" fill="#fff" />
-  <rect x="0" y="4.5" width="18" height="3" fill="#fff" />
-  
-  {/* Qizil to'g'ri xoch */}
-  <rect x="8" y="0" width="2" height="12" fill="#C8102E" />
-  <rect x="0" y="5" width="18" height="2" fill="#C8102E" />
-</svg>
+    <svg
+      width="18"
+      height="12"
+      viewBox="0 0 18 12"
+      style={{ borderRadius: 2, overflow: "hidden" }}
+    >
+      {/* Fon */}
+      <rect width="18" height="12" fill="#012169" />
+
+      {/* Oq diagonal xoch — Avliyo Andrey xochi */}
+      <path d="M0,0 L18,12 M18,0 L0,12" stroke="#fff" strokeWidth="3.5" />
+
+      {/* Qizil diagonal xoch — Avliyo Patrik xochi (Asimmetrik siljigan) */}
+      {/* Yuqori chap va pastki o'ng */}
+      <path
+        d="M0,0 L9,6"
+        stroke="#C8102E"
+        strokeWidth="1.2"
+        transform="translate(0, 0.8)"
+      />
+      <path
+        d="M9,6 L18,12"
+        stroke="#C8102E"
+        strokeWidth="1.2"
+        transform="translate(0, -0.8)"
+      />
+
+      {/* Yuqori o'ng va pastki chap */}
+      <path
+        d="M18,0 L9,6"
+        stroke="#C8102E"
+        strokeWidth="1.2"
+        transform="translate(0, 0.8)"
+      />
+      <path
+        d="M9,6 L0,12"
+        stroke="#C8102E"
+        strokeWidth="1.2"
+        transform="translate(0, -0.8)"
+      />
+
+      {/* Oq to'g'ri xoch — Avliyo Georg xochi */}
+      <rect x="7.5" y="0" width="3" height="12" fill="#fff" />
+      <rect x="0" y="4.5" width="18" height="3" fill="#fff" />
+
+      {/* Qizil to'g'ri xoch */}
+      <rect x="8" y="0" width="2" height="12" fill="#C8102E" />
+      <rect x="0" y="5" width="18" height="2" fill="#C8102E" />
+    </svg>
   ),
   ru: (
     <svg width="18" height="12" viewBox="0 0 18 12" style={{ borderRadius: 2 }}>

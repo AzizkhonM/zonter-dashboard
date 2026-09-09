@@ -70,5 +70,35 @@
       "password": "Password must contain at least 8 characters",
       "confirmPassword": "Passwords do not match"
     }
+  },
+  "Dashboard": {
+    "title": "Dashboard",
+    "overview": "Overview",
+    "sidebar": {
+      "home": "Home",
+      "myorgs": "My Organizations",
+      "history": "History",
+      "profile": "Profile",
+      "notifications": "Notifications",
+      "help": "Help",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "main": {
+      "welcome": "Welcome to Zonter",
+      "underwelcome": "Create or join an organization to start managing tournaments, teams, players and more.",
+      "orgs": "Organizations",
+      "tours": "Tournaments",
+      "teams": "Teams",
+      "players": "Players",
+      "createorg": "Create an organization",
+      "undercreateorg": "Create your organization and manage tournaments, teams, players and members from one place.",
+      "buttoncreateorg": "Create organization",
+      "joinorg": "Join an organization",
+      "underjoinorg": "Have an invitation? Join an existing organization and start working with its team.",
+      "buttonjoinorg": "View invitations",
+      "noorgs": "No organizations yet",
+      "undernoorgs": "Once you create or join an organization, it will appear here."
+    }
   }
 }
