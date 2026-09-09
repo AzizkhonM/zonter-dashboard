@@ -99,6 +99,28 @@
       "buttonjoinorg": "Taklifnomalarni koʻrish",
       "noorgs": "Hozircha tashkilotlar yo‘q",
       "undernoorgs": "Tashkilot yaratsangiz yoki unga qo‘shilsangiz, u shu yerda ko‘rinadi."
+    },
+    "profile": {
+      "loading": "Yuklanmoqda",
+      "404": "Foydalanuvchi topilmadi",
+      "personal": "Shaxsiy ma’lumotlar",
+      "underpersonal": "Shaxsiy hisob ma’lumotlaringizni boshqaring.",
+      "name": "Ism",
+      "role": "Rol",
+      "superAdmin": "Super administrator",
+      "user": "Foydalanuvchi",
+      "status": "Hisob holati",
+      "active": "Faol",
+      "inactive": "Nofaol",
+      "saving": "Saqlanmoqda...",
+      "save": "O‘zgarishlarni saqlash",
+      "info": "Hisob ma’lumotlari",
+      "createdAt": "Hisob yaratilgan sana",
+      "updatedAt": "Hisob yangilangan sana",
+      "security": "Xavfsizlik",
+      "undersecurity": "Parolingiz va hisobingiz xavfsizligini boshqaring.",
+      "password": "Parol",
+      "changepass": "Parolni o‘zgartirish"
     }
   }
 }

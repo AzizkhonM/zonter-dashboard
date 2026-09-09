@@ -99,6 +99,28 @@
       "buttonjoinorg": "View invitations",
       "noorgs": "No organizations yet",
       "undernoorgs": "Once you create or join an organization, it will appear here."
+    },
+    "profile": {
+      "loading": "Loading",
+      "404": "User not found",
+      "personal": "Personal Information",
+      "underpersonal": "Manage your personal account information.",
+      "name": "Name",
+      "role": "Role",
+      "superAdmin": "Super Admin",
+      "user": "User",
+      "status": "Account status",
+      "active": "Active",
+      "inactive": "Inactive",
+      "saving": "Saving...",
+      "save": "Save changes",
+      "info": "Account information",
+      "createdAt": "Account created",
+      "updatedAt": "Account updated",
+      "security": "Security",
+      "undersecurity": "Manage your password and account security.",
+      "password": "Password",
+      "changepass": "Change password"
     }
   }
 }

@@ -7,6 +7,7 @@ import LocaleDash from "@/components/LocaleDash";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import UserAvatar from "@/components/UserAvatar";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -54,6 +55,21 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const homeHref =
     pathname === "/dashboard" ? "/dashboard" : `/${locale}/dashboard`;
+
+  const headerTitle =
+    pathname === "/dashboard/profile" ||
+    pathname === `/${locale}/dashboard/profile`
+      ? t("sidebar.profile")
+      : t("overview");
+
+  const initials = userName
+    ? userName
+        .split(" ")
+        .map((word) => word[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase()
+    : "U";
 
   useEffect(() => {
     const loadUser = async () => {
@@ -118,17 +134,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </button>
         {/* User section */}
         <div className="sidebar-user">
-          <div className="user-avatar">
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-              <circle cx="24" cy="24" r="24" fill="#646566" />
-              <circle cx="24" cy="18" r="6" fill="white" opacity="0.7" />
-              <path
-                d="M12 36c0-4.418 5.373-8 12-8s12 3.582 12 8v2H12v-2z"
-                fill="white"
-                opacity="0.7"
-              />
-            </svg>
-          </div>
+        <UserAvatar name={userName} />
 
           {userName ? (
             <h3 className="sidebar-zonter">{userName}</h3>
@@ -282,7 +288,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
           <div>
             <p className="header-label">{t("title")}</p>
-            <h1 className="header-title">{t("overview")}</h1>
+            <h1 className="header-title">{headerTitle}</h1>
           </div>
         </header>
 
@@ -365,16 +371,19 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           margin-bottom: 32px;
         }
 
-        .user-avatar {
-          width: 56px;
-          height: 56px;
-          border-radius: 50%;
-          background: #646566;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
-        }
+.user-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
 
         .sidebar-close {
   display: none;
