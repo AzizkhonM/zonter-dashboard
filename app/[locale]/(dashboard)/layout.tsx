@@ -5,6 +5,8 @@ import type { ReactNode } from "react";
 import "@/app/globals.css";
 import LocaleDash from "@/components/LocaleDash";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -16,6 +18,42 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [hasOrganizations, setHasOrganizations] = useState(false);
   const [userName, setUserName] = useState("");
   const t = useTranslations("Dashboard");
+  const pathname = usePathname();
+
+  const localeSet = new Set(["uz", "en", "ru"]);
+
+  const segment = pathname.split("/")[1];
+
+  const locale = localeSet.has(segment) ? segment : "uz";
+
+  const withLocale = (path: string) => {
+    if (locale === "uz") {
+      return path;
+    }
+
+    return `/${locale}${path}`;
+  };
+
+  const dashboardPath = `/${locale}/dashboard`;
+
+  const isHomeActive =
+    pathname === "/dashboard" || pathname === `/${locale}/dashboard`;
+
+  const isHomeDisabled =
+    pathname === "/dashboard" || pathname === `/${locale}/dashboard`;
+
+  const isProfileActive =
+    pathname === "/dashboard/profile" ||
+    pathname === `/${locale}/dashboard/profile` ||
+    pathname.startsWith("/dashboard/profile/") ||
+    pathname.startsWith(`/${locale}/dashboard/profile/`);
+
+  const isProfileDisabled =
+    pathname === "/dashboard/profile" ||
+    pathname === `/${locale}/dashboard/profile`;
+
+  const homeHref =
+    pathname === "/dashboard" ? "/dashboard" : `/${locale}/dashboard`;
 
   useEffect(() => {
     const loadUser = async () => {
@@ -76,7 +114,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           onClick={() => setOpen(false)}
           aria-label="Close menu"
         >
-          ✕
+          <span>✕</span>
         </button>
         {/* User section */}
         <div className="sidebar-user">
@@ -102,32 +140,39 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Navigation */}
         <nav className="sidebar-nav uppercase">
           {/* Home */}
-          <a
-            href="/dashboard"
-            className="nav-link active"
-            onClick={() => setOpen(false)}
+          <Link
+            href={homeHref}
+            className={`nav-link ${isHomeActive ? "active" : ""}`}
+            onClick={(e) => {
+              if (isHomeDisabled) {
+                e.preventDefault();
+                return;
+              }
+
+              setOpen(false);
+            }}
           >
             <span>{t("sidebar.home")}</span>
-          </a>
+          </Link>
 
           {/* Organization navigation */}
           {hasOrganizations && (
             <>
-              <a
-                href="/dashboard/organizations"
+              <Link
+                href={withLocale("/dashboard/organizations")}
                 className="nav-link"
                 onClick={() => setOpen(false)}
               >
                 <span>{t("sidebar.myorgs")}</span>
-              </a>
+              </Link>
 
-              <a
-                href="/dashboard/history"
+              <Link
+                href={withLocale("/dashboard/history")}
                 className="nav-link"
                 onClick={() => setOpen(false)}
               >
                 <span>{t("sidebar.history")}</span>
-              </a>
+              </Link>
             </>
           )}
 
@@ -141,40 +186,44 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           />
 
           {/* Profile */}
-          <a
-            href="/dashboard/profile"
-            className="nav-link"
-            onClick={() => setOpen(false)}
+          <Link
+            href={withLocale("/dashboard/profile")}
+            className={`nav-link ${isProfileActive ? "active" : ""}`}
+            onClick={(e) => {
+              if (isProfileDisabled) {
+                e.preventDefault();
+                return;
+              }
+
+              setOpen(false);
+            }}
           >
             <span>{t("sidebar.profile")}</span>
-          </a>
+          </Link>
 
-          {/* Notifications */}
-          <a
-            href="/dashboard/notifications"
+          <Link
+            href={withLocale("/dashboard/notifications")}
             className="nav-link"
             onClick={() => setOpen(false)}
           >
             <span>{t("sidebar.notifications")}</span>
-          </a>
+          </Link>
 
-          {/* Help */}
-          <a
-            href="/dashboard/help"
+          <Link
+            href={withLocale("/dashboard/help")}
             className="nav-link"
             onClick={() => setOpen(false)}
           >
             <span>{t("sidebar.help")}</span>
-          </a>
+          </Link>
 
-          {/* Settings */}
-          <a
-            href="/dashboard/settings"
+          <Link
+            href={withLocale("/dashboard/settings")}
             className="nav-link"
             onClick={() => setOpen(false)}
           >
             <span>{t("sidebar.settings")}</span>
-          </a>
+          </Link>
         </nav>
 
         {/* Bottom section */}
@@ -269,8 +318,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         /* Mobile menu button */
         .mobile-menu-btn {
           display: none;
-          width: 44px;
-          height: 44px;
           flex-shrink: 0;
           border-radius: 8px;
           color: white;
@@ -280,9 +327,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           transition: background 0.2s;
         }
 
-        .mobile-menu-btn:hover {
-          background: rgba(255, 255, 255, 0.2);
-        }
+.mobile-menu-btn svg {
+  transition: transform 0.2s ease;
+}
+
+.mobile-menu-btn:hover svg {
+  transform: scaleY(1.25);
+}
 
         .menu-icon {
           width: 22px;
@@ -337,11 +388,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   cursor: pointer;
   padding: 0;
   border-radius: 8px;
-  transition: border-color 0.2s;
 }
 
-.sidebar-close:hover{
-background: rgba(255, 255, 255, 0.2);
+.sidebar-close span {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.sidebar-close:hover span {
+  transform: scaleY(1.25);
 }
 
         .sidebar-zonter {
@@ -432,7 +487,7 @@ background: rgba(255, 255, 255, 0.2);
         .dashboard-header {
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 24px;
           border-bottom: 1px solid #232A34;
           background: #0F1115;
           padding: 24px 32px;

@@ -338,7 +338,7 @@ export default async function Dashboard() {
             .action-grid {
               grid-template-columns: 1fr;
               gap: 16px;
-              margin-bottom: 24px;
+              margin-bottom: 16px;
             }
 
             .action-card {
