@@ -37,14 +37,13 @@ export async function GET() {
 
     // 👤 GET PROFILE
     const user = await prisma.user.findUnique({
-      where: {
-        id: decoded.userId,
-      },
+      where: { id: decoded.userId },
       select: {
         id: true,
         name: true,
         email: true,
         role: true,
+        authProvider: true, // ← SHU YERGA
         isActive: true,
         createdAt: true,
         updatedAt: true,

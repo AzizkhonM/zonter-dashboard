@@ -20,10 +20,7 @@ export async function POST(req: Request) {
 
     // CASE 1: aktiv user → block
     if (existing?.isActive) {
-      return NextResponse.json(
-        { error: "USER_EXISTS" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "USER_EXISTS" }, { status: 400 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -32,12 +29,21 @@ export async function POST(req: Request) {
     if (existing && !existing.isActive) {
       await prisma.user.update({
         where: { email },
-        data: { password: hashedPassword, name },
+        data: {
+          password: hashedPassword,
+          name,
+          authProvider: "LOCAL",
+        },
       });
     } else {
-      // CASE 3: yangi user → create
       await prisma.user.create({
-        data: { email, password: hashedPassword, name, isActive: false },
+        data: {
+          email,
+          password: hashedPassword,
+          name,
+          isActive: false,
+          authProvider: "LOCAL",
+        },
       });
     }
 
@@ -78,9 +84,6 @@ export async function POST(req: Request) {
     });
   } catch (err) {
     console.error("REGISTER ERROR:", err);
-    return NextResponse.json(
-      { error: "SERVER_ERROR" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "SERVER_ERROR" }, { status: 500 });
   }
 }

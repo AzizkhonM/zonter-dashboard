@@ -2,6 +2,268 @@
   "HomePage": {
     "title": "Zonterga xush kelibsiz"
   },
+  "Landing": {
+    "header": {
+      "product": "Mahsulot",
+      "features": "Imkoniyatlar",
+      "howItWorks": "Qanday ishlaydi?",
+      "login": "Kirish",
+      "getStarted": "Boshlash",
+      "openMenu": "Menyuni ochish",
+      "closeMenu": "Menyuni yopish"
+    },
+    "hero": {
+      "eyebrow": "CS2 TURNIRLARINI BOSHQARISH TIZIMI",
+      "title": "Turniringizni boshqaring. Jadvalingizni emas.",
+      "description": "Turnirlar, jamoalar, o‘yinlar, map veto va statistikalarni bitta tizimda boshqaring.",
+      "getStarted": "Boshlash",
+      "explore": "Imkoniyatlarni ko‘rish",
+      "builtFor": "CS2 turnir tashkilotchilari uchun yaratilgan"
+    },
+    "problem": {
+      "eyebrow": "MUAMMO",
+      "title": "Turnir tashkil qilish o‘yin o‘ynashdek oson emas.",
+      "description": "Tashkilotchilar turnirning o‘ziga emas, uni boshqarishdagi ortiqcha ishlar bilan shug‘ullanishga vaqt sarflaydi.",
+      "items": {
+        "tools": {
+          "title": "Tarqoq ma’lumotlar",
+          "description": "Turnir ma’lumotlari jadvallar, bracket vositalari, hujjatlar va boshqa alohida joylarda tarqalib ketadi."
+        },
+        "manual": {
+          "title": "Ortiqcha qo‘l mehnati",
+          "description": "Jamoalar, matchlar, natijalar va statistikalarni doimiy ravishda qo‘lda boshqarish kerak bo‘ladi."
+        },
+        "visibility": {
+          "title": "Yagona markaz yo‘q",
+          "description": "Turnirning holati, matchlar, jamoalar va natijalarni bitta joydan boshqarish va kuzatish qiyin."
+        }
+      }
+    },
+    "lifecycle": {
+      "eyebrow": "TURNIR JARAYONI",
+      "title": "Tashkil qilishdan yakuniy natijagacha.",
+      "description": "Turnirning har bir bosqichini bitta tizimda boshqaring.",
+      "steps": {
+        "create": {
+          "number": "01",
+          "title": "Turnirni yarating",
+          "description": "Format, qoidalar, jamoalar va turnir sozlamalarini bir joyda belgilang."
+        },
+        "teams": {
+          "number": "02",
+          "title": "Jamoalarni boshqaring",
+          "description": "Jamoalar va o‘yinchilarni qo‘shing, ularning turnirdagi ishtirokini boshqaring."
+        },
+        "bracket": {
+          "number": "03",
+          "title": "Turnirni tashkil qiling",
+          "description": "Bracket yoki Swiss formatida turnir jadvalini shakllantiring va boshqaring."
+        },
+        "matches": {
+          "number": "04",
+          "title": "Matchlarni boshqaring",
+          "description": "Matchlarni rejalashtiring, natijalarni kiriting va turnir jarayonini kuzating."
+        },
+        "veto": {
+          "number": "05",
+          "title": "Map veto qiling",
+          "description": "Jamoalar map veto jarayonini bajarsin, yakuniy maplar va tomonlarni qayd eting."
+        },
+        "results": {
+          "number": "06",
+          "title": "Natijalarni yakunlang",
+          "description": "Natijalar va statistikalarni saqlang va turnirni yakuniy holatda e’lon qiling."
+        }
+      }
+    },
+    "tournamentManagement": {
+      "eyebrow": "TURNIR BOSHQARUVI",
+      "title": "Turnir uchun kerak bo‘lgan hamma narsa. Bitta joyda.",
+      "description": "Bracket, Swiss, jamoalar, matchlar, e’lonlar, jadval va natijalarni yagona tizimdan boshqaring.",
+      "features": {
+        "bracket": "Bracket",
+        "swiss": "Swiss",
+        "teams": "Turnir jamoalari",
+        "matches": "Matchlar",
+        "announcements": "E’lonlar",
+        "scheduling": "Jadval",
+        "results": "Natijalar"
+      },
+      "imageAlt": "Turnir tuzilmasi, jamoalar, matchlar va natijalarni ko‘rsatuvchi Zonter turnir boshqaruvi dashboardi",
+      "caption": "Turnir uchun kerak bo‘lgan barcha boshqaruv vositalari bitta workspace'da",
+      "dashboardLabel": "TURNIR DASHBOARDI"
+    },
+    "teamsPlayers": {
+      "eyebrow": "JAMOALAR & O‘YINCHILAR",
+      "title": "Jamoalar va o‘yinchilarni bitta turnir bilan cheklamang.",
+      "description": "Jamoalar va o‘yinchilarni organization darajasida boshqaring. Jamoalarni turli turnirlarda qayta ishlating, tarkiblarni boshqaring va ishtirok tarixini bir joyda kuzating.",
+      "teamLabel": "JAMOA",
+      "active": "FAOL",
+      "teamName": "Zonter Academy",
+      "teamMeta": "5 o‘yinchi · 18 turnir",
+      "playersLabel": "TARKIB",
+      "historyLabel": "TURNIR TARIXI",
+      "historyCount": "18 TURNIR",
+      "history": "Tarix",
+      "stats": {
+        "teams": "Jamoa",
+        "players": "O‘yinchi",
+        "tournaments": "Turnir"
+      },
+      "players": {
+        "player1": "Dan \"apEX\" Madesclaire",
+        "player2": "Mathieu \"ZywOo\" Herbaut",
+        "player3": "Shahar \"flameZ\" Shushan",
+        "player4": "William \"mezii\" Merriman",
+        "player5": "Robin \"ropz\" Kool"
+      },
+      "tournaments": {
+        "tournament1": {
+          "name": "Zonter University Cup",
+          "date": "May 2026",
+          "result": "Top 4"
+        },
+        "tournament2": {
+          "name": "Central Asia Open",
+          "date": "Aprel 2026",
+          "result": "2-o‘rin"
+        },
+        "tournament3": {
+          "name": "Spring Championship",
+          "date": "Mart 2026",
+          "result": "Chorak final"
+        }
+      }
+    },
+    "matchCenter": {
+      "eyebrow": "MATCH MARKAZI",
+      "title": "Har bir match. Muhim bo‘lgan barcha ma’lumotlar.",
+      "description": "Match formatidan xaritalar va yakuniy natijagacha bo‘lgan barcha ma’lumotlarni bitta joyda boshqaring.",
+      "status": "YAKUNLANGAN",
+      "matchId": "MATCH #024",
+      "winner": "G‘OLIB",
+      "opponent": "RAQIB",
+      "teamLabel": "JAMOA",
+      "finalScore": "YAKUNIY HISOB",
+      "maps": "XARITALAR",
+      "threeMaps": "3 XARITA",
+      "completed": "YAKUNLANGAN",
+      "playerPerformance": "O‘YINCHI STATISTIKASI",
+      "player": "O‘YINCHI"
+    },
+    "mapVeto": {
+      "eyebrow": "MAP VETO",
+      "title": "Har bir veto jarayonini aniq va tartibli boshqaring.",
+      "description": "Jamoalar map veto jarayonini real vaqt rejimida bajarsin. BO1, BO3 va BO5 formatlarida ban, pick, decider hamda CT/T tomon tanlovini qo‘llab-quvvatlang.",
+      "features": {
+        "banPick": "BAN / PICK",
+        "decider": "DECIDER"
+      },
+      "imageAlt": "ZMap map veto interfeysi",
+      "caption": "ZMap tomonidan taqdim etiladi · Raqobatbardosh CS2 matchlari uchun yaratilgan"
+    },
+    "statistics": {
+      "eyebrow": "STATISTIKA",
+      "title": "Har bir natija. Har bir raqam.",
+      "description": "Match va turnirlar davomida o‘yinchi va jamoa ko‘rsatkichlarini kuzating. K/D/A, damage, ADR, KD, HS%, KAST va MVP ma’lumotlarini yagona tizimda saqlang.",
+      "tournamentName": "Central Asia Open · Turnir statistikasi",
+      "overview": "UMUMIY",
+      "players": "O‘YINCHILAR",
+      "playerPerformance": "O‘YINCHI STATISTIKASI",
+      "fivePlayers": "5 O‘YINCHI",
+      "player": "O‘YINCHI",
+      "mvpLabel": "MATCH MVP",
+      "mvpDescription": "Turnirdagi eng yuqori ko‘rsatkichli o‘yinchi",
+      "kpis": {
+        "damage": "DAMAGE",
+        "adr": "ADR",
+        "kd": "KD",
+        "hs": "HS%",
+        "kast": "KAST"
+      }
+    },
+    "organization": {
+      "eyebrow": "ORGANIZATION",
+      "title": "Bitta organization. Hammasi o‘zaro bog‘langan.",
+      "description": "Jamoalar, turnirlar, o‘yinchilar va matchlarni yagona organization workspace orqali boshqaring.",
+      "hierarchy": {
+        "organization": "ORGANIZATION",
+        "teams": "JAMOALAR",
+        "tournaments": "TURNIRLAR",
+        "players": "O‘YINCHILAR",
+        "matches": "MATCHLAR"
+      },
+      "imageAlt": "Jamoalar, turnirlar, o‘yinchilar va matchlarni ko‘rsatuvchi Zonter organization dashboardi",
+      "caption": "Organization darajasida turnirlarni boshqarish",
+      "dashboardLabel": "ORGANIZATION DASHBOARD"
+    },
+    "publicPages": {
+      "eyebrow": "PUBLIC SAHIFALAR",
+      "title": "Har bir turnir uchun ochiq sahifa yarating.",
+      "description": "Organization va turnir sahifalarini e’lon qiling. Istalgan foydalanuvchi jamoalar, bracket, matchlar, natijalar, e’lonlar va statistikalarni ko‘rishi mumkin.",
+      "features": {
+        "organization": "Organization",
+        "tournament": "Turnir",
+        "bracket": "Bracket",
+        "teams": "Jamoalar",
+        "matches": "Matchlar",
+        "results": "Natijalar",
+        "announcements": "E’lonlar",
+        "stats": "Statistika"
+      },
+      "imageAlt": "Jamoalar, matchlar, bracket, natijalar va statistikalarni ko‘rsatuvchi Zonter public organization va turnir sahifalari",
+      "caption": "Organization va turnirlar uchun public sahifalar",
+      "dashboardLabel": "PUBLIC"
+    },
+    "audience": {
+      "eyebrow": "KIMLAR UCHUN",
+      "title": "Tartibli boshqaruvga muhtoj turnirlar uchun.",
+      "description": "Zonter community, universitet va amateur darajadagi raqobatbardosh CS2 turnirlarini tashkil qiluvchi organizerlar uchun yaratilgan.",
+      "items": {
+        "community": {
+          "title": "Community turnirlar",
+          "description": "Mahalliy va online community turnirlarini jamoalar, matchlar, natijalar va public sahifalar uchun tartibli workflow bilan boshqaring."
+        },
+        "university": {
+          "title": "Universitet esports",
+          "description": "Universitet ligalari va musobaqalarini tashkil qiling, jamoalar, o‘yinchilar, matchlar va turnir tarixini yagona tizimda saqlang."
+        },
+        "amateur": {
+          "title": "Amateur musobaqalar",
+          "description": "Kichikroq raqobatbardosh turnirlarni tarqoq jadvallar, qo‘lbola yangilanishlar va alohida vositalarsiz boshqaring."
+        }
+      }
+    },
+    "finalCta": {
+      "eyebrow": "ZONTER BILAN BOSHLANG",
+      "title": "Keyingi turniringizni boshlashga tayyormisiz?",
+      "description": "Turnir jarayonlaringizni yagona tizimga olib keling va Zonter orqali boshqarishni boshlang.",
+      "getStarted": "Boshlash",
+      "createOrganization": "Organization yaratish",
+      "bottomLabel": "CS2 turnir tashkilotchilari uchun yaratilgan"
+    },
+    "footer": {
+  "description": "CS2 turnir tashkilotchilari uchun yaratilgan turnirlarni boshqarish tizimi.",
+  "product": {
+    "title": "Mahsulot",
+    "features": "Imkoniyatlar",
+    "howItWorks": "Qanday ishlaydi?",
+    "getStarted": "Boshlash"
+  },
+  "resources": {
+    "title": "Hisob",
+    "login": "Kirish",
+    "register": "Hisob yaratish"
+  },
+  "legal": {
+    "title": "Huquqiy",
+    "privacy": "Maxfiylik",
+    "terms": "Foydalanish shartlari"
+  },
+  "copyright": "© {year} Zonter. Barcha huquqlar himoyalangan.",
+  "tagline": "Turnir tashkilotchilari uchun yaratilgan"
+}
+  },
   "RegisterCarousel": {
     "slides": {
       "0": {
@@ -120,7 +382,91 @@
       "security": "Xavfsizlik",
       "undersecurity": "Parolingiz va hisobingiz xavfsizligini boshqaring.",
       "password": "Parol",
-      "changepass": "Parolni o‘zgartirish"
+      "changepass": "Parolni o‘zgartirish",
+      "googleAccount": "Google orqali kirilgan"
+    },
+    "organization": {
+      "create": "Tashkilot yaratish",
+      "undercreate": "Jamoangiz yoki hamjamiyatingiz uchun tashkilot yarating.",
+      "basic": "Asosiy ma’lumotlar",
+      "name": "Tashkilot nomi",
+      "namePlaceholder": "Tashkilot nomini kiriting",
+      "type": "Tashkilot turi",
+      "typePlaceholder": "Tashkilot turini tanlang",
+
+      "types": {
+        "company": "Kompaniya",
+        "university": "Universitet",
+        "school": "Maktab",
+        "government": "Davlat tashkiloti",
+        "ngo": "NNT",
+        "community": "Hamjamiyat",
+        "other": "Boshqa"
+      },
+
+      "affiliatedOrganization": "Tegishli tashkilot",
+      "affiliatedOrganizationPlaceholder": "Tegishli tashkilotni kiriting",
+      "description": "Tavsif",
+      "descriptionPlaceholder": "Tashkilotingiz haqida qisqacha ma’lumot bering",
+      "additional": "Qo‘shimcha ma’lumotlar",
+      "logo": "Logo",
+      "logoPlaceholder": "Rasm tanlang",
+      "uploadLogo": "Tashkilot logotipini yuklang",
+      "logoHint": "PNG, JPEG yoki WebP",
+      "changeLogo": "Logoni almashtirish",
+      "removeLogo": "Logoni olib tashlash",
+      "website": "Veb-sayt",
+      "location": "Joylashuv",
+      "country": "Mamlakat",
+      "countryPlaceholder": "Mamlakatni kiriting",
+      "countries": {
+        "uz": "O‘zbekiston",
+        "kz": "Qozog‘iston",
+        "kg": "Qirg‘iziston",
+        "tj": "Tojikiston",
+        "tm": "Turkmaniston",
+        "az": "Ozarbayjon",
+        "am": "Armaniston",
+        "by": "Belarus",
+        "md": "Moldova",
+        "ru": "Rossiya"
+      },
+      "regions": {
+        "tashkentCity": "Toshkent shahri",
+        "tashkentRegion": "Toshkent viloyati",
+        "andijan": "Andijon viloyati",
+        "bukhara": "Buxoro viloyati",
+        "jizzakh": "Jizzax viloyati",
+        "kashkadarya": "Qashqadaryo viloyati",
+        "khorezm": "Xorazm viloyati",
+        "namangan": "Namangan viloyati",
+        "navoi": "Navoiy viloyati",
+        "samarkand": "Samarqand viloyati",
+        "sirdarya": "Sirdaryo viloyati",
+        "surkhandarya": "Surxondaryo viloyati",
+        "karakalpakstan": "Qoraqalpog‘iston Respublikasi"
+      },
+      "region": "Viloyat",
+      "regionPlaceholder": "Viloyatni kiriting",
+      "city": "Shahar",
+      "cityPlaceholder": "Shaharni kiriting",
+      "request": "So‘rov",
+      "reason": "Tashkilot yaratish sababi",
+      "reasonPlaceholder": "Nima sababdan ushbu tashkilotni yaratmoqchi ekaningizni yozing",
+      "submitting": "Yuborilmoqda...",
+      "submit": "So‘rov yuborish",
+      "errors": {
+        "UNAUTHORIZED": "Avtorizatsiyadan o‘tish talab qilinadi.",
+        "INVALID_TOKEN": "Sessiya yaroqsiz. Qaytadan kiring.",
+        "INVALID_NAME": "Tashkilot nomi noto‘g‘ri.",
+        "INVALID_TYPE": "Tashkilot turini tanlang.",
+        "INVALID_COUNTRY": "Mamlakatni tanlang.",
+        "INVALID_LOGO_TYPE": "Logo faqat PNG, JPEG yoki WebP formatida bo‘lishi mumkin.",
+        "SERVER_ERROR": "Serverda xatolik yuz berdi. Keyinroq qayta urinib ko‘ring."
+      },
+      "success": {
+        "requestSubmitted": "Tashkilot yaratish so‘rovi yuborildi."
+      }
     }
   }
 }

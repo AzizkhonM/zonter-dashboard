@@ -13,6 +13,7 @@ type User = {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
+  authProvider: string;
 };
 
 export default function ProfilePage() {
@@ -27,6 +28,8 @@ export default function ProfilePage() {
   const localeSet = new Set(["uz", "en", "ru"]);
   const segment = pathname.split("/")[1];
   const locale = localeSet.has(segment) ? segment : "uz";
+
+  const isGoogleUser = user?.authProvider === "GOOGLE";
 
   useEffect(() => {
     async function loadUser() {
@@ -203,7 +206,7 @@ export default function ProfilePage() {
 
           <button
             type="button"
-            className="submit-btn profile-save"
+            className="submit-btn"
             onClick={handleSave}
             disabled={saving || !name.trim() || name.trim() === user.name}
           >
@@ -239,14 +242,21 @@ export default function ProfilePage() {
         </div>
 
         <div className="security-row">
-          <div>
-            <p className="profile-info-label">{t("profile.password")}</p>
-            <p className="password-dots">••••••••••••</p>
-          </div>
+          {isGoogleUser ? (
+            <p className="profile-info-value">{t("profile.googleAccount")}</p>
+          ) : (
+            <>
+              <div>
+                <p className="profile-info-label">{t("profile.password")}</p>
 
-          <button type="button" className="secondary-btn">
-          {t("profile.changepass")}
-          </button>
+                <p className="password-dots">••••••••••••</p>
+              </div>
+
+              <button type="button" className="secondary-btn">
+                {t("profile.changepass")}
+              </button>
+            </>
+          )}
         </div>
       </section>
 
@@ -262,7 +272,7 @@ export default function ProfilePage() {
         .profile-card {
           width: 100%;
           padding: 24px;
-          background: var(--surface);
+          background: #0f1115;
           border: 1px solid var(--input-border);
           border-radius: var(--radius);
         }
@@ -427,6 +437,37 @@ export default function ProfilePage() {
             align-items: flex-start;
             flex-direction: column;
           }
+        }
+
+        .submit-btn {
+          width: 100%;
+          padding: 14px;
+          background: var(--primary);
+          color: #fff;
+          font-size: 0.95rem;
+          font-weight: 600;
+          border: none;
+          border-radius: var(--radius);
+          cursor: pointer;
+          margin-top: 4px;
+          transition: background 0.2s, transform 0.1s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .submit-btn:hover {
+          background: var(--primary-hover);
+        }
+
+        .submit-btn:active {
+          transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
         }
       `}</style>
     </div>

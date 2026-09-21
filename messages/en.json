@@ -2,6 +2,268 @@
   "HomePage": {
     "title": "Welcome to Zonter"
   },
+  "Landing": {
+    "header": {
+      "product": "Product",
+      "features": "Features",
+      "howItWorks": "How it works?",
+      "login": "Login",
+      "getStarted": "Get Started",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
+    },
+    "hero": {
+      "eyebrow": "CS2 TOURNAMENT OPERATING SYSTEM",
+      "title": "Run your tournament. Not your spreadsheets.",
+      "description": "Manage tournaments, teams, matches, map vetoes and statistics in one system.",
+      "getStarted": "Get Started",
+      "explore": "Explore Features",
+      "builtFor": "Built for CS2 tournament organizers"
+    },
+    "problem": {
+      "eyebrow": "THE PROBLEM",
+      "title": "Running a tournament shouldn't feel like a second job.",
+      "description": "Organizers spend too much time managing the work around the tournament instead of the tournament itself.",
+      "items": {
+        "tools": {
+          "title": "Scattered information",
+          "description": "Tournament data lives across spreadsheets, bracket tools, documents, and other disconnected places."
+        },
+        "manual": {
+          "title": "Too much manual work",
+          "description": "Teams, matches, results, and statistics often have to be managed manually."
+        },
+        "visibility": {
+          "title": "No single source of truth",
+          "description": "It's difficult to manage and track the tournament, matches, teams, and results from one place."
+        }
+      }
+    },
+    "lifecycle": {
+      "eyebrow": "TOURNAMENT LIFECYCLE",
+      "title": "From setup to final result.",
+      "description": "Manage every stage of your tournament in one system.",
+      "steps": {
+        "create": {
+          "number": "01",
+          "title": "Create the tournament",
+          "description": "Set the format, rules, teams, and tournament settings in one place."
+        },
+        "teams": {
+          "number": "02",
+          "title": "Manage teams",
+          "description": "Add teams and players and manage their participation throughout the tournament."
+        },
+        "bracket": {
+          "number": "03",
+          "title": "Build the tournament",
+          "description": "Set up and manage your tournament structure with Bracket or Swiss format."
+        },
+        "matches": {
+          "number": "04",
+          "title": "Run the matches",
+          "description": "Schedule matches, record results, and keep track of the tournament in real time."
+        },
+        "veto": {
+          "number": "05",
+          "title": "Run the map veto",
+          "description": "Let teams complete the map veto and record the final maps and sides."
+        },
+        "results": {
+          "number": "06",
+          "title": "Finalize the results",
+          "description": "Record results and statistics, then publish the tournament in its final state."
+        }
+      }
+    },
+    "tournamentManagement": {
+      "eyebrow": "TOURNAMENT MANAGEMENT",
+      "title": "Everything your tournament needs. In one place.",
+      "description": "Manage brackets, Swiss, teams, matches, announcements, scheduling, and results from one system.",
+      "features": {
+        "bracket": "Bracket",
+        "swiss": "Swiss",
+        "teams": "Tournament teams",
+        "matches": "Matches",
+        "announcements": "Announcements",
+        "scheduling": "Scheduling",
+        "results": "Results"
+      },
+      "imageAlt": "Zonter tournament management dashboard showing tournament structure, teams, matches, and results",
+      "caption": "Everything your tournament needs in one workspace",
+      "dashboardLabel": "TOURNAMENT DASHBOARD"
+    },
+    "teamsPlayers": {
+      "eyebrow": "TEAMS & PLAYERS",
+      "title": "Manage teams and players beyond a single tournament.",
+      "description": "Keep teams and players organized at the organization level. Reuse teams across tournaments, manage rosters, and track participation history in one place.",
+      "teamLabel": "TEAM",
+      "active": "ACTIVE",
+      "teamName": "Zonter Academy",
+      "teamMeta": "5 players · 18 tournaments",
+      "playersLabel": "ROSTER",
+      "historyLabel": "TOURNAMENT HISTORY",
+      "historyCount": "18 TOURNAMENTS",
+      "history": "History",
+      "stats": {
+        "teams": "Teams",
+        "players": "Players",
+        "tournaments": "Tournaments"
+      },
+      "players": {
+        "player1": "Dan \"apEX\" Madesclaire",
+        "player2": "Mathieu \"ZywOo\" Herbaut",
+        "player3": "Shahar \"flameZ\" Shushan",
+        "player4": "William \"mezii\" Merriman",
+        "player5": "Robin \"ropz\" Kool"
+      },
+      "tournaments": {
+        "tournament1": {
+          "name": "Zonter University Cup",
+          "date": "May 2026",
+          "result": "Top 4"
+        },
+        "tournament2": {
+          "name": "Central Asia Open",
+          "date": "April 2026",
+          "result": "2nd Place"
+        },
+        "tournament3": {
+          "name": "Spring Championship",
+          "date": "March 2026",
+          "result": "Quarterfinal"
+        }
+      }
+    },
+    "matchCenter": {
+      "eyebrow": "MATCH CENTER",
+      "title": "Every match. Everything that matters.",
+      "description": "Manage the complete match from format and maps to the final result and player performance, all in one place.",
+      "status": "COMPLETED",
+      "matchId": "MATCH #024",
+      "winner": "WINNER",
+      "opponent": "OPPONENT",
+      "teamLabel": "TEAM",
+      "finalScore": "FINAL SCORE",
+      "maps": "MAPS",
+      "threeMaps": "3 MAPS",
+      "completed": "COMPLETED",
+      "playerPerformance": "PLAYER PERFORMANCE",
+      "player": "PLAYER"
+    },
+    "mapVeto": {
+      "eyebrow": "MAP VETO",
+      "title": "Run every veto with a clear, structured flow.",
+      "description": "Let teams complete the map veto in real time. Support BO1, BO3, and BO5 with bans, picks, decider maps, and CT/T side selection.",
+      "features": {
+        "banPick": "BAN / PICK",
+        "decider": "DECIDER"
+      },
+      "imageAlt": "ZMap map veto interface showing the map selection process",
+      "caption": "Powered by ZMap · Built for competitive CS2 matches"
+    },
+    "statistics": {
+      "eyebrow": "STATISTICS",
+      "title": "Every result. Every number.",
+      "description": "Track player and team performance across matches and tournaments. Keep K/D/A, damage, ADR, KD, HS%, KAST, and MVP records in one system.",
+      "tournamentName": "Central Asia Open · Tournament Statistics",
+      "overview": "OVERVIEW",
+      "players": "PLAYERS",
+      "playerPerformance": "PLAYER PERFORMANCE",
+      "fivePlayers": "5 PLAYERS",
+      "player": "PLAYER",
+      "mvpLabel": "MATCH MVP",
+      "mvpDescription": "Highest-rated performance in the tournament",
+      "kpis": {
+        "damage": "DAMAGE",
+        "adr": "ADR",
+        "kd": "KD",
+        "hs": "HS%",
+        "kast": "KAST"
+      }
+    },
+    "organization": {
+      "eyebrow": "ORGANIZATION",
+      "title": "One organization. Everything connected.",
+      "description": "Manage your teams, tournaments, players, and matches from one organization-level workspace.",
+      "hierarchy": {
+        "organization": "ORGANIZATION",
+        "teams": "TEAMS",
+        "tournaments": "TOURNAMENTS",
+        "players": "PLAYERS",
+        "matches": "MATCHES"
+      },
+      "imageAlt": "Zonter organization dashboard showing teams, tournaments, players, and matches",
+      "caption": "Organization-level tournament management",
+      "dashboardLabel": "ORGANIZATION DASHBOARD"
+    },
+    "publicPages": {
+      "eyebrow": "PUBLIC PAGES",
+      "title": "Give every tournament a public home.",
+      "description": "Publish organization and tournament pages where anyone can explore teams, brackets, matches, results, announcements, and statistics.",
+      "features": {
+        "organization": "Organization",
+        "tournament": "Tournament",
+        "bracket": "Bracket",
+        "teams": "Teams",
+        "matches": "Matches",
+        "results": "Results",
+        "announcements": "Announcements",
+        "stats": "Statistics"
+      },
+      "imageAlt": "Zonter public organization and tournament pages showing teams, matches, brackets, results, and statistics",
+      "caption": "Public pages for organizations and tournaments",
+      "dashboardLabel": "PUBLIC"
+    },
+    "audience": {
+      "eyebrow": "WHO IT'S FOR",
+      "title": "Built for tournaments that need structure.",
+      "description": "Zonter is designed for organizers running competitive CS2 tournaments at the community, university, and amateur level.",
+      "items": {
+        "community": {
+          "title": "Community tournaments",
+          "description": "Run local and online community tournaments with a structured workflow for teams, matches, results, and public pages."
+        },
+        "university": {
+          "title": "University esports",
+          "description": "Organize campus leagues and university competitions while keeping teams, players, matches, and tournament history connected."
+        },
+        "amateur": {
+          "title": "Amateur competitions",
+          "description": "Manage smaller competitive events without relying on scattered spreadsheets, manual updates, and disconnected tools."
+        }
+      }
+    },
+    "finalCta": {
+      "eyebrow": "START WITH ZONTER",
+      "title": "Ready to run your next tournament?",
+      "description": "Bring your tournament workflow into one system and start managing it with Zonter.",
+      "getStarted": "Get Started",
+      "createOrganization": "Create Organization",
+      "bottomLabel": "Built for CS2 tournament organizers"
+    },
+    "footer": {
+      "description": "A tournament operating system built for CS2 organizers.",
+      "product": {
+        "title": "Product",
+        "features": "Features",
+        "howItWorks": "How it works?",
+        "getStarted": "Get Started"
+      },
+      "resources": {
+        "title": "Account",
+        "login": "Login",
+        "register": "Create account"
+      },
+      "legal": {
+        "title": "Legal",
+        "privacy": "Privacy",
+        "terms": "Terms"
+      },
+      "copyright": "© {year} Zonter. All rights reserved.",
+      "tagline": "Built for tournament organizers"
+    }
+  },
   "RegisterCarousel": {
     "slides": {
       "0": {
@@ -120,7 +382,91 @@
       "security": "Security",
       "undersecurity": "Manage your password and account security.",
       "password": "Password",
-      "changepass": "Change password"
+      "changepass": "Change password",
+      "googleAccount": "Signed in with Google"
+    },
+    "organization": {
+      "create": "Create organization",
+      "undercreate": "Create an organization for your team or community.",
+      "basic": "Basic information",
+      "name": "Organization name",
+      "namePlaceholder": "Enter organization name",
+      "type": "Organization type",
+      "typePlaceholder": "Select organization type",
+
+      "types": {
+        "company": "Company",
+        "university": "University",
+        "school": "School",
+        "government": "Government",
+        "ngo": "NGO",
+        "community": "Community",
+        "other": "Other"
+      },
+
+      "affiliatedOrganization": "Affiliated organization",
+      "affiliatedOrganizationPlaceholder": "Enter affiliated organization",
+      "description": "Description",
+      "descriptionPlaceholder": "Tell us about your organization",
+      "additional": "Additional information",
+      "logo": "Logo",
+      "logoPlaceholder": "Choose an image",
+      "uploadLogo": "Upload organization logo",
+      "logoHint": "PNG, JPEG or WebP",
+      "changeLogo": "Change logo",
+      "removeLogo": "Remove logo",
+      "website": "Website",
+      "location": "Location",
+      "country": "Country",
+      "countryPlaceholder": "Enter country",
+      "countries": {
+        "uz": "Uzbekistan",
+        "kz": "Kazakhstan",
+        "kg": "Kyrgyzstan",
+        "tj": "Tajikistan",
+        "tm": "Turkmenistan",
+        "az": "Azerbaijan",
+        "am": "Armenia",
+        "by": "Belarus",
+        "md": "Moldova",
+        "ru": "Russia"
+      },
+      "regions": {
+        "tashkentCity": "Tashkent City",
+        "tashkentRegion": "Tashkent Region",
+        "andijan": "Andijan",
+        "bukhara": "Bukhara",
+        "jizzakh": "Jizzakh",
+        "kashkadarya": "Kashkadarya",
+        "khorezm": "Khorezm",
+        "namangan": "Namangan",
+        "navoi": "Navoiy",
+        "samarkand": "Samarkand",
+        "sirdarya": "Sirdarya",
+        "surkhandarya": "Surkhandarya",
+        "karakalpakstan": "Karakalpakstan"
+      },
+      "region": "Region",
+      "regionPlaceholder": "Enter region",
+      "city": "City",
+      "cityPlaceholder": "Enter city",
+      "request": "Request",
+      "reason": "Reason for creating organization",
+      "reasonPlaceholder": "Tell us why you want to create this organization",
+      "submitting": "Submitting...",
+      "submit": "Submit request",
+      "errors": {
+        "UNAUTHORIZED": "Authorization is required.",
+        "INVALID_TOKEN": "Your session is invalid. Please log in again.",
+        "INVALID_NAME": "The organization name is invalid.",
+        "INVALID_TYPE": "Please select an organization type.",
+        "INVALID_COUNTRY": "Please select a country.",
+        "INVALID_LOGO_TYPE": "The logo must be in PNG, JPEG, or WebP format.",
+        "SERVER_ERROR": "Something went wrong on the server. Please try again later."
+      },
+      "success": {
+        "requestSubmitted": "Organization creation request submitted."
+      }
     }
   }
 }

@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import UserAvatar from "@/components/UserAvatar";
+import { dashboardRoutes } from "@/lib/dashboard-routes";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -56,11 +57,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const homeHref =
     pathname === "/dashboard" ? "/dashboard" : `/${locale}/dashboard`;
 
-  const headerTitle =
-    pathname === "/dashboard/profile" ||
-    pathname === `/${locale}/dashboard/profile`
-      ? t("sidebar.profile")
-      : t("overview");
+  const pathWithoutLocale =
+    locale === "uz" ? pathname : pathname.replace(`/${locale}`, "");
+
+  const headerKey =
+    dashboardRoutes[pathWithoutLocale as keyof typeof dashboardRoutes] ??
+    "overview";
+
+  const headerTitle = t(headerKey);
 
   const initials = userName
     ? userName
@@ -134,7 +138,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </button>
         {/* User section */}
         <div className="sidebar-user">
-        <UserAvatar name={userName} />
+          <UserAvatar name={userName} />
 
           {userName ? (
             <h3 className="sidebar-zonter">{userName}</h3>

@@ -28,17 +28,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             name,
             password: "",
             isActive: true,
+            authProvider: "GOOGLE",
           },
         });
       } else if (!dbUser.isActive) {
         await prisma.user.update({
           where: { email },
-          data: { isActive: true },
+          data: {
+            isActive: true,
+            authProvider: "GOOGLE",
+          },
         });
 
         dbUser = {
           ...dbUser,
           isActive: true,
+          authProvider: "GOOGLE",
         };
       }
 
@@ -57,9 +62,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       });
 
       // Role bo'yicha redirect
-      return dbUser.role === "SUPER_ADMIN"
-        ? "/admin"
-        : "/dashboard";
+      return dbUser.role === "SUPER_ADMIN" ? "/admin" : "/dashboard";
     },
 
     async redirect({ url, baseUrl }) {

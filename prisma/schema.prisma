@@ -52,19 +52,25 @@ enum OrganizationMemberRole {
   MEMBER
 }
 
+enum AuthProvider {
+  LOCAL
+  GOOGLE
+}
+
 model User {
-  id        String   @id @default(cuid())
-  name      String?
-  email     String   @unique
-  password  String
-  role      UserRole @default(USER)
-  createdAt DateTime @default(now())
-  isActive  Boolean  @default(false)
-  updatedAt DateTime @updatedAt
+  id           String       @id @default(cuid())
+  name         String?
+  email        String       @unique
+  password     String
+  role         UserRole     @default(USER)
+  authProvider AuthProvider @default(LOCAL)
+  createdAt    DateTime     @default(now())
+  isActive     Boolean      @default(false)
+  updatedAt    DateTime     @updatedAt
 
   organizationMembers  OrganizationMember[]
   organizationRequests OrganizationRequest[]
-  organizationInvites  OrganizationInvite[]  @relation("OrganizationInvitesSent")
+  organizationInvites  OrganizationInvite[] @relation("OrganizationInvitesSent")
 }
 
 model EmailVerification {

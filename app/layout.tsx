@@ -1,5 +1,14 @@
-import { SessionProvider } from "@/app/providers/session-provider"
+import { SessionProvider } from "@/app/providers/session-provider";
+import { Metadata } from "next";
 import localFont from "next/font/local";
+import { Toaster } from "sonner";
+
+export const metadata: Metadata = {
+  title: "Zonter",
+  icons: {
+    icon: "favicon.svg",
+  },
+};
 
 // const monument = localFont({
 //   src: [
@@ -76,15 +85,29 @@ const satoshi = localFont({
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html className={satoshi.variable}>
       <body>
         <SessionProvider>
           {children}
+
+          <Toaster
+            position="top-right"
+            closeButton
+            duration={5000}
+            toastOptions={{
+              classNames: {
+                toast: "zonter-toast",
+                title: "zonter-toast-title",
+                description: "zonter-toast-description",
+                closeButton: "zonter-toast-close",
+              },
+            }}
+          />
         </SessionProvider>
       </body>
     </html>
-  )
+  );
 }
