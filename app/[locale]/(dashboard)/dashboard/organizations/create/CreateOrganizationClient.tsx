@@ -206,6 +206,8 @@ export default function CreateOrganizationPage() {
 
       toast.success(t("organization.success.requestSubmitted"));
 
+      window.dispatchEvent(new Event("organization-updated"));
+
       const dashboardPath =
         locale === "uz" ? "/dashboard" : `/${locale}/dashboard`;
 

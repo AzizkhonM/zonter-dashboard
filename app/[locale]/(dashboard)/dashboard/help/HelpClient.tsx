@@ -3,10 +3,16 @@
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { toast } from "sonner";
 
 export default function HelpClient() {
   const t = useTranslations("Dashboard");
   const [search, setSearch] = useState("");
+  const [showSupportModal, setShowSupportModal] = useState(false);
+  const [sendingSupport, setSendingSupport] = useState(false);
+
+  const [supportSubject, setSupportSubject] = useState("");
+  const [supportMessage, setSupportMessage] = useState("");
 
   const categories = [
     {
@@ -77,6 +83,53 @@ export default function HelpClient() {
       ],
     },
   ];
+
+  const handleSendSupport = async () => {
+    const subject = supportSubject.trim();
+    const message = supportMessage.trim();
+
+    if (subject.length < 3 || message.length < 10) {
+      toast.error(t("help.support.validation"));
+      return;
+    }
+
+    try {
+      setSendingSupport(true);
+
+      const res = await fetch("/api/support", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          subject,
+          message,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        toast.error(
+          data.error
+            ? t(`help.support.errors.${data.error}`)
+            : t("help.support.errors.SERVER_ERROR")
+        );
+        return;
+      }
+
+      toast.success(t("help.support.success"));
+
+      setSupportSubject("");
+      setSupportMessage("");
+      setShowSupportModal(false);
+    } catch (error) {
+      console.error("Support request error:", error);
+      toast.error(t("help.support.errors.SERVER_ERROR"));
+    } finally {
+      setSendingSupport(false);
+    }
+  };
 
   const searchResults = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -200,10 +253,99 @@ export default function HelpClient() {
           <p>{t("help.support.description")}</p>
         </div>
 
-        <button type="button" className="help-support-button">
+        <button
+          type="button"
+          className="action-link primary help-support-button"
+          onClick={() => setShowSupportModal(true)}
+        >
           {t("help.support.button")}
         </button>
       </section>
+
+      {showSupportModal && (
+        <div
+          className="password-modal-overlay"
+          onClick={() => {
+            if (!sendingSupport) {
+              setShowSupportModal(false);
+            }
+          }}
+        >
+          <div className="password-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="password-modal-header">
+              <div>
+                <h2>{t("help.support.modalTitle")}</h2>
+                <p>{t("help.support.modalDescription")}</p>
+              </div>
+
+              <button
+                type="button"
+                className="password-modal-close"
+                onClick={() => setShowSupportModal(false)}
+                disabled={sendingSupport}
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="profile-form">
+              <div className="field">
+                <label className="profile-label">
+                  {t("help.support.subject")}
+                </label>
+
+                <input
+                  className="input"
+                  type="text"
+                  value={supportSubject}
+                  onChange={(e) => setSupportSubject(e.target.value)}
+                  disabled={sendingSupport}
+                />
+              </div>
+
+              <div className="field">
+                <label className="profile-label">
+                  {t("help.support.message")}
+                </label>
+
+                <textarea
+                  className="input support-textarea"
+                  value={supportMessage}
+                  onChange={(e) => setSupportMessage(e.target.value)}
+                  disabled={sendingSupport}
+                  rows={5}
+                />
+              </div>
+
+              <div className="password-modal-actions">
+                <button
+                  type="button"
+                  className="secondary-btn"
+                  onClick={() => setShowSupportModal(false)}
+                  disabled={sendingSupport}
+                >
+                  {t("help.support.cancel")}
+                </button>
+
+                <button
+                  type="button"
+                  className="submit-btn"
+                  onClick={handleSendSupport}
+                  disabled={
+                    sendingSupport ||
+                    supportSubject.trim().length < 3 ||
+                    supportMessage.trim().length < 10
+                  }
+                >
+                  {sendingSupport
+                    ? t("help.support.sending")
+                    : t("help.support.send")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style>{`
         .help-header {
@@ -482,6 +624,188 @@ export default function HelpClient() {
 
           .help-support-button {
             width: 100%;
+          }
+        }
+
+        .submit-btn {
+          width: 100%;
+          padding: 14px;
+          background: var(--primary);
+          color: #fff;
+          font-size: 0.95rem;
+          font-weight: 600;
+          border: none;
+          border-radius: var(--radius);
+          cursor: pointer;
+          margin-top: 4px;
+          transition: background 0.2s, transform 0.1s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .submit-btn:hover {
+          background: var(--primary-hover);
+        }
+
+        .submit-btn:active {
+          transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+
+        .secondary-btn {
+          padding: 11px 16px;
+          background: transparent;
+          border: 1.5px solid var(--input-border);
+          border-radius: var(--radius);
+          color: var(--text-primary);
+          font-size: 0.88rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: background 0.2s, border-color 0.2s;
+        }
+
+        .secondary-btn:hover {
+          background: rgba(255, 255, 255, 0.04);
+          border-color: #3a4450;
+        }
+
+        .profile-label {
+          display: block;
+          margin-bottom: 7px;
+          color: var(--text-secondary);
+          font-size: 0.82rem;
+          font-weight: 500;
+        }
+
+        .input {
+          width: 100%;
+          padding: 13px 16px;
+          background: var(--input-bg);
+          border: 1.5px solid var(--input-border);
+          border-radius: var(--radius);
+          font-size: 0.92rem;
+          color: var(--text-primary);
+          outline: none;
+          transition: border-color 0.2s, background 0.2s;
+        }
+
+        .input::placeholder {
+          color: var(--text-muted);
+        }
+
+        .input:focus {
+          border-color: var(--input-focus);
+          background: var(--surface);
+        }
+
+        .input:disabled {
+          opacity: 0.55;
+          cursor: not-allowed;
+        }
+        
+        .field {
+          position: relative;
+          width: 100%;
+        }
+
+        .profile-form {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+
+        .password-modal-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          padding: 24px;
+
+          background: rgba(0, 0, 0, 0.72);
+          backdrop-filter: blur(6px);
+        }
+
+        .password-modal {
+          width: 100%;
+          max-width: 520px;
+
+          padding: 28px;
+
+          background: #11151b;
+          border: 1px solid #232a34;
+          border-radius: 14px;
+
+          box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .password-modal-header {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 20px;
+
+          margin-bottom: 24px;
+        }
+
+        .password-modal-header h2 {
+          margin: 0;
+          color: white;
+          font-size: 120%;
+        }
+
+        .password-modal-header p {
+          margin: 6px 0 0;
+          color: #8b929d;
+          font-size: 14px;
+        }
+
+        .password-modal-close {
+          width: 32px;
+          height: 32px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          padding: 0;
+
+          border: 1px solid #232a34;
+          border-radius: 8px;
+
+          background: transparent;
+          color: #8b929d;
+
+          font-size: 22px;
+          line-height: 1;
+
+          cursor: pointer;
+        }
+
+        .password-modal-close:hover {
+          color: #f3f4f6;
+          border-color: #343b47;
+        }
+
+        .password-modal-actions {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 10px;
+          margin-top: 8px;
+        }
+
+        @media (min-width: 768px) {
+          .password-modal-actions {
+            grid-template-columns: 1fr 1fr;
           }
         }
       `}</style>

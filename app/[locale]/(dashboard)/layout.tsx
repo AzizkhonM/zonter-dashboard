@@ -108,7 +108,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         setUserName(data.user?.name || "User");
 
         const organizations = data.user?.organizationMembers ?? [];
-        setHasOrganizations(organizations.length > 0);
+        const organizationRequests = data.user?.organizationRequests ?? [];
+
+        setHasOrganizations(
+          organizations.length > 0 || organizationRequests.length > 0
+        );
       } catch (error) {
         console.error("Failed to load user:", error);
       }
@@ -120,10 +124,20 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       loadUser();
     };
 
+    const handleOrganizationUpdated = () => {
+      loadUser();
+    };
+
     window.addEventListener("profile-updated", handleProfileUpdated);
+    window.addEventListener("organization-updated", handleOrganizationUpdated);
 
     return () => {
       window.removeEventListener("profile-updated", handleProfileUpdated);
+
+      window.removeEventListener(
+        "organization-updated",
+        handleOrganizationUpdated
+      );
     };
   }, []);
 

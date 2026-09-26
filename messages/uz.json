@@ -565,7 +565,26 @@
       "support": {
         "title": "Hali ham yordam kerakmi?",
         "description": "Javob topa olmadingizmi? Biz bilan bog‘laning.",
-        "button": "Qo‘llab-quvvatlash"
+        "button": "Qo‘llab-quvvatlash",
+
+        "modalTitle": "Qo‘llab-quvvatlash",
+        "modalDescription": "Muammo yoki savolingizni yuboring. Biz siz bilan bog‘lanamiz.",
+        "subject": "Mavzu",
+        "message": "Xabar",
+        "cancel": "Bekor qilish",
+        "send": "Yuborish",
+        "sending": "Yuborilmoqda...",
+        "validation": "Mavzu kamida 3 ta, xabar esa kamida 10 ta belgidan iborat bo‘lishi kerak.",
+        "success": "Xabaringiz muvaffaqiyatli yuborildi.",
+        "error": "Xabarni yuborishda xatolik yuz berdi.",
+        "errors": {
+          "UNAUTHORIZED": "Avval tizimga kiring.",
+          "INVALID_REQUEST": "Noto‘g‘ri so‘rov.",
+          "SUBJECT_TOO_SHORT": "Mavzu kamida 3 ta belgidan iborat bo‘lishi kerak.",
+          "MESSAGE_TOO_SHORT": "Xabar kamida 10 ta belgidan iborat bo‘lishi kerak.",
+          "USER_NOT_FOUND": "Foydalanuvchi topilmadi.",
+          "SERVER_ERROR": "Xatolik yuz berdi. Keyinroq qayta urinib ko‘ring."
+        }
       },
 
       "searchResults": {

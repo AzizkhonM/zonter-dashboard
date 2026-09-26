@@ -565,7 +565,26 @@
       "support": {
         "title": "Still need help?",
         "description": "Couldn't find an answer? Get in touch with us.",
-        "button": "Contact Support"
+        "button": "Contact Support",
+
+        "modalTitle": "Contact Support",
+        "modalDescription": "Send us your question or issue and we’ll get back to you.",
+        "subject": "Subject",
+        "message": "Message",
+        "cancel": "Cancel",
+        "send": "Send",
+        "sending": "Sending...",
+        "validation": "The subject must be at least 3 characters and the message at least 10 characters.",
+        "success": "Your message has been sent successfully.",
+        "error": "Failed to send your message.",
+        "errors": {
+          "UNAUTHORIZED": "Please log in first.",
+          "INVALID_REQUEST": "Invalid request.",
+          "SUBJECT_TOO_SHORT": "The subject must be at least 3 characters long.",
+          "MESSAGE_TOO_SHORT": "The message must be at least 10 characters long.",
+          "USER_NOT_FOUND": "User not found.",
+          "SERVER_ERROR": "Something went wrong. Please try again later."
+        }
       },
 
       "searchResults": {
