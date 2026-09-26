@@ -3,6 +3,7 @@ import Google from "next-auth/providers/google";
 import { prisma } from "@/lib/prisma";
 import { signToken } from "@/lib/jwt";
 import { cookies } from "next/headers";
+import { sendTelegramMessage } from "@/lib/telegram";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -47,6 +48,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         };
       }
 
+      // Telegram notification
+      try {
+        await sendTelegramMessage(
+          `🔐 <b>User logged in</b>\n\n` +
+            `👤 <b>Name:</b> ${dbUser.name ?? "Unknown"}\n` +
+            `📧 <b>Email:</b> ${dbUser.email}\n` +
+            `🆔 <b>User ID:</b> <code>${dbUser.id}</code>\n` +
+            `🔑 <b>Provider:</b> Google`
+        );
+      } catch (error) {
+        console.error("Telegram notification failed:", error);
+      }
+
       const token = await signToken({
         userId: dbUser.id,
         role: dbUser.role,
@@ -56,17 +70,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       cookieStore.set("token", token, {
         httpOnly: true,
-        secure: false, // LOCAL DEV
+        secure: false,
         sameSite: "lax",
         path: "/",
       });
 
-      // Role bo'yicha redirect
       return dbUser.role === "SUPER_ADMIN" ? "/admin" : "/dashboard";
     },
 
     async redirect({ url, baseUrl }) {
-      // signIn callback'dan qaytgan URL'ni saqlab qolamiz
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`;
       }

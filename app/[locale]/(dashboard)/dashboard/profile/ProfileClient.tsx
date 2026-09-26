@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import UserAvatar from "@/components/UserAvatar";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 type User = {
   id: string;
@@ -23,11 +24,21 @@ export default function ProfilePage() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+
   const pathname = usePathname();
 
   const localeSet = new Set(["uz", "en", "ru"]);
   const segment = pathname.split("/")[1];
   const locale = localeSet.has(segment) ? segment : "uz";
+  const router = useRouter();
 
   const isGoogleUser = user?.authProvider === "GOOGLE";
 
@@ -55,15 +66,152 @@ export default function ProfilePage() {
   }, []);
 
   async function handleSave() {
-    if (!name.trim() || !user) return;
+    const trimmedName = name.trim();
+
+    if (!user || trimmedName.length < 4) {
+      toast.error(t("profile.errors.name"));
+      return;
+    }
+
+    if (trimmedName === (user.name ?? "")) {
+      return;
+    }
 
     setSaving(true);
 
     try {
-      // Keyingi bosqichda API yozamiz
-      console.log("Save name:", name.trim());
+      const response = await fetch("/api/profile", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: trimmedName,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        switch (data.error) {
+          case "NAME_TOO_SHORT":
+            toast.error(t("profile.errors.name"));
+            break;
+
+          case "UNAUTHORIZED":
+            toast.error(t("profile.errors.unauthorized"));
+            break;
+
+          default:
+            toast.error(t("profile.errors.server"));
+        }
+
+        return;
+      }
+
+      // Inputni yangilash
+      setName(data.user.name);
+
+      // Profile'dagi user state'ni ham yangilash
+      setUser((prev) =>
+        prev
+          ? {
+              ...prev,
+              name: data.user.name,
+              updatedAt: data.user.updatedAt,
+            }
+          : prev
+      );
+
+      window.dispatchEvent(new Event("profile-updated"));
+
+      toast.success(t("profile.success"));
+    } catch (error) {
+      console.error("Profile update error:", error);
+      toast.error(t("profile.errors.server"));
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleChangePassword() {
+    if (
+      currentPassword.length < 8 ||
+      newPassword.length < 8 ||
+      confirmNewPassword.length < 8
+    ) {
+      toast.error(t("profile.passwordErrors.minLength"));
+      return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      toast.error(t("profile.passwordErrors.mismatch"));
+      return;
+    }
+
+    setChangingPassword(true);
+
+    try {
+      const response = await fetch("/api/profile/password", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          currentPassword,
+          newPassword,
+          confirmPassword: confirmNewPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        switch (data.error) {
+          case "INVALID_CURRENT_PASSWORD":
+            toast.error(t("profile.passwordErrors.current"));
+            break;
+
+          case "PASSWORD_TOO_SHORT":
+            toast.error(t("profile.passwordErrors.minLength"));
+            break;
+
+          case "PASSWORD_MISMATCH":
+            toast.error(t("profile.passwordErrors.mismatch"));
+            break;
+
+          case "UNAUTHORIZED":
+            toast.error(t("profile.errors.unauthorized"));
+            break;
+
+          default:
+            toast.error(t("profile.errors.server"));
+        }
+
+        return;
+      }
+
+      toast.success(t("profile.passwordSuccess"));
+
+      setUser((prev) =>
+        prev
+          ? {
+              ...prev,
+              updatedAt: data.updatedAt,
+            }
+          : prev
+      );
+
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmNewPassword("");
+
+      setShowPasswordModal(false);
+    } catch (error) {
+      console.error("Password change error:", error);
+      toast.error(t("profile.errors.server"));
+    } finally {
+      setChangingPassword(false);
     }
   }
 
@@ -174,41 +322,15 @@ export default function ProfilePage() {
             <input className="input" type="email" value={user.email} disabled />
           </div>
 
-          <div className="profile-row">
-            <div className="field">
-              <label className="profile-label">{t("profile.role")}</label>
-
-              <input
-                className="input"
-                type="text"
-                value={
-                  user.role === "SUPER_ADMIN"
-                    ? t("profile.superAdmin")
-                    : t("profile.user")
-                }
-                disabled
-              />
-            </div>
-
-            <div className="field">
-              <label className="profile-label">{t("profile.status")}</label>
-
-              <input
-                className="input"
-                type="text"
-                value={
-                  user.isActive ? t("profile.active") : t("profile.inactive")
-                }
-                disabled
-              />
-            </div>
-          </div>
-
           <button
             type="button"
             className="submit-btn"
             onClick={handleSave}
-            disabled={saving || !name.trim() || name.trim() === user.name}
+            disabled={
+              saving ||
+              name.trim().length < 4 ||
+              name.trim() === (user.name ?? "")
+            }
           >
             {saving ? t("profile.saving") : t("profile.save")}
           </button>
@@ -252,13 +374,151 @@ export default function ProfilePage() {
                 <p className="password-dots">••••••••••••</p>
               </div>
 
-              <button type="button" className="secondary-btn">
+              <button
+                type="button"
+                className="secondary-btn"
+                onClick={() => setShowPasswordModal(true)}
+              >
                 {t("profile.changepass")}
               </button>
             </>
           )}
         </div>
       </section>
+
+      {showPasswordModal && (
+        <div
+          className="password-modal-overlay"
+          onClick={() => {
+            if (!changingPassword) {
+              setShowPasswordModal(false);
+            }
+          }}
+        >
+          <div className="password-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="password-modal-header">
+              <div>
+                <h2>{t("profile.changepass")}</h2>
+                <p>{t("profile.passwordDescription")}</p>
+              </div>
+
+              <button
+                type="button"
+                className="password-modal-close"
+                onClick={() => setShowPasswordModal(false)}
+                disabled={changingPassword}
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="profile-form">
+              <div className="field">
+                <label className="profile-label">
+                  {t("profile.currentPassword")}
+                </label>
+
+                <div className="input-wrapper field-icon">
+                  <input
+                    className="input"
+                    type={showCurrentPassword ? "text" : "password"}
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    autoComplete="current-password"
+                  />
+
+                  <button
+                    type="button"
+                    className="eye-btn"
+                    onClick={() => setShowCurrentPassword((v) => !v)}
+                    tabIndex={-1}
+                  >
+                    {showCurrentPassword ? <EyeOffIcon /> : <EyeIcon />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="profile-label">
+                  {t("profile.newPassword")}
+                </label>
+
+                <div className="input-wrapper field-icon">
+                  <input
+                    className="input"
+                    type={showNewPassword ? "text" : "password"}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    autoComplete="new-password"
+                  />
+
+                  <button
+                    type="button"
+                    className="eye-btn"
+                    onClick={() => setShowNewPassword((v) => !v)}
+                    tabIndex={-1}
+                  >
+                    {showNewPassword ? <EyeOffIcon /> : <EyeIcon />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="field">
+                <label className="profile-label">
+                  {t("profile.confirmNewPassword")}
+                </label>
+
+                <div className="input-wrapper field-icon">
+                  <input
+                    className="input"
+                    type={showConfirmNewPassword ? "text" : "password"}
+                    value={confirmNewPassword}
+                    onChange={(e) => setConfirmNewPassword(e.target.value)}
+                    autoComplete="new-password"
+                  />
+
+                  <button
+                    type="button"
+                    className="eye-btn"
+                    onClick={() => setShowConfirmNewPassword((v) => !v)}
+                    tabIndex={-1}
+                  >
+                    {showConfirmNewPassword ? <EyeOffIcon /> : <EyeIcon />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="password-modal-actions">
+                <button
+                  type="button"
+                  className="secondary-btn"
+                  onClick={() => setShowPasswordModal(false)}
+                  disabled={changingPassword}
+                >
+                  {t("profile.cancel")}
+                </button>
+
+                <button
+                  type="button"
+                  className="submit-btn"
+                  onClick={handleChangePassword}
+                  disabled={
+                    changingPassword ||
+                    currentPassword.length < 8 ||
+                    newPassword.length < 8 ||
+                    confirmNewPassword.length < 8 ||
+                    newPassword !== confirmNewPassword
+                  }
+                >
+                  {changingPassword
+                    ? t("profile.changingPassword")
+                    : t("profile.changePassword")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style jsx>{`
         .profile-page {
@@ -469,7 +729,160 @@ export default function ProfilePage() {
           cursor: not-allowed;
           transform: none;
         }
+
+        .password-modal-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          padding: 24px;
+
+          background: rgba(0, 0, 0, 0.72);
+          backdrop-filter: blur(6px);
+        }
+
+        .password-modal {
+          width: 100%;
+          max-width: 520px;
+
+          padding: 28px;
+
+          background: #11151b;
+          border: 1px solid #232a34;
+          border-radius: 14px;
+
+          box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .password-modal-header {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 20px;
+
+          margin-bottom: 24px;
+        }
+
+        .password-modal-header h2 {
+          margin: 0;
+          color: white;
+          font-size: 120%;
+        }
+
+        .password-modal-header p {
+          margin: 6px 0 0;
+          color: #8b929d;
+          font-size: 14px;
+        }
+
+        .password-modal-close {
+          width: 32px;
+          height: 32px;
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          padding: 0;
+
+          border: 1px solid #232a34;
+          border-radius: 8px;
+
+          background: transparent;
+          color: #8b929d;
+
+          font-size: 22px;
+          line-height: 1;
+
+          cursor: pointer;
+        }
+
+        .password-modal-close:hover {
+          color: #f3f4f6;
+          border-color: #343b47;
+        }
+
+        .password-modal-actions {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 10px;
+          margin-top: 8px;
+        }
+
+        @media (min-width: 768px) {
+          .password-modal-actions {
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+
+        .eye-btn {
+          position: absolute;
+          right: 14px;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: var(--text-muted);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+          width: 40px;
+          height: 40px;
+          transition: color 0.2s;
+        }
+
+        .eye-btn:hover {
+          color: var(--text-secondary);
+        }
+
+        .input-wrapper {
+          position: relative;
+          width: 100%;
+        }
       `}</style>
     </div>
   );
+
+  function EyeIcon() {
+    return (
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+        <circle cx="12" cy="12" r="3" />
+      </svg>
+    );
+  }
+
+  function EyeOffIcon() {
+    return (
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" />
+        <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" />
+        <line x1="1" y1="1" x2="23" y2="23" />
+      </svg>
+    );
+  }
 }

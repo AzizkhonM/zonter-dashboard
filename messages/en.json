@@ -383,7 +383,26 @@
       "undersecurity": "Manage your password and account security.",
       "password": "Password",
       "changepass": "Change password",
-      "googleAccount": "Signed in with Google"
+      "googleAccount": "Signed in with Google",
+      "success": "Your name has been updated successfully",
+      "errors": {
+        "name": "Name must be at least 4 characters long",
+        "unauthorized": "Please log in first",
+        "server": "Something went wrong. Please try again"
+      },
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmNewPassword": "Confirm new password",
+      "cancel": "Cancel",
+      "changePassword": "Change password",
+      "changingPassword": "Changing...",
+      "passwordDescription": "Enter your new password",
+      "passwordSuccess": "Password changed successfully",
+      "passwordErrors": {
+        "minLength": "Password must be at least 8 characters long",
+        "mismatch": "New passwords do not match",
+        "current": "Current password is incorrect"
+      }
     },
     "organization": {
       "create": "Create organization",
@@ -466,6 +485,95 @@
       },
       "success": {
         "requestSubmitted": "Organization creation request submitted."
+      }
+    },
+    "help": {
+      "title": "Help Center",
+      "description": "Learn how to use Zonter and find answers to common questions.",
+      "search": "Search help articles...",
+
+      "articlesCategory": "Help article",
+
+      "categories": {
+        "gettingStarted": {
+          "title": "Getting Started",
+          "description": "Learn the basics of Zonter."
+        },
+        "organizations": {
+          "title": "Organizations",
+          "description": "Manage your organization and members."
+        },
+        "tournaments": {
+          "title": "Tournaments",
+          "description": "Learn how to create and manage tournaments."
+        },
+        "account": {
+          "title": "Account & Security",
+          "description": "Manage your profile and account security."
+        }
+      },
+
+      "articles": {
+        "gettingStarted": {
+          "title": "Getting started with Zonter",
+          "description": "Learn the basic workflow of Zonter.",
+          "content": "Zonter helps tournament organizers manage organizations, teams, tournaments and match-related information from one place."
+        },
+        "createOrganization": {
+          "title": "Create an organization",
+          "description": "Learn how to create and configure your organization.",
+          "content": "Create an organization to manage your tournaments, teams and members in one workspace."
+        },
+        "members": {
+          "title": "Managing members",
+          "description": "Learn how organization members work.",
+          "content": "Organization members can help manage tournaments and other organization activities according to their assigned role."
+        },
+        "roles": {
+          "title": "Organization roles",
+          "description": "Understand owner, admin and member roles.",
+          "content": "Zonter organizations use different roles to control access and responsibilities. Each role has its own permissions."
+        },
+        "createTournament": {
+          "title": "Create a tournament",
+          "description": "Learn how to create your first tournament.",
+          "content": "Create a tournament by defining its basic information, format and other settings required to organize the competition."
+        },
+        "formats": {
+          "title": "Tournament formats",
+          "description": "Learn about bracket and Swiss formats.",
+          "content": "Zonter supports different tournament formats, including bracket and Swiss formats, allowing organizers to choose the structure that fits their competition."
+        },
+        "profile": {
+          "title": "Managing your profile",
+          "description": "Learn how to manage your Zonter profile.",
+          "content": "Your profile contains your basic account information. You can update your name and review your account details from the Profile page."
+        },
+        "security": {
+          "title": "Password & security",
+          "description": "Learn how to keep your account secure.",
+          "content": "Keep your Zonter account secure by using a strong password and protecting your account credentials."
+        }
+      },
+
+      "article": {
+        "backToHelp": "Back to Help Center",
+        "notFound": "Article not found",
+        "notFoundDescription": "The help article you are looking for does not exist."
+      },
+
+      "support": {
+        "title": "Still need help?",
+        "description": "Couldn't find an answer? Get in touch with us.",
+        "button": "Contact Support"
+      },
+
+      "searchResults": {
+        "title": "Search results",
+        "found": "{count} articles found.",
+        "empty": "No articles found.",
+        "noResults": "No articles found",
+        "tryAgain": "Try searching with different keywords."
       }
     }
   }

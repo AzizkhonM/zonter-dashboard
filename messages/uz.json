@@ -243,26 +243,26 @@
       "bottomLabel": "CS2 turnir tashkilotchilari uchun yaratilgan"
     },
     "footer": {
-  "description": "CS2 turnir tashkilotchilari uchun yaratilgan turnirlarni boshqarish tizimi.",
-  "product": {
-    "title": "Mahsulot",
-    "features": "Imkoniyatlar",
-    "howItWorks": "Qanday ishlaydi?",
-    "getStarted": "Boshlash"
-  },
-  "resources": {
-    "title": "Hisob",
-    "login": "Kirish",
-    "register": "Hisob yaratish"
-  },
-  "legal": {
-    "title": "Huquqiy",
-    "privacy": "Maxfiylik",
-    "terms": "Foydalanish shartlari"
-  },
-  "copyright": "© {year} Zonter. Barcha huquqlar himoyalangan.",
-  "tagline": "Turnir tashkilotchilari uchun yaratilgan"
-}
+      "description": "CS2 turnir tashkilotchilari uchun yaratilgan turnirlarni boshqarish tizimi.",
+      "product": {
+        "title": "Mahsulot",
+        "features": "Imkoniyatlar",
+        "howItWorks": "Qanday ishlaydi?",
+        "getStarted": "Boshlash"
+      },
+      "resources": {
+        "title": "Hisob",
+        "login": "Kirish",
+        "register": "Hisob yaratish"
+      },
+      "legal": {
+        "title": "Huquqiy",
+        "privacy": "Maxfiylik",
+        "terms": "Foydalanish shartlari"
+      },
+      "copyright": "© {year} Zonter. Barcha huquqlar himoyalangan.",
+      "tagline": "Turnir tashkilotchilari uchun yaratilgan"
+    }
   },
   "RegisterCarousel": {
     "slides": {
@@ -383,7 +383,26 @@
       "undersecurity": "Parolingiz va hisobingiz xavfsizligini boshqaring.",
       "password": "Parol",
       "changepass": "Parolni o‘zgartirish",
-      "googleAccount": "Google orqali kirilgan"
+      "googleAccount": "Google orqali kirilgan",
+      "success": "Ismingiz muvaffaqiyatli o‘zgartirildi",
+      "errors": {
+        "name": "Ism kamida 4 ta belgidan iborat bo‘lishi kerak",
+        "unauthorized": "Avval tizimga kiring",
+        "server": "Xatolik yuz berdi. Qaytadan urinib ko‘ring"
+      },
+      "currentPassword": "Joriy parol",
+      "newPassword": "Yangi parol",
+      "confirmNewPassword": "Yangi parolni tasdiqlang",
+      "cancel": "Bekor qilish",
+      "changePassword": "Parolni o‘zgartirish",
+      "changingPassword": "O‘zgartirilmoqda...",
+      "passwordDescription": "Yangi parolingizni kiriting",
+      "passwordSuccess": "Parol muvaffaqiyatli o‘zgartirildi",
+      "passwordErrors": {
+        "minLength": "Parol kamida 8 ta belgidan iborat bo‘lishi kerak",
+        "mismatch": "Yangi parollar mos kelmaydi",
+        "current": "Joriy parol noto‘g‘ri"
+      }
     },
     "organization": {
       "create": "Tashkilot yaratish",
@@ -466,6 +485,95 @@
       },
       "success": {
         "requestSubmitted": "Tashkilot yaratish so‘rovi yuborildi."
+      }
+    },
+    "help": {
+      "title": "Yordam markazi",
+      "description": "Zonter'dan foydalanishni o‘rganing va keng tarqalgan savollarga javob toping.",
+      "search": "Yordam maqolalarini qidirish...",
+
+      "articlesCategory": "Yordam maqolasi",
+
+      "categories": {
+        "gettingStarted": {
+          "title": "Boshlash",
+          "description": "Zonter asoslarini o‘rganing."
+        },
+        "organizations": {
+          "title": "Tashkilotlar",
+          "description": "Tashkilotingiz va a’zolaringizni boshqaring."
+        },
+        "tournaments": {
+          "title": "Turnirlar",
+          "description": "Turnirlarni yaratish va boshqarishni o‘rganing."
+        },
+        "account": {
+          "title": "Profil va xavfsizlik",
+          "description": "Profilingiz va hisob xavfsizligini boshqaring."
+        }
+      },
+
+      "articles": {
+        "gettingStarted": {
+          "title": "Zonter'dan foydalanishni boshlash",
+          "description": "Zonter'dagi asosiy ishlash tartibini o‘rganing.",
+          "content": "Zonter turnir tashkilotchilariga tashkilotlar, jamoalar, turnirlar va o‘yinlarga oid ma’lumotlarni yagona joydan boshqarish imkonini beradi."
+        },
+        "createOrganization": {
+          "title": "Tashkilot yaratish",
+          "description": "Tashkilotingizni qanday yaratish va sozlashni o‘rganing.",
+          "content": "Turnirlar, jamoalar va a’zolarni yagona ish maydonida boshqarish uchun tashkilot yarating."
+        },
+        "members": {
+          "title": "A’zolarni boshqarish",
+          "description": "Tashkilot a’zolari qanday ishlashini o‘rganing.",
+          "content": "Tashkilot a’zolari o‘zlariga berilgan rolga qarab turnirlar va tashkilotning boshqa faoliyatlarini boshqarishda yordam berishlari mumkin."
+        },
+        "roles": {
+          "title": "Tashkilot rollari",
+          "description": "Owner, admin va member rollari haqida bilib oling.",
+          "content": "Zonter tashkilotlarida kirish huquqlari va mas’uliyatlarni boshqarish uchun turli rollar mavjud. Har bir rolning o‘ziga xos ruxsatlari bor."
+        },
+        "createTournament": {
+          "title": "Turnir yaratish",
+          "description": "Birinchi turniringizni qanday yaratishni o‘rganing.",
+          "content": "Turnir yaratishda uning asosiy ma’lumotlari, formati va musobaqani tashkil qilish uchun zarur bo‘lgan boshqa sozlamalarni belgilang."
+        },
+        "formats": {
+          "title": "Turnir formatlari",
+          "description": "Bracket va Swiss formatlari haqida bilib oling.",
+          "content": "Zonter turli turnir formatlarini, jumladan Bracket va Swiss formatlarini qo‘llab-quvvatlaydi. Bu tashkilotchiga musobaqasi uchun mos tuzilmani tanlash imkonini beradi."
+        },
+        "profile": {
+          "title": "Profilni boshqarish",
+          "description": "Zonter profilingizni qanday boshqarishni o‘rganing.",
+          "content": "Profilingiz asosiy hisob ma’lumotlarini o‘z ichiga oladi. Profil sahifasidan ismingizni o‘zgartirishingiz va hisob ma’lumotlaringizni ko‘rishingiz mumkin."
+        },
+        "security": {
+          "title": "Parol va xavfsizlik",
+          "description": "Hisobingizni qanday himoyalashni o‘rganing.",
+          "content": "Zonter hisobingizni himoya qilish uchun kuchli paroldan foydalaning va hisob ma’lumotlaringizni xavfsiz saqlang."
+        }
+      },
+
+      "article": {
+        "backToHelp": "Yordam markaziga qaytish",
+        "notFound": "Maqola topilmadi",
+        "notFoundDescription": "Siz qidirayotgan yordam maqolasi mavjud emas."
+      },
+
+      "support": {
+        "title": "Hali ham yordam kerakmi?",
+        "description": "Javob topa olmadingizmi? Biz bilan bog‘laning.",
+        "button": "Qo‘llab-quvvatlash"
+      },
+
+      "searchResults": {
+        "title": "Qidiruv natijalari",
+        "found": "{count} ta maqola topildi.",
+        "empty": "Maqolalar topilmadi.",
+        "noResults": "Maqolalar topilmadi",
+        "tryAgain": "Boshqa kalit so‘zlar bilan qidirib ko‘ring."
       }
     }
   }

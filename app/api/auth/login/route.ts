@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { signToken } from "@/lib/jwt";
 import crypto from "crypto";
 import { sendVerificationEmail } from "@/lib/email";
+import { sendTelegramMessage } from "@/lib/telegram";
 
 function generateCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -80,10 +81,16 @@ export async function POST(req: Request) {
   const res = NextResponse.json({
     success: true,
     role: user.role,
-    redirectTo: user.role === "SUPER_ADMIN"
-      ? "/admin"
-      : "/dashboard",
+    redirectTo: user.role === "SUPER_ADMIN" ? "/admin" : "/dashboard",
   });
+
+  await sendTelegramMessage(
+    `🔐 <b>User logged in</b>\n\n` +
+      `👤 <b>Name:</b> ${user.name ?? "Unknown"}\n` +
+      `📧 <b>Email:</b> ${user.email}\n` +
+      `🆔 <b>User ID:</b> <code>${user.id}</code>\n` +
+      `🔑 <b>Provider:</b> Email & Password`
+  );
 
   res.cookies.set("token", token, {
     httpOnly: true,

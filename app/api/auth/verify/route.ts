@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { signToken } from "@/lib/jwt";
+import { sendTelegramMessage } from "@/lib/telegram";
 
 function hashCode(code: string) {
   return crypto.createHash("sha256").update(code).digest("hex");
@@ -72,6 +73,14 @@ export async function POST(req: Request) {
     where: { email },
     data: { isActive: true },
   });
+
+  await sendTelegramMessage(
+    `🆕 <b>New Zonter user verified</b>\n\n` +
+      `👤 <b>Name:</b> ${user.name ?? "—"}\n` +
+      `📧 <b>Email:</b> ${user.email}\n` +
+      `🆔 <b>User ID:</b> <code>${user.id}</code>\n` +
+      `🔑 <b>Provider:</b> Email & Password`
+  );
 
   // optional cleanup
   await prisma.emailVerification.delete({

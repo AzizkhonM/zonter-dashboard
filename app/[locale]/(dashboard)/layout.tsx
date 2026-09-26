@@ -6,7 +6,7 @@ import "@/app/globals.css";
 import LocaleDash from "@/components/LocaleDash";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import UserAvatar from "@/components/UserAvatar";
 import { dashboardRoutes } from "@/lib/dashboard-routes";
 
@@ -21,6 +21,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [userName, setUserName] = useState("");
   const t = useTranslations("Dashboard");
   const pathname = usePathname();
+  const router = useRouter();
 
   const localeSet = new Set(["uz", "en", "ru"]);
 
@@ -34,6 +35,23 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     }
 
     return `/${locale}${path}`;
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("Logout failed");
+      }
+
+      router.push("/login");
+      router.refresh();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const dashboardPath = `/${locale}/dashboard`;
@@ -97,6 +115,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     };
 
     loadUser();
+
+    const handleProfileUpdated = () => {
+      loadUser();
+    };
+
+    window.addEventListener("profile-updated", handleProfileUpdated);
+
+    return () => {
+      window.removeEventListener("profile-updated", handleProfileUpdated);
+    };
   }, []);
 
   useEffect(() => {
@@ -249,7 +277,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <LocaleDash />
             </div>
 
-            <button className="sidebar-logout" style={{ width: "auto" }}>
+            <button
+              className="sidebar-logout"
+              style={{ width: "auto" }}
+              onClick={handleLogout}
+            >
               {t("sidebar.logout")}
             </button>
           </div>

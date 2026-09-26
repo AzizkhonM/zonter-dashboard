@@ -64,8 +64,9 @@ export default function Home() {
         <PublicPages />
         <Audience />
         <FinalCTA />
-        <Footer />
       </main>
+      
+      <Footer />
     </>
   );
 }
