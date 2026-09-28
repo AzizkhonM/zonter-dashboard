@@ -8,6 +8,8 @@ import {
   uzbekistanRegionOptions,
 } from "@/lib/organization-options";
 import { toast } from "sonner";
+import Filter from "@/components/admin/Filter";
+import PageHeader from "@/components/admin/PageHeader";
 
 type RequestStatus = "PENDING" | "APPROVED" | "REJECTED";
 
@@ -330,56 +332,19 @@ export default function OrganizationRequestsPage() {
   return (
     <section className="organization-requests-page">
       {/* Header */}
-      <header className="organization-requests-header">
-        <div>
-          <h1>{t("title")}</h1>
-
-          <p>{t("description")}</p>
-        </div>
-      </header>
+      <PageHeader title={t("title")} description={t("description")} />
 
       {/* Filters */}
-      <div className="organization-requests-filters">
-        <button
-          type="button"
-          className={`organization-requests-filter ${
-            activeFilter === "ALL" ? "active" : ""
-          }`}
-          onClick={() => setActiveFilter("ALL")}
-        >
-          {t("filters.all")}
-        </button>
-
-        <button
-          type="button"
-          className={`organization-requests-filter ${
-            activeFilter === "PENDING" ? "active" : ""
-          }`}
-          onClick={() => setActiveFilter("PENDING")}
-        >
-          {t("filters.pending")}
-        </button>
-
-        <button
-          type="button"
-          className={`organization-requests-filter ${
-            activeFilter === "APPROVED" ? "active" : ""
-          }`}
-          onClick={() => setActiveFilter("APPROVED")}
-        >
-          {t("filters.approved")}
-        </button>
-
-        <button
-          type="button"
-          className={`organization-requests-filter ${
-            activeFilter === "REJECTED" ? "active" : ""
-          }`}
-          onClick={() => setActiveFilter("REJECTED")}
-        >
-          {t("filters.rejected")}
-        </button>
-      </div>
+      <Filter
+        value={activeFilter}
+        onChange={setActiveFilter}
+        options={[
+          { value: "ALL", label: t("filters.all") },
+          { value: "PENDING", label: t("filters.pending") },
+          { value: "APPROVED", label: t("filters.approved") },
+          { value: "REJECTED", label: t("filters.rejected") },
+        ]}
+      />
 
       {/* Table */}
       <div className="organization-requests-table-wrapper">

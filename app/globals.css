@@ -132,6 +132,43 @@
   border-color: rgba(239, 68, 68, 0.35) !important;
 }
 
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: fit-content;
+  margin-bottom: 22px;
+  padding: 3px;
+  border: 1px solid #1d2229;
+  border-radius: 7px;
+  background: #0d1014;
+}
+
+.filter-button {
+  height: 29px;
+  padding: 0 11px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #666b75;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.filter-button:hover {
+  color: #b4b7bd;
+}
+
+.filter-button.active {
+  background: #191d23;
+  color: #e4e4e7;
+}
+
 /* :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

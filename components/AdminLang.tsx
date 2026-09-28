@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
+import { useLocale } from "next-intl";
 
 const locales = [
   { code: "uz", label: "O‘zbekcha" },
@@ -12,19 +12,15 @@ const locales = [
 
 export default function AdminLang() {
   const pathname = usePathname();
+  const locale = useLocale();
 
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const segments = pathname.split("/").filter(Boolean);
-
-  const currentLocale =
-    locales.some((locale) => locale.code === segments[0])
-      ? segments[0]
-      : "uz";
+  const currentLocale = locale;
 
   const current =
-    locales.find((locale) => locale.code === currentLocale) ?? locales[0];
+    locales.find((item) => item.code === currentLocale) ?? locales[0];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -43,22 +39,8 @@ export default function AdminLang() {
     };
   }, []);
 
-  const getLocaleHref = (locale: string) => {
-    const hasLocalePrefix = locales.some(
-      (item) => item.code === segments[0]
-    );
-
-    const pathWithoutLocale = hasLocalePrefix
-      ? `/${segments.slice(1).join("/")}`
-      : pathname;
-
-    if (locale === "uz") {
-      return pathWithoutLocale || "/";
-    }
-
-    return `/${locale}${
-      pathWithoutLocale === "/" ? "" : pathWithoutLocale
-    }`;
+  const getLocaleHref = () => {
+    return pathname;
   };
 
   return (
@@ -90,23 +72,21 @@ export default function AdminLang() {
 
       {open && (
         <div className="admin-lang-dropdown" role="listbox">
-          {locales.map((locale) => {
-            const selected = locale.code === currentLocale;
-            const href = getLocaleHref(locale.code);
+          {locales.map((localeOption) => {
+            const selected = localeOption.code === currentLocale;
 
             return (
               <Link
-                key={locale.code}
-                href={href}
+                key={localeOption.code}
+                href={pathname}
+                locale={localeOption.code}
                 scroll={false}
-                className={`admin-lang-option ${
-                  selected ? "selected" : ""
-                }`}
+                className={`admin-lang-option ${selected ? "selected" : ""}`}
                 onClick={() => setOpen(false)}
                 role="option"
                 aria-selected={selected}
               >
-                <span>{locale.label}</span>
+                <span>{localeOption.label}</span>
 
                 {selected && (
                   <svg

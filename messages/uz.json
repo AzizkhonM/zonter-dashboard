@@ -644,6 +644,73 @@
         "description": "Ushbu so‘rovni tasdiqlash tashkilotni yaratadi va yuboruvchini uning egasi sifatida tayinlaydi.",
         "cancel": "Bekor qilish"
       }
+    },
+    "organizations": {
+      "title": "Tashkilotlar",
+      "description": "Zonter platformasidagi barcha tashkilotlarni boshqaring.",
+      "loading": "Tashkilotlar yuklanmoqda...",
+      "empty": "Tashkilotlar topilmadi.",
+      "filters": {
+        "all": "Barchasi"
+      },
+      "columns": {
+        "organization": "Tashkilot",
+        "type": "Tur",
+        "owner": "Egasi",
+        "members": "A'zolar",
+        "status": "Holat",
+        "created": "Yaratilgan",
+        "actions": "Amallar"
+      },
+      "status": {
+        "active": "Faol",
+        "suspended": "To‘xtatilgan",
+        "archived": "Arxivlangan"
+      },
+      "actions": {
+        "details": "Batafsil"
+      },
+      "values": {
+        "unnamedOwner": "Nomsiz foydalanuvchi"
+      }
+    },
+    "organizationDetails": {
+      "title": "Tashkilot tafsilotlari",
+      "description": "Tashkilot haqida batafsil ma’lumotlarni ko‘ring va boshqaring.",
+      "back": "Tashkilotlarga qaytish",
+      "loading": "Tashkilot ma’lumotlari yuklanmoqda...",
+      "errors": {
+        "ORGANIZATION_NOT_FOUND": "Tashkilot topilmadi.",
+        "UNAUTHORIZED": "Avtorizatsiya talab qilinadi.",
+        "FORBIDDEN": "Bu amal uchun ruxsatingiz yo‘q.",
+        "INVALID_TOKEN": "Sessiya yaroqsiz.",
+        "SERVER_ERROR": "Serverda xatolik yuz berdi."
+      },
+      "status": {
+        "active": "Faol",
+        "suspended": "To‘xtatilgan",
+        "archived": "Arxivlangan"
+      },
+      "fields": {
+        "type": "Turi",
+        "members": "A'zolar",
+        "country": "Mamlakat",
+        "region": "Hudud",
+        "city": "Shahar",
+        "affiliatedOrganization": "Bog‘liq tashkilot",
+        "website": "Veb-sayt",
+        "created": "Yaratilgan",
+        "updated": "Yangilangan"
+      },
+      "types": {
+        "company": "Kompaniya",
+        "university": "Universitet",
+        "school": "Maktab",
+        "government": "Davlat tashkiloti",
+        "ngo": "NNT",
+        "community": "Hamjamiyat",
+        "other": "Boshqa"
+      }
     }
   },
   "common": {

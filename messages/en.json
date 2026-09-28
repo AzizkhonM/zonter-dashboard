@@ -644,6 +644,73 @@
         "description": "Approving this request will create the organization and assign the requester as its owner.",
         "cancel": "Cancel"
       }
+    },
+    "organizations": {
+      "title": "Organizations",
+      "description": "Manage all organizations on the Zonter platform.",
+      "loading": "Loading organizations...",
+      "empty": "No organizations found.",
+      "filters": {
+        "all": "All"
+      },
+      "columns": {
+        "organization": "Organization",
+        "type": "Type",
+        "owner": "Owner",
+        "members": "Members",
+        "status": "Status",
+        "created": "Created",
+        "actions": "Actions"
+      },
+      "status": {
+        "active": "Active",
+        "suspended": "Suspended",
+        "archived": "Archived"
+      },
+      "actions": {
+        "details": "Details"
+      },
+      "values": {
+        "unnamedOwner": "Unnamed user"
+      }
+    },
+    "organizationDetails": {
+      "title": "Organization Details",
+      "description": "View and manage detailed organization information.",
+      "back": "Back to organizations",
+      "loading": "Loading organization details...",
+      "errors": {
+        "ORGANIZATION_NOT_FOUND": "Organization not found.",
+        "UNAUTHORIZED": "Authorization is required.",
+        "FORBIDDEN": "You do not have permission to perform this action.",
+        "INVALID_TOKEN": "The session is invalid.",
+        "SERVER_ERROR": "Something went wrong on the server."
+      },
+      "status": {
+        "active": "Active",
+        "suspended": "Suspended",
+        "archived": "Archived"
+      },
+      "fields": {
+        "type": "Type",
+        "members": "Members",
+        "country": "Country",
+        "region": "Region",
+        "city": "City",
+        "affiliatedOrganization": "Affiliated organization",
+        "website": "Website",
+        "created": "Created",
+        "updated": "Updated"
+      },
+      "types": {
+        "company": "Company",
+        "university": "University",
+        "school": "School",
+        "government": "Government",
+        "ngo": "NGO",
+        "community": "Community",
+        "other": "Other"
+      }
     }
   },
   "common": {
