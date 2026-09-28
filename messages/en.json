@@ -412,17 +412,6 @@
       "namePlaceholder": "Enter organization name",
       "type": "Organization type",
       "typePlaceholder": "Select organization type",
-
-      "types": {
-        "company": "Company",
-        "university": "University",
-        "school": "School",
-        "government": "Government",
-        "ngo": "NGO",
-        "community": "Community",
-        "other": "Other"
-      },
-
       "affiliatedOrganization": "Affiliated organization",
       "affiliatedOrganizationPlaceholder": "Enter affiliated organization",
       "description": "Description",
@@ -438,33 +427,6 @@
       "location": "Location",
       "country": "Country",
       "countryPlaceholder": "Enter country",
-      "countries": {
-        "uz": "Uzbekistan",
-        "kz": "Kazakhstan",
-        "kg": "Kyrgyzstan",
-        "tj": "Tajikistan",
-        "tm": "Turkmenistan",
-        "az": "Azerbaijan",
-        "am": "Armenia",
-        "by": "Belarus",
-        "md": "Moldova",
-        "ru": "Russia"
-      },
-      "regions": {
-        "tashkentCity": "Tashkent City",
-        "tashkentRegion": "Tashkent Region",
-        "andijan": "Andijan",
-        "bukhara": "Bukhara",
-        "jizzakh": "Jizzakh",
-        "kashkadarya": "Kashkadarya",
-        "khorezm": "Khorezm",
-        "namangan": "Namangan",
-        "navoi": "Navoiy",
-        "samarkand": "Samarkand",
-        "sirdarya": "Sirdarya",
-        "surkhandarya": "Surkhandarya",
-        "karakalpakstan": "Karakalpakstan"
-      },
       "region": "Region",
       "regionPlaceholder": "Enter region",
       "city": "City",
@@ -477,10 +439,12 @@
       "errors": {
         "UNAUTHORIZED": "Authorization is required.",
         "INVALID_TOKEN": "Your session is invalid. Please log in again.",
+        "PENDING_REQUEST_EXISTS": "You already have an organization request under review.",
         "INVALID_NAME": "The organization name is invalid.",
         "INVALID_TYPE": "Please select an organization type.",
         "INVALID_COUNTRY": "Please select a country.",
         "INVALID_LOGO_TYPE": "The logo must be in PNG, JPEG, or WebP format.",
+        "LOGO_TOO_LARGE": "The logo size must not exceed 5 MB.",
         "SERVER_ERROR": "Something went wrong on the server. Please try again later."
       },
       "success": {
@@ -593,6 +557,132 @@
         "empty": "No articles found.",
         "noResults": "No articles found",
         "tryAgain": "Try searching with different keywords."
+      }
+    }
+  },
+  "Admin": {
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "organizationRequests": "Requests",
+      "organizations": "Organizations",
+      "users": "Users",
+      "reports": "Reports",
+      "feedback": "Feedback",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "organizationRequests": {
+      "title": "Organization Requests",
+      "description": "Review and manage organization creation requests.",
+      "filters": {
+        "all": "All",
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "table": {
+        "organization": "Organization",
+        "type": "Type",
+        "user": "User",
+        "status": "Status",
+        "created": "Created"
+      },
+      "states": {
+        "loading": "Loading...",
+        "empty": "No organization requests found."
+      },
+      "status": {
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "sections": {
+        "organization": "Organization",
+        "description": "Description",
+        "submittedBy": "Submitted by",
+        "location": "Location",
+        "additionalInformation": "Additional information",
+        "reason": "Reason",
+        "reviewNote": "Review note"
+      },
+      "fields": {
+        "name": "Name",
+        "type": "Type",
+        "status": "Status",
+        "created": "Created",
+        "country": "Country",
+        "region": "Region",
+        "city": "City",
+        "affiliatedOrganization": "Affiliated organization",
+        "website": "Website"
+      },
+      "values": {
+        "unnamedUser": "Unnamed user"
+      },
+      "modal": {
+        "close": "Close"
+      },
+      "actions": {
+        "approve": "Approve",
+        "approving": "Approving...",
+        "reject": "Reject",
+        "rejecting": "Rejecting..."
+      },
+      "reject": {
+        "title": "Reject request",
+        "description": "Enter the reason for rejecting this organization request.",
+        "placeholder": "Enter the rejection reason..."
+      },
+      "toast": {
+        "rejectSuccess": "Organization request rejected.",
+        "rejectError": "Failed to reject the organization request.",
+        "approveSuccess": "Organization request approved.",
+        "approveError": "Failed to approve the organization request."
+      },
+      "approve": {
+        "title": "Approve request",
+        "description": "Approving this request will create the organization and assign the requester as its owner.",
+        "cancel": "Cancel"
+      }
+    }
+  },
+  "common": {
+    "organization": {
+      "types": {
+        "company": "Company",
+        "university": "University",
+        "school": "School",
+        "government": "Government",
+        "ngo": "NGO",
+        "community": "Community",
+        "other": "Other"
+      },
+      "countries": {
+        "uz": "Uzbekistan",
+        "kz": "Kazakhstan",
+        "kg": "Kyrgyzstan",
+        "tj": "Tajikistan",
+        "tm": "Turkmenistan",
+        "az": "Azerbaijan",
+        "am": "Armenia",
+        "by": "Belarus",
+        "md": "Moldova",
+        "ru": "Russia"
+      },
+      "regions": {
+        "tashkentCity": "Tashkent City",
+        "tashkentRegion": "Tashkent Region",
+        "andijan": "Andijan",
+        "bukhara": "Bukhara",
+        "jizzakh": "Jizzakh",
+        "kashkadarya": "Kashkadarya",
+        "khorezm": "Khorezm",
+        "namangan": "Namangan",
+        "navoi": "Navoiy",
+        "samarkand": "Samarkand",
+        "sirdarya": "Sirdarya",
+        "surkhandarya": "Surkhandarya",
+        "karakalpakstan": "Karakalpakstan"
       }
     }
   }

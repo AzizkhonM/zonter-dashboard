@@ -4,29 +4,27 @@ import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter, usePathname } from "next/navigation";
 import { toast } from "sonner";
+import {
+  organizationTypeOptions,
+  cisCountryOptions,
+  uzbekistanRegionOptions,
+} from "@/lib/organization-options";
 
 const ORGANIZATION_DRAFT_KEY = "zonter-create-organization";
 
 export default function CreateOrganizationPage() {
   const t = useTranslations("Dashboard");
-
-  const organizationTypes = [
-    { value: "COMPANY", label: t("organization.types.company") },
-    { value: "UNIVERSITY", label: t("organization.types.university") },
-    { value: "SCHOOL", label: t("organization.types.school") },
-    { value: "GOVERNMENT", label: t("organization.types.government") },
-    { value: "NGO", label: t("organization.types.ngo") },
-    { value: "COMMUNITY", label: t("organization.types.community") },
-    { value: "OTHER", label: t("organization.types.other") },
-  ];
+  const tCommon = useTranslations("common");
 
   const errorMessages = {
     UNAUTHORIZED: "organization.errors.UNAUTHORIZED",
     INVALID_TOKEN: "organization.errors.INVALID_TOKEN",
+    PENDING_REQUEST_EXISTS: "organization.errors.PENDING_REQUEST_EXISTS",
     INVALID_NAME: "organization.errors.INVALID_NAME",
     INVALID_TYPE: "organization.errors.INVALID_TYPE",
     INVALID_COUNTRY: "organization.errors.INVALID_COUNTRY",
     INVALID_LOGO_TYPE: "organization.errors.INVALID_LOGO_TYPE",
+    LOGO_TOO_LARGE: "organization.errors.LOGO_TOO_LARGE",
     SERVER_ERROR: "organization.errors.SERVER_ERROR",
   } as const;
 
@@ -127,40 +125,20 @@ export default function CreateOrganizationPage() {
     setLogoPreview(URL.createObjectURL(file));
   };
 
-  const cisCountries = [
-    { value: "UZ", label: t("organization.countries.uz") },
-    { value: "KZ", label: t("organization.countries.kz") },
-    { value: "KG", label: t("organization.countries.kg") },
-    { value: "TJ", label: t("organization.countries.tj") },
-    { value: "TM", label: t("organization.countries.tm") },
-    { value: "AZ", label: t("organization.countries.az") },
-    { value: "AM", label: t("organization.countries.am") },
-    { value: "BY", label: t("organization.countries.by") },
-    { value: "MD", label: t("organization.countries.md") },
-    { value: "RU", label: t("organization.countries.ru") },
-  ];
+  const organizationTypes = organizationTypeOptions.map((item) => ({
+    value: item.value,
+    label: tCommon(`organization.types.${item.translationKey}`),
+  }));
 
-  const uzbekistanRegions = [
-    { value: "TASHKENT_CITY", label: t("organization.regions.tashkentCity") },
-    {
-      value: "TASHKENT_REGION",
-      label: t("organization.regions.tashkentRegion"),
-    },
-    { value: "ANDIJAN", label: t("organization.regions.andijan") },
-    { value: "BUKHARA", label: t("organization.regions.bukhara") },
-    { value: "JIZZAKH", label: t("organization.regions.jizzakh") },
-    { value: "KASHKADARYA", label: t("organization.regions.kashkadarya") },
-    { value: "KHOREZM", label: t("organization.regions.khorezm") },
-    { value: "NAMANGAN", label: t("organization.regions.namangan") },
-    { value: "NAVOIY", label: t("organization.regions.navoi") },
-    { value: "SAMARKAND", label: t("organization.regions.samarkand") },
-    { value: "SIRDARYA", label: t("organization.regions.sirdarya") },
-    { value: "SURKHANDARYA", label: t("organization.regions.surkhandarya") },
-    {
-      value: "KARAKALPAKSTAN",
-      label: t("organization.regions.karakalpakstan"),
-    },
-  ];
+  const cisCountries = cisCountryOptions.map((item) => ({
+    value: item.value,
+    label: tCommon(`organization.countries.${item.translationKey}`),
+  }));
+
+  const uzbekistanRegions = uzbekistanRegionOptions.map((item) => ({
+    value: item.value,
+    label: tCommon(`organization.regions.${item.translationKey}`),
+  }));
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -282,7 +260,7 @@ export default function CreateOrganizationPage() {
                   value={affiliatedOrganization}
                   onChange={(e) => setAffiliatedOrganization(e.target.value)}
                   placeholder={t(
-                    "organization.affiliatedOrganizationPlaceholder"
+                    "organization.affiliatedOrganizationPlaceholder",
                   )}
                 />
               </div>
@@ -584,7 +562,9 @@ export default function CreateOrganizationPage() {
           font-size: 0.92rem;
           color: var(--text-primary);
           outline: none;
-          transition: border-color 0.2s, background 0.2s;
+          transition:
+            border-color 0.2s,
+            background 0.2s;
         }
 
         .input::placeholder {
@@ -630,7 +610,9 @@ export default function CreateOrganizationPage() {
           color: var(--text-muted);
           font-size: 0.88rem;
           cursor: pointer;
-          transition: border-color 0.2s, background 0.2s;
+          transition:
+            border-color 0.2s,
+            background 0.2s;
           overflow: hidden;
         }
 
@@ -674,7 +656,9 @@ export default function CreateOrganizationPage() {
           border-radius: var(--radius);
           cursor: pointer;
           margin-top: 4px;
-          transition: background 0.2s, transform 0.1s;
+          transition:
+            background 0.2s,
+            transform 0.1s;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -704,7 +688,9 @@ export default function CreateOrganizationPage() {
           border: 1.5px dashed var(--input-border);
           border-radius: var(--radius);
           cursor: pointer;
-          transition: border-color 0.2s, background 0.2s;
+          transition:
+            border-color 0.2s,
+            background 0.2s;
         }
 
         .logo-dropzone:hover {

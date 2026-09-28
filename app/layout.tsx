@@ -96,6 +96,7 @@ export default function RootLayout({
           <Toaster
             position="top-right"
             closeButton
+            theme="dark"
             duration={5000}
             toastOptions={{
               classNames: {

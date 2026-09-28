@@ -412,17 +412,6 @@
       "namePlaceholder": "Tashkilot nomini kiriting",
       "type": "Tashkilot turi",
       "typePlaceholder": "Tashkilot turini tanlang",
-
-      "types": {
-        "company": "Kompaniya",
-        "university": "Universitet",
-        "school": "Maktab",
-        "government": "Davlat tashkiloti",
-        "ngo": "NNT",
-        "community": "Hamjamiyat",
-        "other": "Boshqa"
-      },
-
       "affiliatedOrganization": "Tegishli tashkilot",
       "affiliatedOrganizationPlaceholder": "Tegishli tashkilotni kiriting",
       "description": "Tavsif",
@@ -438,33 +427,6 @@
       "location": "Joylashuv",
       "country": "Mamlakat",
       "countryPlaceholder": "Mamlakatni kiriting",
-      "countries": {
-        "uz": "O‘zbekiston",
-        "kz": "Qozog‘iston",
-        "kg": "Qirg‘iziston",
-        "tj": "Tojikiston",
-        "tm": "Turkmaniston",
-        "az": "Ozarbayjon",
-        "am": "Armaniston",
-        "by": "Belarus",
-        "md": "Moldova",
-        "ru": "Rossiya"
-      },
-      "regions": {
-        "tashkentCity": "Toshkent shahri",
-        "tashkentRegion": "Toshkent viloyati",
-        "andijan": "Andijon viloyati",
-        "bukhara": "Buxoro viloyati",
-        "jizzakh": "Jizzax viloyati",
-        "kashkadarya": "Qashqadaryo viloyati",
-        "khorezm": "Xorazm viloyati",
-        "namangan": "Namangan viloyati",
-        "navoi": "Navoiy viloyati",
-        "samarkand": "Samarqand viloyati",
-        "sirdarya": "Sirdaryo viloyati",
-        "surkhandarya": "Surxondaryo viloyati",
-        "karakalpakstan": "Qoraqalpog‘iston Respublikasi"
-      },
       "region": "Viloyat",
       "regionPlaceholder": "Viloyatni kiriting",
       "city": "Shahar",
@@ -477,10 +439,12 @@
       "errors": {
         "UNAUTHORIZED": "Avtorizatsiyadan o‘tish talab qilinadi.",
         "INVALID_TOKEN": "Sessiya yaroqsiz. Qaytadan kiring.",
+        "PENDING_REQUEST_EXISTS": "Sizda allaqachon ko‘rib chiqilayotgan tashkilot so‘rovi mavjud.",
         "INVALID_NAME": "Tashkilot nomi noto‘g‘ri.",
         "INVALID_TYPE": "Tashkilot turini tanlang.",
         "INVALID_COUNTRY": "Mamlakatni tanlang.",
         "INVALID_LOGO_TYPE": "Logo faqat PNG, JPEG yoki WebP formatida bo‘lishi mumkin.",
+        "LOGO_TOO_LARGE": "Logo hajmi 5 MB dan oshmasligi kerak.",
         "SERVER_ERROR": "Serverda xatolik yuz berdi. Keyinroq qayta urinib ko‘ring."
       },
       "success": {
@@ -593,6 +557,132 @@
         "empty": "Maqolalar topilmadi.",
         "noResults": "Maqolalar topilmadi",
         "tryAgain": "Boshqa kalit so‘zlar bilan qidirib ko‘ring."
+      }
+    }
+  },
+  "Admin": {
+    "sidebar": {
+      "dashboard": "Boshqaruv paneli",
+      "organizationRequests": "Tashkilot so‘rovlari",
+      "organizations": "Tashkilotlar",
+      "users": "Foydalanuvchilar",
+      "reports": "Shikoyatlar",
+      "feedback": "Fikr-mulohazalar",
+      "settings": "Sozlamalar",
+      "logout": "Chiqish"
+    },
+    "organizationRequests": {
+      "title": "Tashkilot so‘rovlari",
+      "description": "Tashkilot yaratish so‘rovlarini ko‘rib chiqing va boshqaring.",
+      "filters": {
+        "all": "Barchasi",
+        "pending": "Kutilmoqda",
+        "approved": "Tasdiqlangan",
+        "rejected": "Rad etilgan"
+      },
+      "table": {
+        "organization": "Tashkilot",
+        "type": "Turi",
+        "user": "Foydalanuvchi",
+        "status": "Holat",
+        "created": "Yaratilgan"
+      },
+      "states": {
+        "loading": "Yuklanmoqda...",
+        "empty": "Tashkilot so‘rovlari topilmadi."
+      },
+      "status": {
+        "pending": "Kutilmoqda",
+        "approved": "Tasdiqlangan",
+        "rejected": "Rad etilgan"
+      },
+      "sections": {
+        "organization": "Tashkilot",
+        "description": "Tavsif",
+        "submittedBy": "Yuboruvchi",
+        "location": "Joylashuv",
+        "additionalInformation": "Qo‘shimcha ma’lumot",
+        "reason": "Sabab",
+        "reviewNote": "Ko‘rib chiqish izohi"
+      },
+      "fields": {
+        "name": "Nomi",
+        "type": "Turi",
+        "status": "Holati",
+        "created": "Yaratilgan",
+        "country": "Mamlakat",
+        "region": "Viloyat",
+        "city": "Shahar",
+        "affiliatedOrganization": "Bog‘liq tashkilot",
+        "website": "Veb-sayt"
+      },
+      "values": {
+        "unnamedUser": "Nomsiz foydalanuvchi"
+      },
+      "modal": {
+        "close": "Yopish"
+      },
+      "actions": {
+        "approve": "Tasdiqlash",
+        "approving": "Tasdiqlanmoqda...",
+        "reject": "Rad etish",
+        "rejecting": "Rad etilmoqda..."
+      },
+      "reject": {
+        "title": "So‘rovni rad etish",
+        "description": "Ushbu tashkilot so‘rovini rad etish sababini kiriting.",
+        "placeholder": "Rad etish sababini yozing..."
+      },
+      "toast": {
+        "rejectSuccess": "Tashkilot so‘rovi rad etildi.",
+        "rejectError": "Tashkilot so‘rovini rad etishda xatolik yuz berdi.",
+        "approveSuccess": "Tashkilot so‘rovi tasdiqlandi.",
+        "approveError": "Tashkilot so‘rovini tasdiqlashda xatolik yuz berdi."
+      },
+      "approve": {
+        "title": "So‘rovni tasdiqlash",
+        "description": "Ushbu so‘rovni tasdiqlash tashkilotni yaratadi va yuboruvchini uning egasi sifatida tayinlaydi.",
+        "cancel": "Bekor qilish"
+      }
+    }
+  },
+  "common": {
+    "organization": {
+      "types": {
+        "company": "Kompaniya",
+        "university": "Universitet",
+        "school": "Maktab",
+        "government": "Davlat tashkiloti",
+        "ngo": "NNT",
+        "community": "Hamjamiyat",
+        "other": "Boshqa"
+      },
+      "countries": {
+        "uz": "O‘zbekiston",
+        "kz": "Qozog‘iston",
+        "kg": "Qirg‘iziston",
+        "tj": "Tojikiston",
+        "tm": "Turkmaniston",
+        "az": "Ozarbayjon",
+        "am": "Armaniston",
+        "by": "Belarus",
+        "md": "Moldova",
+        "ru": "Rossiya"
+      },
+      "regions": {
+        "tashkentCity": "Toshkent shahri",
+        "tashkentRegion": "Toshkent viloyati",
+        "andijan": "Andijon viloyati",
+        "bukhara": "Buxoro viloyati",
+        "jizzakh": "Jizzax viloyati",
+        "kashkadarya": "Qashqadaryo viloyati",
+        "khorezm": "Xorazm viloyati",
+        "namangan": "Namangan viloyati",
+        "navoi": "Navoiy viloyati",
+        "samarkand": "Samarqand viloyati",
+        "sirdarya": "Sirdaryo viloyati",
+        "surkhandarya": "Surxondaryo viloyati",
+        "karakalpakstan": "Qoraqalpog‘iston Respublikasi"
       }
     }
   }
