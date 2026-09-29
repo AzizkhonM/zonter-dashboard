@@ -43,7 +43,7 @@ type SortDirection = "asc" | "desc";
 export default function OrganizationsPage() {
   const t = useTranslations("Admin.organizations");
   const tCommon = useTranslations("common");
-  const locale = useLocale();
+  const locale = useLocale() as "uz" | "en" | "ru";
 
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [activeFilter, setActiveFilter] = useState<"ALL" | OrganizationStatus>(
