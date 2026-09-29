@@ -82,7 +82,7 @@ export default function OrganizationDetailsPage() {
   const tCommon = useTranslations("common.organization");
 
   const params = useParams<{ slug: string }>();
-  const locale = useLocale();
+  const locale = useLocale() as "uz" | "en" | "ru";
 
   const [organization, setOrganization] = useState<Organization | null>(null);
   const [loading, setLoading] = useState(true);
