@@ -451,6 +451,17 @@
         "requestSubmitted": "Organization creation request submitted."
       }
     },
+    "organizations": {
+      "title": "Organizations",
+      "description": "Manage the organizations you are a member of.",
+      "create": "Create organization",
+      "open": "Open",
+      "role": "Role",
+      "empty": {
+        "title": "No organizations yet",
+        "description": "Create an organization or join one through an invitation."
+      }
+    },
     "help": {
       "title": "Help Center",
       "description": "Learn how to use Zonter and find answers to common questions.",
@@ -710,6 +721,22 @@
         "ngo": "NGO",
         "community": "Community",
         "other": "Other"
+      },
+      "actions": {
+        "label": "Actions",
+        "suspend": "Suspend",
+        "archive": "Archive",
+        "restore": "Restore"
+      },
+      "confirm": {
+        "title": "Confirm action",
+        "suspended": "Are you sure you want to suspend this organization?",
+        "archived": "Are you sure you want to archive this organization?",
+        "active": "Are you sure you want to restore this organization?",
+        "cancel": "Cancel",
+        "confirm": "Confirm",
+        "loading": "Saving...",
+        "reasonPlaceholder": "Enter the reason..."
       }
     }
   },
@@ -750,7 +777,30 @@
         "sirdarya": "Sirdarya",
         "surkhandarya": "Surkhandarya",
         "karakalpakstan": "Karakalpakstan"
+      },
+      "errors": {
+        "UNAUTHORIZED": "Authorization is required.",
+        "INVALID_TOKEN": "The session is invalid.",
+        "FORBIDDEN": "You do not have permission to perform this action.",
+        "REQUEST_NOT_FOUND": "Organization request not found.",
+        "REQUEST_ALREADY_REVIEWED": "This organization request has already been reviewed.",
+        "REVIEW_NOTE_REQUIRED": "Please provide a reason for rejection.",
+        "INVALID_ACTION": "Invalid action.",
+        "INVALID_REQUEST_BODY": "Invalid request data.",
+        "INVALID_SLUG": "A valid identifier could not be generated from the organization name.",
+        "ORGANIZATION_ALREADY_EXISTS": "An organization with this name already exists.",
+        "SERVER_ERROR": "A server error occurred."
       }
+    },
+    "roles": {
+      "owner": "Owner",
+      "admin": "Administrator",
+      "member": "Member"
+    },
+    "statuses": {
+      "active": "Active",
+      "suspended": "Suspended",
+      "archived": "Archived"
     }
   }
 }

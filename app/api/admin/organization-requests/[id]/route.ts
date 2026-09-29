@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 
 import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/jwt";
+import { sendOrganizationEmail } from "@/lib/organization-email";
 
 function createSlugBase(name: string) {
   return name
@@ -13,35 +14,6 @@ function createSlugBase(name: string) {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
-}
-
-async function generateUniqueSlug(name: string) {
-  const baseSlug = createSlugBase(name);
-
-  if (!baseSlug) {
-    throw new Error("INVALID_SLUG");
-  }
-
-  let slug = baseSlug;
-  let counter = 2;
-
-  while (true) {
-    const existingOrganization = await prisma.organization.findUnique({
-      where: {
-        slug,
-      },
-      select: {
-        id: true,
-      },
-    });
-
-    if (!existingOrganization) {
-      return slug;
-    }
-
-    slug = `${baseSlug}-${counter}`;
-    counter++;
-  }
 }
 
 export async function POST(
@@ -54,10 +26,7 @@ export async function POST(
     const token = cookieStore.get("token")?.value?.trim();
 
     if (!token) {
-      return NextResponse.json(
-        { error: "UNAUTHORIZED" },
-        { status: 401 },
-      );
+      return NextResponse.json({ error: "UNAUTHORIZED" }, { status: 401 });
     }
 
     let decoded;
@@ -65,34 +34,22 @@ export async function POST(
     try {
       decoded = await verifyToken(token);
     } catch {
-      return NextResponse.json(
-        { error: "INVALID_TOKEN" },
-        { status: 401 },
-      );
+      return NextResponse.json({ error: "INVALID_TOKEN" }, { status: 401 });
     }
 
     if (!decoded?.userId) {
-      return NextResponse.json(
-        { error: "INVALID_TOKEN" },
-        { status: 401 },
-      );
+      return NextResponse.json({ error: "INVALID_TOKEN" }, { status: 401 });
     }
 
     // 2. SUPER_ADMIN only
     if (decoded.role !== "SUPER_ADMIN") {
-      return NextResponse.json(
-        { error: "FORBIDDEN" },
-        { status: 403 },
-      );
+      return NextResponse.json({ error: "FORBIDDEN" }, { status: 403 });
     }
 
     const { id } = await params;
 
     if (!id) {
-      return NextResponse.json(
-        { error: "REQUEST_NOT_FOUND" },
-        { status: 404 },
-      );
+      return NextResponse.json({ error: "REQUEST_NOT_FOUND" }, { status: 404 });
     }
 
     // 3. Request body
@@ -114,10 +71,7 @@ export async function POST(
     const reviewNote = body.reviewNote?.trim() || null;
 
     if (action !== "approve" && action !== "reject") {
-      return NextResponse.json(
-        { error: "INVALID_ACTION" },
-        { status: 400 },
-      );
+      return NextResponse.json({ error: "INVALID_ACTION" }, { status: 400 });
     }
 
     // 4. Reject requires a reason
@@ -129,18 +83,14 @@ export async function POST(
     }
 
     // 5. Find request
-    const organizationRequest =
-      await prisma.organizationRequest.findUnique({
-        where: {
-          id,
-        },
-      });
+    const organizationRequest = await prisma.organizationRequest.findUnique({
+      where: {
+        id,
+      },
+    });
 
     if (!organizationRequest) {
-      return NextResponse.json(
-        { error: "REQUEST_NOT_FOUND" },
-        { status: 404 },
-      );
+      return NextResponse.json({ error: "REQUEST_NOT_FOUND" }, { status: 404 });
     }
 
     if (organizationRequest.status !== "PENDING") {
@@ -155,9 +105,10 @@ export async function POST(
     // =========================================================
 
     if (action === "reject") {
-      const updatedRequest = await prisma.organizationRequest.update({
+      const result = await prisma.organizationRequest.updateMany({
         where: {
           id,
+          status: "PENDING",
         },
         data: {
           status: "REJECTED",
@@ -166,6 +117,69 @@ export async function POST(
           reviewNote,
         },
       });
+
+      if (result.count === 0) {
+        return NextResponse.json(
+          { error: "REQUEST_ALREADY_REVIEWED" },
+          { status: 409 },
+        );
+      }
+
+      const updatedRequest = await prisma.organizationRequest.findUnique({
+        where: {
+          id,
+        },
+        select: {
+          id: true,
+          status: true,
+          reviewedAt: true,
+          reviewNote: true,
+          userId: true,
+          name: true,
+          locale: true,
+        },
+      });
+
+      if (!updatedRequest) {
+        return NextResponse.json(
+          { error: "REQUEST_NOT_FOUND" },
+          { status: 404 },
+        );
+      }
+
+      const user = await prisma.user.findUnique({
+        where: {
+          id: updatedRequest.userId,
+        },
+        select: {
+          email: true,
+        },
+      });
+
+      if (user) {
+        await prisma.notification.create({
+          data: {
+            userId: updatedRequest.userId,
+            type: "ORGANIZATION_REJECTED",
+            metadata: {
+              organizationName: updatedRequest.name,
+              reason: updatedRequest.reviewNote,
+            },
+          },
+        });
+
+        try {
+          await sendOrganizationEmail({
+            email: user.email,
+            organizationName: updatedRequest.name,
+            locale: updatedRequest.locale.toLowerCase() as "uz" | "en" | "ru",
+            type: "REJECTED",
+            reason: updatedRequest.reviewNote,
+          });
+        } catch (error) {
+          console.error("REJECT ORGANIZATION EMAIL ERROR:", error);
+        }
+      }
 
       return NextResponse.json({
         success: true,
@@ -190,12 +204,11 @@ export async function POST(
        * This protects against two admins trying to approve
        * the same request at nearly the same time.
        */
-      const currentRequest =
-        await tx.organizationRequest.findUnique({
-          where: {
-            id,
-          },
-        });
+      const currentRequest = await tx.organizationRequest.findUnique({
+        where: {
+          id,
+        },
+      });
 
       if (!currentRequest) {
         throw new Error("REQUEST_NOT_FOUND");
@@ -216,15 +229,14 @@ export async function POST(
       let counter = 2;
 
       while (true) {
-        const existingOrganization =
-          await tx.organization.findUnique({
-            where: {
-              slug,
-            },
-            select: {
-              id: true,
-            },
-          });
+        const existingOrganization = await tx.organization.findUnique({
+          where: {
+            slug,
+          },
+          select: {
+            id: true,
+          },
+        });
 
         if (!existingOrganization) {
           break;
@@ -242,8 +254,8 @@ export async function POST(
           description: currentRequest.description,
           logoUrl: currentRequest.logoUrl,
           type: currentRequest.type,
-          affiliatedOrganization:
-            currentRequest.affiliatedOrganization,
+          locale: currentRequest.locale,
+          affiliatedOrganization: currentRequest.affiliatedOrganization,
           website: currentRequest.website,
           country: currentRequest.country,
           region: currentRequest.region,
@@ -261,17 +273,16 @@ export async function POST(
       });
 
       // 3. Approve request
-      const updatedRequest =
-        await tx.organizationRequest.update({
-          where: {
-            id: currentRequest.id,
-          },
-          data: {
-            status: "APPROVED",
-            reviewedById: decoded.userId,
-            reviewedAt: new Date(),
-          },
-        });
+      const updatedRequest = await tx.organizationRequest.update({
+        where: {
+          id: currentRequest.id,
+        },
+        data: {
+          status: "APPROVED",
+          reviewedById: decoded.userId,
+          reviewedAt: new Date(),
+        },
+      });
 
       return {
         organization,
@@ -279,6 +290,40 @@ export async function POST(
         request: updatedRequest,
       };
     });
+
+    const owner = await prisma.user.findUnique({
+      where: {
+        id: result.request.userId,
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    if (owner) {
+      await prisma.notification.create({
+        data: {
+          userId: result.request.userId,
+          organizationId: result.organization.id,
+          type: "ORGANIZATION_APPROVED",
+          metadata: {
+            organizationName: result.organization.name,
+          },
+        },
+      });
+
+      try {
+        await sendOrganizationEmail({
+          email: owner.email,
+          organizationName: result.organization.name,
+          locale: result.organization.locale.toLowerCase() as
+            "uz" | "en" | "ru",
+          type: "APPROVED",
+        });
+      } catch (error) {
+        console.error("APPROVE ORGANIZATION EMAIL ERROR:", error);
+      }
+    }
 
     return NextResponse.json({
       success: true,
@@ -295,10 +340,7 @@ export async function POST(
       },
     });
   } catch (error) {
-    console.error(
-      "REVIEW ORGANIZATION REQUEST ERROR:",
-      error,
-    );
+    console.error("REVIEW ORGANIZATION REQUEST ERROR:", error);
 
     if (error instanceof Error) {
       if (error.message === "REQUEST_NOT_FOUND") {
@@ -316,10 +358,7 @@ export async function POST(
       }
 
       if (error.message === "INVALID_SLUG") {
-        return NextResponse.json(
-          { error: "INVALID_SLUG" },
-          { status: 400 },
-        );
+        return NextResponse.json({ error: "INVALID_SLUG" }, { status: 400 });
       }
     }
 
@@ -334,9 +373,6 @@ export async function POST(
       );
     }
 
-    return NextResponse.json(
-      { error: "SERVER_ERROR" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "SERVER_ERROR" }, { status: 500 });
   }
 }

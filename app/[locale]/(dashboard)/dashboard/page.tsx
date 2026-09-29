@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import ActionCard from "@/components/dashboard/ActionCard";
+import { Link } from "@/i18n/navigation";
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Dashboard");
@@ -27,33 +29,51 @@ export default async function Dashboard() {
     const payload = await verifyToken(token);
     const userId = payload.userId as string;
 
-    const organizationCount = await prisma.organizationMember.count({
-      where: {
-        userId,
-      },
-    });
-
-    const hasOrganizations = organizationCount > 0;
-
     if (!userId) {
       return <div>Invalid token</div>;
     }
 
+    const organizations = await prisma.organizationMember.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        role: true,
+        organization: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+            logoUrl: true,
+            status: true,
+            type: true,
+            country: true,
+            city: true,
+          },
+        },
+      },
+      orderBy: {
+        joinedAt: "desc",
+      },
+    });
+
+    const hasOrganizations = organizations.length > 0;
+
     return (
       <div className="dashboard-page">
         {/* Welcome section */}
-        <div className="welcome-section">
-          <h2 className="welcome-title">{t("main.welcome")}</h2>
-          <p className="welcome-subtitle">{t("main.underwelcome")}</p>
-        </div>
+        <DashboardHeader
+          title={t("main.welcome")}
+          subtitle={t("main.underwelcome")}
+        />
 
         {/* Quick stats */}
         {hasOrganizations && (
           <div className="stats-grid">
-            <div className="stat-card">
+            <Link href="/dashboard/organizations" className="stat-card">
               <p className="stat-label">{t("main.orgs")}</p>
-              <p className="stat-value">0</p>
-            </div>
+              <p className="stat-value">{organizations.length}</p>
+            </Link>
             <div className="stat-card">
               <p className="stat-label">{t("main.tours")}</p>
               <p className="stat-value">0</p>
@@ -110,24 +130,6 @@ export default async function Dashboard() {
             width: 100%;
           }
 
-          .welcome-section {
-            margin-bottom: 40px;
-          }
-
-          .welcome-title {
-            font-size: 32px;
-            font-weight: 600;
-            color: white;
-            letter-spacing: -0.5px;
-            margin-bottom: 12px;
-          }
-
-          .welcome-subtitle {
-            font-size: 14px;
-            color: #9CA3AF;
-            max-width: 600px;
-          }
-
           .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -141,6 +143,15 @@ export default async function Dashboard() {
             border-radius: 10px;
             padding: 20px;
             transition: all 0.2s;
+          }
+
+          .stat-card {
+            display: block;
+            text-decoration: none;
+            cursor: pointer;
+            transition:
+              border-color 0.2s ease,
+              background 0.2s ease;
           }
 
           .stat-card:hover {

@@ -451,6 +451,17 @@
         "requestSubmitted": "Tashkilot yaratish so‘rovi yuborildi."
       }
     },
+    "organizations": {
+      "title": "Tashkilotlar",
+      "description": "Siz a’zo bo‘lgan tashkilotlarni boshqaring.",
+      "create": "Tashkilot yaratish",
+      "open": "Ochish",
+      "role": "Rol",
+      "empty": {
+        "title": "Hozircha tashkilotlar yo‘q",
+        "description": "Tashkilot yarating yoki taklifnoma orqali tashkilotga qo‘shiling."
+      }
+    },
     "help": {
       "title": "Yordam markazi",
       "description": "Zonter'dan foydalanishni o‘rganing va keng tarqalgan savollarga javob toping.",
@@ -655,7 +666,7 @@
       },
       "columns": {
         "organization": "Tashkilot",
-        "type": "Tur",
+        "type": "Turi",
         "owner": "Egasi",
         "members": "A'zolar",
         "status": "Holat",
@@ -693,14 +704,14 @@
       },
       "fields": {
         "type": "Turi",
-        "members": "A'zolar",
+        "members": "Aʼzolar",
         "country": "Mamlakat",
         "region": "Hudud",
         "city": "Shahar",
         "affiliatedOrganization": "Bog‘liq tashkilot",
         "website": "Veb-sayt",
-        "created": "Yaratilgan",
-        "updated": "Yangilangan"
+        "created": "Yaratilgan sana",
+        "updated": "Yangilangan sana"
       },
       "types": {
         "company": "Kompaniya",
@@ -710,6 +721,22 @@
         "ngo": "NNT",
         "community": "Hamjamiyat",
         "other": "Boshqa"
+      },
+      "actions": {
+        "label": "Amallar",
+        "suspend": "To‘xtatish",
+        "archive": "Arxivga olish",
+        "restore": "Tiklash"
+      },
+      "confirm": {
+        "title": "Amalni tasdiqlash",
+        "suspended": "Tashkilotni vaqtincha to‘xtatishni tasdiqlaysizmi?",
+        "archived": "Tashkilotni arxivlashni tasdiqlaysizmi?",
+        "active": "Tashkilotni qayta faollashtirishni tasdiqlaysizmi?",
+        "cancel": "Bekor qilish",
+        "confirm": "Tasdiqlash",
+        "loading": "Saqlanmoqda...",
+        "reasonPlaceholder": "Sababni kiriting..."
       }
     }
   },
@@ -750,7 +777,30 @@
         "sirdarya": "Sirdaryo viloyati",
         "surkhandarya": "Surxondaryo viloyati",
         "karakalpakstan": "Qoraqalpog‘iston Respublikasi"
+      },
+      "errors": {
+        "UNAUTHORIZED": "Avtorizatsiya talab qilinadi.",
+        "INVALID_TOKEN": "Sessiya yaroqsiz.",
+        "FORBIDDEN": "Bu amal uchun ruxsatingiz yo‘q.",
+        "REQUEST_NOT_FOUND": "Tashkilot so‘rovi topilmadi.",
+        "REQUEST_ALREADY_REVIEWED": "Bu tashkilot so‘rovi allaqachon ko‘rib chiqilgan.",
+        "REVIEW_NOTE_REQUIRED": "Rad etish sababini kiriting.",
+        "INVALID_ACTION": "Noto‘g‘ri amal.",
+        "INVALID_REQUEST_BODY": "Noto‘g‘ri so‘rov ma’lumotlari.",
+        "INVALID_SLUG": "Tashkilot nomidan yaroqli identifikator yaratib bo‘lmadi.",
+        "ORGANIZATION_ALREADY_EXISTS": "Bunday tashkilot allaqachon mavjud.",
+        "SERVER_ERROR": "Serverda xatolik yuz berdi."
       }
+    },
+    "roles": {
+      "owner": "Egasi",
+      "admin": "Administrator",
+      "member": "A’zo"
+    },
+    "statuses": {
+      "active": "Faol",
+      "suspended": "To‘xtatilgan",
+      "archived": "Arxivlangan"
     }
   }
 }

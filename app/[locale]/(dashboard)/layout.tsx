@@ -338,7 +338,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
           <div>
             <p className="header-label">{t("title")}</p>
-            <h1 className="header-title">{headerTitle}</h1>
           </div>
         </header>
 
@@ -561,7 +560,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           color: #6B7280;
           text-transform: uppercase;
           letter-spacing: 0.05em;
-          margin-bottom: 8px;
         }
 
         .header-title {

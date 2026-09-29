@@ -5,7 +5,7 @@ import { Prisma } from "@prisma/client";
 import { verifyToken } from "@/lib/jwt";
 import { r2 } from "@/lib/r2";
 import { cookies } from "next/headers";
-import { OrganizationType } from "@prisma/client";
+import { OrganizationType, Locale } from "@prisma/client";
 
 const ALLOWED_TYPES = ["image/png", "image/jpeg", "image/webp"] as const;
 
@@ -13,6 +13,10 @@ const MAX_LOGO_SIZE = 5 * 1024 * 1024; // 5 MB
 
 function isOrganizationType(value: string): value is OrganizationType {
   return Object.values(OrganizationType).includes(value as OrganizationType);
+}
+
+function isLocale(value: string): value is Locale {
+  return Object.values(Locale).includes(value as Locale);
 }
 
 export async function POST(req: Request) {
@@ -66,6 +70,8 @@ export async function POST(req: Request) {
 
     const type = String(formData.get("type") ?? "").trim();
 
+    const locale = String(formData.get("locale") ?? "").trim();
+
     const description = String(formData.get("description") ?? "").trim();
 
     const affiliatedOrganization = String(
@@ -91,6 +97,10 @@ export async function POST(req: Request) {
 
     if (!isOrganizationType(type)) {
       return NextResponse.json({ error: "INVALID_TYPE" }, { status: 400 });
+    }
+
+    if (!isLocale(locale)) {
+      return NextResponse.json({ error: "INVALID_LOCALE" }, { status: 400 });
     }
 
     if (!country) {
@@ -149,6 +159,7 @@ export async function POST(req: Request) {
         logoUrl,
 
         type,
+        locale,
 
         affiliatedOrganization: affiliatedOrganization || null,
 

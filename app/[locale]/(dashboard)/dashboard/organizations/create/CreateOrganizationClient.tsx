@@ -152,6 +152,7 @@ export default function CreateOrganizationPage() {
 
       formData.append("name", name.trim());
       formData.append("type", type);
+      formData.append("locale", locale.toUpperCase());
       formData.append("description", description.trim());
       formData.append("affiliatedOrganization", affiliatedOrganization.trim());
       formData.append("website", website.trim());

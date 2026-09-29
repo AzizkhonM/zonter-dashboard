@@ -7,6 +7,7 @@ import {
   cisCountryOptions,
   uzbekistanRegionOptions,
 } from "@/lib/organization-options";
+import { formatDateTime } from "@/lib/format-date-time";
 import { toast } from "sonner";
 import Filter from "@/components/admin/Filter";
 import PageHeader from "@/components/admin/PageHeader";
@@ -135,9 +136,9 @@ export default function OrganizationRequestsPage() {
 
       const updatedRequest: OrganizationRequest = {
         ...selectedRequest,
-        status: "REJECTED",
-        reviewNote: reviewNote.trim(),
-        reviewedAt: new Date().toISOString(),
+        status: data.request.status,
+        reviewNote: data.request.reviewNote,
+        reviewedAt: data.request.reviewedAt,
       };
 
       setRequests((currentRequests) =>
@@ -155,7 +156,9 @@ export default function OrganizationRequestsPage() {
       console.error("Reject organization request failed:", error);
 
       toast.error(
-        error instanceof Error ? error.message : t("toast.rejectError"),
+        error instanceof Error
+          ? tCommon(`errors.${error.message}`)
+          : tCommon("errors.SERVER_ERROR"),
       );
     } finally {
       setRejecting(false);
@@ -193,8 +196,8 @@ export default function OrganizationRequestsPage() {
 
       const updatedRequest: OrganizationRequest = {
         ...selectedRequest,
-        status: "APPROVED",
-        reviewedAt: new Date().toISOString(),
+        status: data.request.status,
+        reviewedAt: data.request.reviewedAt,
       };
 
       setRequests((currentRequests) =>
@@ -211,7 +214,9 @@ export default function OrganizationRequestsPage() {
       console.error("Approve organization request failed:", error);
 
       toast.error(
-        error instanceof Error ? error.message : t("toast.approveError"),
+        error instanceof Error
+          ? tCommon(`errors.${error.message}`)
+          : tCommon("errors.SERVER_ERROR"),
       );
     } finally {
       setApproving(false);
@@ -246,39 +251,6 @@ export default function OrganizationRequestsPage() {
     return option
       ? tCommon(`organization.regions.${option.translationKey}`)
       : region;
-  };
-
-  const formatDateTime = (date: string) => {
-    const value = new Date(date);
-
-    if (locale === "uz") {
-      const parts = new Intl.DateTimeFormat("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-        timeZone: "Asia/Tashkent",
-      }).formatToParts(value);
-
-      const get = (type: string) =>
-        parts.find((part) => part.type === type)?.value ?? "";
-
-      return `${get("day")}.${get("month")}.${get("year")}, ${get("hour")}:${get("minute")} UTC+5`;
-    }
-
-    return (
-      new Intl.DateTimeFormat(locale === "ru" ? "ru-RU" : "en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: locale === "en",
-        timeZone: "Asia/Tashkent",
-      }).format(value) + " UTC+5"
-    );
   };
 
   const filteredRequests =
@@ -524,7 +496,7 @@ export default function OrganizationRequestsPage() {
                   {/* Created */}
                   <td>
                     <span className="request-date">
-                      {formatDateTime(request.createdAt)}
+                      {formatDateTime(request.createdAt, locale)}
                     </span>
                   </td>
                 </tr>
@@ -591,7 +563,9 @@ export default function OrganizationRequestsPage() {
 
                   <div className="request-detail-item">
                     <span>{t("fields.created")}</span>
-                    <strong>{formatDateTime(selectedRequest.createdAt)}</strong>
+                    <strong>
+                      {formatDateTime(selectedRequest.createdAt, locale)}
+                    </strong>
                   </div>
                 </div>
               </section>

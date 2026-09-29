@@ -6,6 +6,7 @@ import { organizationTypeOptions } from "@/lib/organization-options";
 import Filter from "@/components/admin/Filter";
 import PageHeader from "@/components/admin/PageHeader";
 import { Link } from "@/i18n/navigation";
+import { formatDateTime } from "@/lib/format-date-time";
 
 type OrganizationStatus = "ACTIVE" | "SUSPENDED" | "ARCHIVED";
 
@@ -102,39 +103,6 @@ export default function OrganizationsPage() {
 
   const getStatusLabel = (status: OrganizationStatus) => {
     return t(`status.${status.toLowerCase()}`);
-  };
-
-  const formatDateTime = (date: string) => {
-    const value = new Date(date);
-
-    if (locale === "uz") {
-      const parts = new Intl.DateTimeFormat("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-        timeZone: "Asia/Tashkent",
-      }).formatToParts(value);
-
-      const get = (type: string) =>
-        parts.find((part) => part.type === type)?.value ?? "";
-
-      return `${get("day")}.${get("month")}.${get("year")}, ${get("hour")}:${get("minute")} UTC+5`;
-    }
-
-    return (
-      new Intl.DateTimeFormat(locale === "ru" ? "ru-RU" : "en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: locale === "en",
-        timeZone: "Asia/Tashkent",
-      }).format(value) + " UTC+5"
-    );
   };
 
   const filteredOrganizations =
@@ -327,7 +295,7 @@ export default function OrganizationsPage() {
 
                   <td>
                     <span className="organizations-date">
-                      {formatDateTime(organization.createdAt)}
+                      {formatDateTime(organization.createdAt, locale)}
                     </span>
                   </td>
 
@@ -447,17 +415,17 @@ export default function OrganizationsPage() {
 
         .organizations-table th:nth-child(4),
         .organizations-table td:nth-child(4) {
-          width: 9%;
+          width: 7%;
         }
 
         .organizations-table th:nth-child(5),
         .organizations-table td:nth-child(5) {
-          width: 13%;
+          width: 10%;
         }
 
         .organizations-table th:nth-child(6),
         .organizations-table td:nth-child(6) {
-          width: 10%;
+          width: 15%;
         }
 
         .organizations-table th:nth-child(7),
