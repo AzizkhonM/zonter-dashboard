@@ -46,7 +46,7 @@ type SortDirection = "asc" | "desc";
 export default function OrganizationRequestsPage() {
   const t = useTranslations("Admin.organizationRequests");
   const tCommon = useTranslations("common");
-  const locale = useLocale();
+  const locale = useLocale() as "uz" | "en" | "ru";
   const [requests, setRequests] = useState<OrganizationRequest[]>([]);
   const [activeFilter, setActiveFilter] = useState<"ALL" | RequestStatus>(
     "ALL",
